@@ -87,3 +87,17 @@ En la primera mención de cada página se añade entre paréntesis el significad
 | par (price of 100) | la par |
 | saw-tooth | diente de sierra |
 | Taylor polynomial | polinomio de Taylor |
+| return (earned by the investor) | rendimiento; "rendimiento obtenido" (no se usa "rentabilidad": reservada a yield) |
+| yield | rentabilidad |
+| coupon rate | tipo del cupón |
+| shock | choque |
+| effective duration | duración efectiva |
+| cash flow yield | rentabilidad de flujos de caja |
+| to accrue / accrued | devengar / devengado |
+| overnight rates | tipos a un día |
+| CD (plural) | los CD (las siglas no llevan "s" en plural) |
+| key rate | tipo clave |
+| sensitivity | sensibilidad |
+| weighted average | media ponderada |
+| repricing / reprice | revaloración / revalorar |
+| steepen / flatten / twist (curve) | empinarse / aplanarse / girar |

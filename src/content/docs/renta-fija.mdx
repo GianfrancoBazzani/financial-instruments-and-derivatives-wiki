@@ -1,6 +1,6 @@
 ---
 title: Instrumentos de renta fija
-description: Bonos, letras y CDs, valoración por descuento de flujos, rentabilidad, duración, DV01, convexidad y duración por tipo clave.
+description: Bonos, letras y CD, valoración por descuento de flujos, rentabilidad, duración, DV01, convexidad y duración por tipo clave.
 banner:
   content: "Traducción pendiente de revisión"
 ---
@@ -30,13 +30,13 @@ Las letras tienen un plazo corto hasta el vencimiento (1 año o menos). Como el 
 
 Las letras con vencimientos muy cortos (por ejemplo, 1 mes o 90 días) son muy habituales.
 
-### CDs (certificados de depósito)
+### CD (certificados de depósito)
 
 Los depósitos normalmente son exigibles a la vista, lo que significa que el cliente puede retirar el dinero en cualquier momento, sin previo aviso. Como el dinero puede retirarse en cualquier instante, un depósito a la vista tiene una duración muy corta, cercana a cero, y su valor no es sensible a los cambios en los tipos de interés.
 
 Un certificado de depósito (CD) es distinto. El cliente se compromete a dejar un importe fijo en el banco hasta una fecha de vencimiento (por ejemplo, 3 meses, 6 meses o 1 año). A cambio, el banco paga un tipo de interés fijo, normalmente más alto que el de un depósito a la vista. Si el cliente retira el dinero antes del vencimiento, el banco aplica una penalización. Como los flujos de caja están fijados de antemano, un CD es un instrumento de renta fija, igual que un bono o una letra.
 
-El principal problema de un CD es su liquidez limitada. A diferencia de los bonos y las letras, un CD es un contrato entre el cliente y un solo banco, y no existe un mercado donde el cliente pueda revender fácilmente esta deuda a otro inversor. La única forma de recuperar el dinero antes del vencimiento es pagar la penalización al banco. Solo los CDs grandes emitidos a instituciones (CDs negociables) pueden venderse en un mercado secundario.
+El principal problema de un CD es su liquidez limitada. A diferencia de los bonos y las letras, un CD es un contrato entre el cliente y un solo banco, y no existe un mercado donde el cliente pueda revender fácilmente esta deuda a otro inversor. La única forma de recuperar el dinero antes del vencimiento es pagar la penalización al banco. Solo los CD grandes emitidos a instituciones (CD negociables) pueden venderse en un mercado secundario.
 
 ## Valoración de un valor de renta fija
 
@@ -108,11 +108,11 @@ El gráfico muestra, por defecto, un bono a 10 años con un cupón del 3%, pagad
 {/* GRAFICO: CleanDirtyPrice */}
 
 - El precio sucio dibuja un **diente de sierra**. Sube con el cupón corrido y baja el importe del cupón en cada fecha de cupón. Esta caída **no es una pérdida**, porque el dinero pasa del precio a la caja del titular.
-- El precio limpio sube **suavemente** hacia la par. Se mantiene por debajo de 100, porque el cupón del 3% es menor que la rentabilidad del 5%. Su variación **no es la rentabilidad obtenida**, porque no incluye el cupón corrido.
+- El precio limpio sube **suavemente** hacia la par. Se mantiene por debajo de 100, porque el cupón del 3% es menor que la rentabilidad del 5%. Su variación **no es el rendimiento**, porque no incluye el cupón corrido.
 
 **Por qué el mercado cotiza el precio limpio**
 
-El cupón corrido crece linealmente y vuelve a cero en la fecha del cupón, así que absorbe el salto del precio sucio. El precio limpio se mantiene continuo, de modo que permite comparar los precios de distintos valores de renta fija, también cuando sus calendarios de cupones son diferentes. Las pantallas, las mesas de contratación y los futuros cotizan el precio limpio. La liquidación y la rentabilidad obtenida usan siempre el precio sucio.
+El cupón corrido crece linealmente y vuelve a cero en la fecha del cupón, así que absorbe el salto del precio sucio. El precio limpio se mantiene continuo, de modo que permite comparar los precios de distintos valores de renta fija, también cuando sus calendarios de cupones son diferentes. Las pantallas, las mesas de contratación y los futuros cotizan el precio limpio. La liquidación y el rendimiento obtenido usan siempre el precio sucio.
 
 ### Convenciones de cómputo de días
 
@@ -666,7 +666,7 @@ Tres características de un valor de renta fija determinan lo sensible que es su
 
 ## Duración por tipo clave
 
-La duración y la convexidad nos dan una forma de estimar la sensibilidad de nuestros valores de renta fija ante un cambio en los tipos de interés. Sin embargo, no hemos definido qué cambios de los tipos de interés. Los tipos de interés no son un único número. Forman una curva, con un tipo para cada vencimiento (la curva de tipos). Los tipos en distintos puntos de esta curva pueden moverse de maneras distintas. Por ejemplo, el tipo a 10 años puede subir mientras el tipo a 1 año baja. La duración y la convexidad suponen un desplazamiento paralelo, en el que todos los tipos se mueven en el mismo importe. La duración por tipo clave elimina este supuesto.
+La duración y la convexidad nos dan una forma de estimar la sensibilidad de nuestros valores de renta fija ante un cambio en los tipos de interés. Sin embargo, no hemos precisado a qué cambios de los tipos de interés nos referimos. Los tipos de interés no son un único número. Forman una curva, con un tipo para cada vencimiento (la curva de tipos). Los tipos en distintos puntos de esta curva pueden moverse de maneras distintas. Por ejemplo, el tipo a 10 años puede subir mientras el tipo a 1 año baja. La duración y la convexidad suponen un desplazamiento paralelo, en el que todos los tipos se mueven en el mismo importe. La duración por tipo clave elimina este supuesto.
 
 La duración por tipo clave mide la sensibilidad del precio de un valor de renta fija ante un cambio en el tipo de un vencimiento concreto, mientras todos los demás tipos de la curva permanecen constantes. Es una construcción teórica. En el mercado, los tipos de vencimientos cercanos rara vez se mueven de forma aislada.
 
