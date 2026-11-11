@@ -101,3 +101,39 @@ En la primera mención de cada página se añade entre paréntesis el significad
 | weighted average | media ponderada |
 | repricing / reprice | revaloración / revalorar |
 | steepen / flatten / twist (curve) | empinarse / aplanarse / girar |
+
+## Términos de la página 01 (tipos de interés)
+
+| English | Español |
+| --- | --- |
+| interest rate | tipo de interés |
+| tenor | plazo |
+| credit risk | riesgo de crédito |
+| credit spread | spread de crédito |
+| risk-free rate | tipo libre de riesgo |
+| expected loss / probability of default / loss given default | pérdida esperada / probabilidad de impago / pérdida en caso de impago |
+| credit risk premium / liquidity premium | prima de riesgo de crédito / prima de liquidez |
+| unsecured / secured | sin garantía / con garantía |
+| wholesale | mayorista |
+| Treasury rates | tipos del Tesoro |
+| overnight (adjetivo, tipos) | a un día |
+| volume-weighted median / mean | mediana / media ponderada por volumen |
+| policy rate | tipo de política monetaria |
+| deposit facility rate | tipo de la facilidad de depósito |
+| collateral / collateralized | colateral / con colateral |
+| repo (repurchase agreement) | repo (pacto de recompra); reverse repo → repo inverso; term repo → repo a plazo |
+| general collateral / special (repo) | colateral general / especial |
+| haircut (primera mención) | haircut (recorte de valoración) |
+| close-out netting / master agreement | compensación por cierre (close-out netting) / contrato marco |
+| margin call | llamada de margen |
+| reference rate | tipo de referencia |
+| floating-rate / floating leg | a tipo variable / pata variable |
+| reset date | fecha de revisión |
+| in arrears | a plazo vencido |
+| liquidity preference theory | teoría de la preferencia por la liquidez |
+| liquidity (term) premium | prima de liquidez (de plazo) |
+| maturity transformation | transformación de plazos |
+| net interest income | margen de intereses |
+| asset-liability management | gestión de activos y pasivos |
+| quantitative easing | expansión cuantitativa |
+| expectations theory / market segmentation theory | teoría de las expectativas / teoría de la segmentación del mercado |

@@ -1,0 +1,117 @@
+---
+title: Tipos de interés
+description: Riesgo de crédito, tipos libres de riesgo, LIBOR, EURIBOR, tipos del Tesoro, tipos a un día, tipos de repo, tipos de referencia y teoría de la preferencia por la liquidez.
+banner:
+  content: "Traducción pendiente de revisión"
+---
+
+{/* Fuente: 01-interest-rates.md @ 627bb65c932601a19f45d2d83c7b9f99169740dd */}
+
+Un **tipo de interés** define el importe de dinero que un prestatario promete pagar al prestamista por el uso de los fondos, por ejemplo el tipo de una hipoteca o el de un depósito. El tipo depende de la divisa, del plazo, de la frecuencia de capitalización (véase [Curvas de tipos](/curvas-de-tipos/)) y del riesgo de crédito del prestatario.
+
+Las variaciones de los tipos y los spreads se cotizan en **puntos básicos** (pb). Un punto básico es el 0.01% anual, es decir, 0.0001.
+
+## Riesgo de crédito
+
+El **riesgo de crédito** es el riesgo de que el prestatario incumpla y no pague los intereses o el principal como prometió. Un mayor riesgo de crédito exige un tipo prometido más alto.
+
+### Tipo libre de riesgo
+
+Se supone que el gobierno de un país desarrollado no incumple su deuda en su propia divisa, porque su banco central puede crear el dinero para pagarla. Por eso sus letras y bonos del Tesoro son la referencia libre de riesgo habitual. Este supuesto tiene tres límites.
+
+- **Se requiere soberanía monetaria.** Grecia reestructuró su deuda en euros en 2012, la mayor reestructuración soberana de la historia, porque un miembro del euro no puede imprimir euros.
+- **Solo se elimina el riesgo de impago.** Un bono del Tesoro sigue expuesto al riesgo de inflación y a los cambios de precio antes del vencimiento.
+- **Los tipos del Tesoro son ligeramente demasiado bajos.** La regulación y las normas de capital obligan a los bancos a mantener bonos del Tesoro, y los bonos del Tesoro de EE. UU. reciben un trato fiscal favorable. La demanda adicional reduce su rentabilidad, y por eso los operadores de derivados usan los tipos OIS como aproximación al tipo libre de riesgo.
+
+### Spread de crédito
+
+El **spread de crédito** es el tipo adicional sobre el tipo libre de riesgo que compensa el riesgo de crédito. Tiene tres componentes.
+
+- **Pérdida esperada.** $EL = PD \times LGD$, es decir, la probabilidad de impago por la pérdida en caso de impago. Una probabilidad de impago del 2% con una pérdida del 40% da 80 pb al año.
+- **Prima de riesgo de crédito.** Compensación por la incertidumbre de la pérdida, porque los impagos se concentran en las recesiones, cuando otros activos también pierden valor.
+- **Prima de liquidez.** Compensación por un bono que es más difícil de vender que un bono del Estado.
+
+
+## Clases de tipos
+
+Para cualquier divisa se cotizan con regularidad muchos tipos de interés diferentes.
+
+### LIBOR
+
+El **LIBOR** (London Interbank Offered Rate) era el tipo al que un panel de grandes bancos estimaba que podía obtener financiación sin garantía de otros bancos. Cada día, antes de las 11:00 hora de Londres, los bancos enviaban sus estimaciones para 5 divisas (USD, GBP, EUR, CHF, JPY) y 7 plazos, desde un día hasta 12 meses, frente a las 10 divisas y los 15 plazos que había antes de 2013. Se descartaban los cuartiles superior e inferior de las estimaciones y se promediaba el resto. El LIBOR terminó entre 2021 y 2024 (los últimos valores sintéticos del USD cesaron en septiembre de 2024) por dos motivos. Se basaba en el juicio de los bancos y no en operaciones reales, así que podía manipularse, como mostró el escándalo de manipulación de tipos de 2012. Además, después de 2008, el mercado interbancario a plazo sin garantía que medía se volvió demasiado poco profundo.
+
+### EURIBOR
+
+El **EURIBOR** (Euro Interbank Offered Rate) es el tipo al que los bancos de los países de la UE y de la AELC (Asociación Europea de Libre Comercio) pueden obtener financiación mayorista sin garantía en euros. Nació con el euro el 1 de enero de 1999 y sustituyó a los tipos nacionales. El Instituto Europeo de Mercados Monetarios (EMMI) lo publica cada día hábil a las 11:00 CET para 5 plazos (1 semana, 1, 3, 6 y 12 meses), a partir de un panel de unos 20 bancos. Como el LIBOR, se basaba en cotizaciones y fue manipulado, y la Comisión Europea sancionó a varios bancos en 2013 y 2016 por un cártel del EURIBOR entre 2005 y 2008. Se reformó en lugar de suprimirse, y desde 2019 una metodología híbrida usa las operaciones reales de los bancos del panel cuando están disponibles y, en su defecto, datos interpolados o ajustados al mercado a partir de operaciones anteriores. Es un índice de referencia crítico según el Reglamento de la UE sobre índices de referencia, supervisado por la ESMA desde 2022, y es el índice de la pata variable de la mayoría de los swaps (permutas financieras) en euros (a 3 o 6 meses) y de las hipotecas a tipo variable (a 12 meses en España, a 6 meses en Portugal).
+
+### Tipos del Tesoro
+
+Los **tipos del Tesoro** son las rentabilidades de las letras, las notas y los bonos que un gobierno emite para endeudarse en su propia divisa, y son los tipos libres de riesgo habituales, con los límites indicados antes. Los fijan las subastas y la negociación en el mercado secundario, y el Tesoro de EE. UU. los publica cada día hábil como una curva de tipos par desde 1 mes hasta 30 años. La zona del euro no tiene un único Tesoro, así que el bund alemán es la referencia y los demás emisores soberanos se cotizan como un spread sobre él, por ejemplo el spread BTP–Bund. Los tipos del Tesoro son también la base del G-spread de los bonos corporativos.
+
+Suelen ser más bajos que otros tipos de muy bajo riesgo por dos motivos principales.
+
+ 1. Demanda regulatoria y requisitos de capital: los bancos y otras instituciones financieras deben mantener bonos del Tesoro para cumplir los requisitos regulatorios, y necesitan reservar menos capital para los bonos del Tesoro que para otras inversiones de bajo riesgo. Esto aumenta la demanda de bonos del Tesoro, lo que empuja sus precios al alza y sus rentabilidades a la baja.
+ 2. Ventajas fiscales: los intereses de los bonos del Tesoro están exentos de los impuestos estatales y locales sobre la renta, a diferencia de la mayoría de las demás inversiones de renta fija. Como los inversores se quedan con una mayor parte del rendimiento después de impuestos, aceptan un tipo nominal más bajo.
+ 
+### Tipos a un día
+
+Los bancos mantienen reservas en cuentas del banco central. Al final de cada día, algunos bancos tienen reservas excedentes y otros necesitan fondos, así que prestan y toman prestado a un día, de forma bilateral o a través de un bróker. Cada divisa tiene su propio índice de referencia a un día.
+
+- El **€STR** (euro short-term rate) es el tipo a un día sin garantía al que se financian al por mayor los bancos de la zona del euro. El BCE lo publica cada día hábil de TARGET2 a las 08:00 CET como la media ponderada por volumen de los depósitos a tipo fijo del día anterior superiores a €1 million comunicados en las estadísticas del mercado monetario (MMSR), tras recortar el 25% superior e inferior del volumen. Recomendado en 2018 como tipo libre de riesgo del euro, empezó a publicarse el 2 de octubre de 2019 y es difícil de manipular porque procede de operaciones reales. Sigue el tipo de la facilidad de depósito del BCE y es el tipo variable del OIS en euros, el tipo de descuento de los derivados en euros con colateral y la base de los tipos capitalizados y a plazo que sirven como alternativa al EURIBOR.
+- El **EFFR** (effective federal funds rate) es el tipo a un día sin garantía del mercado de fondos federales de EE. UU. El Banco de la Reserva Federal de Nueva York lo publica hacia las 09:00 ET del día hábil siguiente como la mediana ponderada por volumen de las operaciones que los bancos nacionales y las sucursales estadounidenses de bancos extranjeros comunican en el formulario FR 2420. El FOMC fija un rango objetivo para él, así que es el tipo de política monetaria de la Fed, pero el tipo libre de riesgo del USD que sustituyó al LIBOR es el SOFR, que tiene garantía.
+- El **SONIA** (Sterling Overnight Index Average) es el tipo a un día sin garantía de la libra esterlina. El Banco de Inglaterra lo administra desde 2016 y lo publica a las 09:00 del día hábil siguiente como la media ponderada por volumen del 50% central de los depósitos admisibles de al menos £25 million, intermediados o bilaterales. Recomendado en 2017 como tipo libre de riesgo de la libra esterlina, sustituyó al LIBOR del GBP.
+- El **TONA** (Tokyo Overnight Average Rate) es el tipo de call money a un día sin garantía en yenes. El Banco de Japón lo publica a las 10:00 hora de Tokio del día hábil siguiente como la media ponderada por volumen de todas las operaciones que se liquidan en la fecha de contratación y vencen el siguiente día hábil. Recomendado en diciembre de 2016 como tipo libre de riesgo del yen, sustituyó al LIBOR del JPY.
+- El **SARON** (Swiss Average Rate Overnight) es el tipo a un día con garantía del mercado de repos del franco suizo. SIX lo administra desde 2009 y lo calcula a partir de operaciones de repo cerradas y cotizaciones vinculantes en la plataforma de repos de SIX, con filtros contra la manipulación y una fijación de referencia a las 18:00 hora de Zúrich. Recomendado en octubre de 2017 como tipo libre de riesgo del franco suizo, sustituyó al LIBOR del CHF, y desde junio de 2019 el Banco Nacional Suizo (SNB) lo mantiene cerca de su tipo de política monetaria.
+
+### Tipos de repo
+
+A diferencia de los tipos a un día sin garantía, los tipos de repo son tipos de financiación con garantía. En un **repo** (repurchase agreement, o pacto de recompra), una institución financiera vende valores, normalmente bonos del Estado, y se compromete a recomprarlos más tarde a un precio algo más alto. La diferencia entre los dos precios es el interés, y su valor anualizado es el **tipo de repo**. Para la contraparte, la misma operación es un **repo inverso**. El prestamista recibe la titularidad legal de los valores, de modo que si el prestatario incumple, el prestamista los vende, y si el prestamista incumple, el prestatario se queda con el efectivo, y cualquier diferencia se liquida mediante la compensación por cierre (close-out netting) en virtud de un contrato marco como el GMRA. Un **haircut** (recorte de valoración: el efectivo prestado es inferior al valor de mercado de los valores) y las llamadas de margen diarias protegen al prestamista frente a una caída del valor del colateral, así que un repo tiene muy poco riesgo de crédito. La mayoría de los repos son a un día, y los más largos son **repos a plazo**. Los repos de **colateral general** (GC) aceptan cualquier bono de una clase determinada, mientras que los repos **especiales** piden un bono concreto con mucha demanda y pagan un tipo más bajo. En teoría, un tipo de repo es algo inferior al tipo a un día sin garantía de la misma divisa, pero la escasez de reservas o una gran oferta de bonos pueden situarlo por encima, como cuando el SOFR superó al EFFR desde finales de 2025. Los principales índices de referencia de repo son los siguientes.
+
+- El **SOFR** (Secured Overnight Financing Rate) es el tipo a un día de los repos respaldados por bonos del Tesoro de EE. UU. El Banco de la Reserva Federal de Nueva York lo publica hacia las 08:00 ET del día hábil siguiente como la mediana ponderada por volumen de las operaciones tripartitas, GCF y bilaterales compensadas por la FICC, sin incluir los repos especiales. Recomendado en 2017 como tipo libre de riesgo del USD, sustituyó al LIBOR del USD.
+- El **SARON** (véase Tipos a un día) es el equivalente en francos suizos.
+- El **RepoFunds Rate** es una familia de índices diarios de repo que CME publica a partir de operaciones en las plataformas BrokerTec y MTS, con el RFR Euro y los índices por país, como el RFR Germany para el colateral soberano en euros y el RFR Sterling para los gilts.
+- El **Tokyo Repo Rate** es el tipo de repo del yen que publica la Asociación Japonesa de Operadores de Valores (JSDA) para plazos desde un día hasta un año.
+
+## Tipos de referencia
+
+Un **tipo de referencia** es un tipo que publica a diario un administrador o un banco central. Sus usos principales son los siguientes.
+
+- **Préstamos y bonos a tipo variable.** Las hipotecas, los préstamos corporativos y los bonos a tipo variable pagan el tipo de referencia, observado de nuevo en cada fecha de revisión, más un spread por el riesgo de crédito del prestatario.
+- **Derivados de tipos de interés.** Los swaps, los FRA, los futuros, los caps y los floors calculan a partir de él sus pagos variables.
+- **Descuento.** Los derivados con colateral se descuentan con los tipos de los swaps indexados a un día (OIS), porque el colateral en efectivo devenga el tipo a un día.
+- **Spreads de crédito.** Las rentabilidades de los bonos con riesgo se cotizan como un spread sobre un tipo del Tesoro o un tipo swap.
+- **Política monetaria.** Los bancos centrales dirigen el tipo a un día (la Fed con un rango objetivo para el tipo de los fondos federales, el BCE con su tipo de la facilidad de depósito), y la variación se transmite a todos los demás tipos.
+
+Para resistir la manipulación, un tipo de referencia debe apoyarse en operaciones reales. Antes de que se retirara el LIBOR (a finales de 2021 para la mayoría de los valores, en junio de 2023 para el USD), los grupos de trabajo nacionales eligieron para cada divisa un tipo a un día casi libre de riesgo (RFR) que lo sustituyera. Estos tipos se calculan a partir de grandes volúmenes de operaciones reales en lugar de estimaciones de los bancos, lo que los hace mucho más difíciles de manipular, aunque no inmunes. Como son tipos a un día y casi no tienen riesgo de crédito bancario, los contratos los capitalizan a lo largo del periodo de interés (a plazo vencido, o mediante versiones a plazo como el Term SOFR) y añaden un ajuste fijo del spread de crédito cuando convierten operaciones heredadas del LIBOR.
+
+| Divisa | Sustituye a | Nuevo tipo | Nombre completo | Administrador | Mercado subyacente | Tipo |
+|---|---|---|---|---|---|---|
+| USD | LIBOR del USD | **SOFR** | Secured Overnight Financing Rate | Fed de Nueva York | Repo de bonos del Tesoro | Con garantía |
+| EUR | LIBOR del EUR / EONIA | **€STR** | Euro Short-Term Rate | BCE | Financiación bancaria mayorista | Sin garantía |
+| GBP | LIBOR del GBP | **SONIA** | Sterling Overnight Index Average | Banco de Inglaterra | Depósitos a un día | Sin garantía |
+| CHF | LIBOR del CHF | **SARON** | Swiss Average Rate Overnight | SIX | Repo en francos suizos | Con garantía |
+| JPY | LIBOR del JPY | **TONA** | Tokyo Overnight Average Rate | Banco de Japón | Call money sin colateral | Sin garantía |
+
+El EURIBOR se reformó en lugar de retirarse, y desde 2019 una metodología híbrida usa las operaciones de los bancos del panel cuando están disponibles y, en caso contrario, datos derivados de operaciones. Sigue siendo, junto al €STR, el principal tipo de referencia de los préstamos y las hipotecas a tipo variable en la zona del euro.
+
+## Teoría de la preferencia por la liquidez
+
+La **teoría de la preferencia por la liquidez** explica por qué la curva de tipos suele tener pendiente ascendente. Los depositantes y los inversores prefieren los vencimientos cortos, porque los bonos largos son menos líquidos y sus precios se mueven más cuando cambian los tipos, de modo que una venta anticipada puede suponer una pérdida mayor, mientras que los prestatarios prefieren los préstamos largos a tipo fijo, que eliminan su riesgo de refinanciación. Esto hace asimétricas la oferta y la demanda, con un exceso de fondos a corto plazo y una escasez de fondos a largo plazo. Los bancos y otros intermediarios cierran esta brecha fijando los tipos largos por encima de los tipos cortos futuros esperados, lo que atrae depósitos a largo plazo y desincentiva el endeudamiento a largo plazo. La rentabilidad adicional es la **prima de liquidez (de plazo)**, de modo que un tipo forward es igual al tipo corto futuro esperado más una prima que suele crecer con el vencimiento, y la curva tiene pendiente ascendente incluso cuando se espera que los tipos cortos se mantengan constantes.
+
+En términos de rentabilidades, el tipo a $n$ años es aproximadamente la media del tipo a un año actual y de los tipos a un año esperados, más una prima $L_n$ que la teoría supone positiva y creciente con el vencimiento.
+
+$$
+i_n = \frac{i_1 + i_2^e + \dots + i_n^e}{n} + L_n
+$$
+
+La forma de la curva depende entonces de la trayectoria esperada de los tipos cortos. Unas subidas esperadas dan una curva ascendente y empinada, unas expectativas de tipos constantes siguen dando una curva ascendente, unas pequeñas bajadas esperadas dan una curva plana o ascendente, y solo unas grandes bajadas esperadas dan una curva invertida. Por ejemplo, con un tipo a un año del 4% y primas del 0.25% a dos años y del 0.50% a tres años, las rentabilidades son las siguientes.
+
+| Vencimiento | Tipos cortos esperados constantes en el 4% | Tipos cortos esperados a la baja hasta el 3% y el 2% |
+| --- | --- | --- |
+| 1 año | 4.00% | 4.00% |
+| 2 años | 4% + 0.25% = 4.25% | 3.5% + 0.25% = 3.75% |
+| 3 años | 4% + 0.50% = 4.50% | 3% + 0.50% = 3.50% |
+
+Esto explica por qué las curvas ascendentes son mucho más habituales que las invertidas, mientras que la teoría pura de las expectativas, sin prima, predice ambas con una frecuencia parecida.
+
+Los bancos obtienen esta prima mediante la **transformación de plazos**, que consiste en financiar préstamos largos a tipo fijo con depósitos cortos, pero una subida de los tipos cortos reduce entonces su margen de intereses, un riesgo que gestionan con la gestión de activos y pasivos y con swaps. La teoría, formalizada por Hicks en 1939, difiere de la **teoría de las expectativas** (los tipos largos reflejan solo los tipos cortos esperados, así que los tipos forward son iguales a los tipos esperados) y de la **teoría de la segmentación del mercado** (cada vencimiento tiene su propia oferta y demanda). La prima no es siempre positiva, y las estimaciones de los modelos de la prima de plazo del bono estadounidense a 10 años fueron en su mayoría negativas de 2016 a 2024 con la expansión cuantitativa.

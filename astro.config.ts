@@ -22,7 +22,14 @@ export default defineConfig({
       defaultLocale: "root",
       locales: { root: { label: "Español", lang: "es" } },
       ...(sidebar.length > 0 ? { sidebar } : {}),
-      plugins: [starlightLinksValidator()],
+      plugins: [
+        starlightLinksValidator({
+          // Enlaces hacia páginas que aún no existen; cada tarea de página elimina su entrada.
+          exclude: [
+            "/curvas-de-tipos/", // la tarea de la página 02 (curvas-de-tipos) elimina esta entrada
+          ],
+        }),
+      ],
       customCss: ["katex/dist/katex.min.css", "./src/styles/tema.css"],
       components: {
         Footer: "./src/components/Footer.astro",
