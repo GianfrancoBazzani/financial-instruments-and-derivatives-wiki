@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 312" font-size="16">
+<text x="215" y="24" text-anchor="middle" font-weight="bold">Tipos cupón cero</text>
+<line x1="90" y1="250.00" x2="340" y2="250.00" stroke="var(--g-grid)"/>
+<text x="82" y="255.00" text-anchor="end">4.0 %</text>
+<line x1="90" y1="180.00" x2="340" y2="180.00" stroke="var(--g-grid)"/>
+<text x="82" y="185.00" text-anchor="end">4.5 %</text>
+<line x1="90" y1="110.00" x2="340" y2="110.00" stroke="var(--g-grid)"/>
+<text x="82" y="115.00" text-anchor="end">5.0 %</text>
+<line x1="90" y1="40.00" x2="340" y2="40.00" stroke="var(--g-grid)"/>
+<text x="82" y="45.00" text-anchor="end">5.5 %</text>
+<line x1="90.00" y1="40" x2="90.00" y2="250" stroke="var(--g-grid)"/>
+<text x="90.00" y="274" text-anchor="middle">0</text>
+<line x1="173.33" y1="40" x2="173.33" y2="250" stroke="var(--g-grid)"/>
+<text x="173.33" y="274" text-anchor="middle">2</text>
+<line x1="256.67" y1="40" x2="256.67" y2="250" stroke="var(--g-grid)"/>
+<text x="256.67" y="274" text-anchor="middle">4</text>
+<line x1="340.00" y1="40" x2="340.00" y2="250" stroke="var(--g-grid)"/>
+<text x="340.00" y="274" text-anchor="middle">6</text>
+<rect x="90" y="40" width="250" height="210" fill="none" stroke="currentColor"/>
+<path d="M173.33,180.00 L298.33,82.00" stroke="var(--g-muted)" stroke-width="1.5" stroke-dasharray="5 4" fill="none"/>
+<circle cx="173.33" cy="180.00" r="4.5" fill="var(--g-b)"/>
+<circle cx="298.33" cy="82.00" r="4.5" fill="var(--g-c)"/>
+<text x="182.33" y="206">r(2) = 4.5 %</text>
+<text x="290.33" y="68" text-anchor="end">r(5) = 5.2 %</text>
+<text x="215" y="302" text-anchor="middle">Plazo (años)</text>
+<text transform="translate(18,145) rotate(-90)" text-anchor="middle">Tipo cupón cero</text>
+<text x="595" y="24" text-anchor="middle" font-weight="bold">Factores de descuento</text>
+<line x1="470" y1="250.00" x2="720" y2="250.00" stroke="var(--g-grid)"/>
+<text x="462" y="255.00" text-anchor="end">0.75</text>
+<line x1="470" y1="208.00" x2="720" y2="208.00" stroke="var(--g-grid)"/>
+<text x="462" y="213.00" text-anchor="end">0.80</text>
+<line x1="470" y1="166.00" x2="720" y2="166.00" stroke="var(--g-grid)"/>
+<text x="462" y="171.00" text-anchor="end">0.85</text>
+<line x1="470" y1="124.00" x2="720" y2="124.00" stroke="var(--g-grid)"/>
+<text x="462" y="129.00" text-anchor="end">0.90</text>
+<line x1="470" y1="82.00" x2="720" y2="82.00" stroke="var(--g-grid)"/>
+<text x="462" y="87.00" text-anchor="end">0.95</text>
+<line x1="470" y1="40.00" x2="720" y2="40.00" stroke="var(--g-grid)"/>
+<text x="462" y="45.00" text-anchor="end">1.00</text>
+<line x1="470.00" y1="40" x2="470.00" y2="250" stroke="var(--g-grid)"/>
+<text x="470.00" y="274" text-anchor="middle">0</text>
+<line x1="553.33" y1="40" x2="553.33" y2="250" stroke="var(--g-grid)"/>
+<text x="553.33" y="274" text-anchor="middle">2</text>
+<line x1="636.67" y1="40" x2="636.67" y2="250" stroke="var(--g-grid)"/>
+<text x="636.67" y="274" text-anchor="middle">4</text>
+<line x1="720.00" y1="40" x2="720.00" y2="250" stroke="var(--g-grid)"/>
+<text x="720.00" y="274" text-anchor="middle">6</text>
+<rect x="470" y="40" width="250" height="210" fill="none" stroke="currentColor"/>
+<path d="M470.00,40.00 L553.33,110.81 L678.33,228.08" stroke="var(--g-muted)" stroke-width="1.5" stroke-dasharray="5 4" fill="none"/>
+<circle cx="470.00" cy="40.00" r="4.5" fill="currentColor"/>
+<circle cx="553.33" cy="110.81" r="4.5" fill="var(--g-b)"/>
+<circle cx="678.33" cy="228.08" r="4.5" fill="var(--g-c)"/>
+<text x="512" y="60">DF(0) = 1</text>
+<text x="562.33" y="98">DF(2) = 0.9157</text>
+<text x="668.33" y="245" text-anchor="end">DF(5) = 0.7761</text>
+<text x="595" y="302" text-anchor="middle">Plazo (años)</text>
+<text transform="translate(388,145) rotate(-90)" text-anchor="middle">Factor de descuento</text>
+</svg>

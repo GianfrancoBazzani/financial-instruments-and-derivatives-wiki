@@ -159,3 +159,28 @@ En la primera mención de cada página se añade entre paréntesis el significad
 | hedger / speculator / arbitrageur | coberturista / especulador / arbitrajista |
 | leverage | apalancamiento |
 | no-arbitrage | ausencia de arbitraje |
+
+## Términos de la página 02 (curvas de tipos de interés)
+
+| English | Español |
+| --- | --- |
+| structure of interest rates | estructura de los tipos de interés |
+| term premium | prima de plazo |
+| preferred habitat / market segmentation | hábitat preferido / segmentación del mercado |
+| inflation risk | riesgo de inflación |
+| yield curve (la curva de las TIR de los bonos de un emisor; la curva genérica sigue siendo "curva de tipos") | curva de rentabilidades |
+| coupon effect | efecto cupón |
+| par rate / par rate curve | tipo par / curva de tipos par |
+| par value | valor a la par (valor nominal o de emisión) |
+| quoted at par / priced at par | cotiza a la par / precio a la par |
+| bootstrap (procedimiento) | bootstrapping |
+| no-arbitrage condition | condición de ausencia de arbitraje |
+| amortization (carry) | amortización |
+| pull to par | convergencia hacia la par (pull to par) |
+| total return | rendimiento total |
+| mid price | precio medio (mid) |
+| interpolation: linear / log-linear / cubic spline | interpolación: lineal / log-lineal / spline cúbico |
+| outliers | valores atípicos |
+| carry trade | carry trade |
+| calendar spread | calendar spread |
+| steepening / flattening (estrategia) | empinamiento / aplanamiento |

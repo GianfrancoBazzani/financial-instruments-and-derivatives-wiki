@@ -1,0 +1,502 @@
+---
+title: Curvas de tipos de interés
+description: Estructura temporal de los tipos de interés, tipos cupón cero, tipos par y tipos forward, bootstrapping, carry y roll-down, y estrategias basadas en la curva.
+banner:
+  content: "Traducción pendiente de revisión"
+---
+
+{/* Fuente: 02-interest-rates-curves.md @ 627bb65c932601a19f45d2d83c7b9f99169740dd */}
+
+import Diagrama from "../../components/Diagrama.astro";
+
+## Estructura de los tipos de interés
+
+La **estructura de los tipos de interés** describe la relación entre los tipos de interés y sus **plazos**. El plazo es el tiempo hasta el vencimiento de un instrumento de renta fija. Cada instrumento tiene su propio tipo de interés, y este tipo puede depender del plazo del instrumento. Por ejemplo, en condiciones normales de mercado un instrumento más largo suele pagar un tipo de interés más alto. Los motivos principales son los siguientes.
+
+- **Prima de plazo (preferencia por la liquidez):** el prestamista inmoviliza el capital durante más tiempo y queda expuesto a más incertidumbre, así que pide una compensación.
+- **Expectativas sobre los tipos cortos futuros:** el tipo largo refleja la trayectoria esperada de los tipos cortos. Si el mercado espera bajadas de tipos, el tipo largo puede ser menor que el tipo corto.
+- **Riesgo de inflación:** el poder adquisitivo de un pago fijo en un futuro lejano es más incierto, así que el prestamista pide un tipo más alto.
+- **Riesgo de crédito:** para un mismo prestatario, la probabilidad de impago crece con el horizonte temporal, así que el tipo largo incluye un spread de crédito mayor.
+- **Riesgo de tipo de interés (sensibilidad del precio):** el precio de un instrumento largo se mueve más cuando cambian los tipos, así que el inversor pide una compensación por esta volatilidad.
+- **Segmentación del mercado (hábitat preferido):** distintos inversores prefieren distintos plazos; por ejemplo, los bancos prefieren los plazos cortos y los fondos de pensiones prefieren los largos. La oferta y la demanda de cada segmento fijan el tipo de ese plazo.
+
+La **curva** es el gráfico de esta estructura. Muestra el plazo en el eje horizontal y el tipo de interés en el eje vertical. Cada punto es el tipo de un plazo. La curva no siempre tiene pendiente ascendente. Puede ser plana o invertida cuando el mercado espera tipos más bajos en el futuro, como ocurrió en el mercado del Tesoro de EE. UU. en 2022 y 2023.
+
+## Curva de rentabilidades
+
+La **curva de rentabilidades** suele ser la curva de las rentabilidades de un conjunto de bonos del mismo emisor y de la misma calidad crediticia, representadas frente a sus plazos. La rentabilidad de un bono es su **rentabilidad al vencimiento (TIR)**, el único tipo que hace que el valor actual de todos los cupones y del principal sea igual al precio de mercado del bono.
+
+El mercado da esta curva casi directamente. Los datos de mercado son precios y rentabilidades cotizadas. Una rentabilidad cotizada ya incluye las convenciones de mercado del instrumento: la regla de cómputo de días y la frecuencia de capitalización. Por ejemplo, el mercado del Tesoro de EE. UU. y el mercado de swaps (permutas financieras) usan una capitalización semestral.
+
+La curva de rentabilidades tiene dos límites.
+
+- **La rentabilidad es una media.** Un único tipo descuenta todos los flujos de caja del bono. La rentabilidad mezcla los tipos de todos los plazos hasta el vencimiento.
+- **La rentabilidad depende del cupón.** Dos bonos con el mismo vencimiento pero con cupones distintos tienen rentabilidades distintas. Este efecto es el **efecto cupón**.
+
+Por estos dos motivos no se puede usar una rentabilidad para descontar un único flujo de caja. Para descontar flujos de caja hay que usar la curva cupón cero de la sección siguiente. El procedimiento de **bootstrapping** extrae la curva cupón cero de los instrumentos de mercado.
+
+## Tipos cupón cero
+
+El tipo cupón cero para el vencimiento $T$ es el tipo de interés de un bono cupón cero que vence en $T$. El bono no paga cupones, y el único flujo de caja es el principal al vencimiento. Hay un tipo cupón cero para cada vencimiento, y todos juntos forman la curva cupón cero.
+
+El factor de descuento $DF(T)$ es el valor hoy de una unidad de dinero pagada en $T$. Para un tipo cupón cero con $m$ periodos de capitalización al año, el factor de descuento es
+
+$$
+DF(T) = \frac{1}{\left(1 + \frac{r(T)}{m}\right)^{m T}}
+$$
+
+- $m$ es la frecuencia de capitalización, el número de periodos de capitalización al año.
+- $T$ es el vencimiento, en años.
+- $r(T)$ es el tipo cupón cero para el vencimiento $T$, cotizado como tipo anual nominal con $m$ periodos de capitalización al año.
+
+En el caso particular de la capitalización anual ($m = 1$), la fórmula pasa a ser
+
+$$
+DF(T) = \frac{1}{(1 + r(T))^{T}}
+$$
+
+Con capitalización continua ($m \to \infty$), el factor de descuento es
+
+$$
+DF(T) = e^{-r(T) T}
+$$
+
+**Ejemplo**
+
+Tipos cupón cero:
+
+- Tipo cupón cero a 2 años: $r(2) = 0.045$ (4.5 %)
+- Tipo cupón cero a 5 años: $r(5) = 0.052$ (5.2 %)
+
+Factores de descuento con capitalización anual:
+
+- $DF(2) = \frac{1}{(1.045)^2} = 0.9157$
+- $DF(5) = \frac{1}{(1.052)^5} = 0.7761$
+
+Factores de descuento con capitalización continua:
+
+- $DF(2) = e^{-0.045 \cdot 2} = 0.9139$
+- $DF(5) = e^{-0.052 \cdot 5} = 0.7711$
+
+Para el mismo tipo cupón cero, la capitalización continua da un factor de descuento menor, porque el interés genera interés en cada instante.
+
+El gráfico muestra los dos puntos del ejemplo. El panel izquierdo da los tipos cupón cero. El panel derecho da los factores de descuento.
+
+<Diagrama nombre="example-zero-rates-discount-factors" alt="Tipos cupón cero y factores de descuento del ejemplo" />
+
+Normalmente el tipo cupón cero crece con el vencimiento, pero el factor de descuento disminuye.
+
+## Tipos par
+
+El tipo par para el vencimiento $T$ es el tipo de cupón que hace que el precio de un valor de renta fija sea igual a su valor a la par. El valor a la par es el valor nominal o de emisión del valor, normalmente 100. Hay un tipo par para cada vencimiento, y todos juntos forman la curva de tipos par.
+
+Para un valor de renta fija con un valor a la par de 100 y $m$ cupones al año, en una fecha de cupón, el cupón anual que da el precio a la par es
+
+$$
+C = \frac{100 m \left[ 1 - DF(T) \right]}{\sum_{k=1}^{N} DF(t_k)}
+$$
+
+- $C$ es el cupón anual, en unidades monetarias. Cada pago de cupón es $\frac{C}{m}$.
+- $m$ es el número de cupones al año (por ejemplo, $m = 2$ para cupones semestrales).
+- $t_k = k/m$ es el momento del $k$-ésimo cupón, en años.
+- $N = m T$ es el número de cupones, y $T$ es el vencimiento en años.
+- $DF(t_k)$ es el factor de descuento del momento $t_k$, tomado de la curva cupón cero.
+
+El tipo par es el cupón anual dividido entre el valor a la par, $c = \frac{C}{100}$, cotizado como tipo anual nominal con $m$ periodos de capitalización al año. El valor a la par se cancela en esta división, así que el tipo par depende solo de los factores de descuento, es decir, de la curva cupón cero.
+
+En el caso particular de un cupón al año ($m = 1$), los cupones llegan en los años enteros $t_k = k = 1, \dots, T$, y la fórmula pasa a ser
+
+$$
+C = \frac{100 \left[ 1 - DF(T) \right]}{\sum_{k=1}^{T} DF(k)}
+$$
+
+Los factores de descuento pueden proceder de tipos cupón cero con cualquier capitalización, y esta capitalización puede ser distinta del $m$ de los cupones. Si los tipos cupón cero usan capitalización continua, los factores de descuento son $DF(t_k) = e^{-r(t_k) t_k}$, y la fórmula de $C$ no cambia.
+
+**Derivación**
+
+Cada pago de cupón es $\frac{C}{m}$, y el último flujo de caja incluye además el principal de 100. El valor cotiza a la par cuando el valor actual de sus flujos de caja es igual a 100.
+
+$$
+100 = \sum_{k=1}^{N} \frac{C}{m} DF(t_k) + 100 \times DF(T)
+$$
+
+El primer término es el valor actual de los cupones, y el segundo término es el valor actual del principal. Pasamos el principal al lado izquierdo.
+
+$$
+100 \left[ 1 - DF(T) \right] = \frac{C}{m} \sum_{k=1}^{N} DF(t_k)
+$$
+
+Multiplicamos los dos lados por $m$ y los dividimos entre la suma de los factores de descuento. El resultado es la fórmula del cupón anual.
+
+**Ejemplo**
+
+Un bono tiene un valor a la par de 100, cupones anuales ($m = 1$) y un vencimiento de 3 años. Los tipos cupón cero son $r(1) = 3.0\%$, $r(2) = 4.0\%$ y $r(3) = 4.5\%$.
+
+Con capitalización anual, los factores de descuento son $DF(1) = 0.9709$, $DF(2) = 0.9246$ y $DF(3) = 0.8763$.
+
+$$
+C = \frac{100 \left[ 1 - 0.8763 \right]}{0.9709 + 0.9246 + 0.8763} = \frac{12.37}{2.7717} = 4.46
+$$
+
+El cupón anual es 4.46, así que el tipo par a 3 años es $c = \frac{4.46}{100} = 4.46$ %. Es menor que el tipo cupón cero a 3 años, del 4.5 %, porque el bono también paga cupones en las fechas anteriores, donde los tipos cupón cero son menores.
+
+Si los mismos tipos cupón cero usan capitalización continua, los factores de descuento son $DF(1) = e^{-0.03} = 0.9704$, $DF(2) = e^{-0.08} = 0.9231$ y $DF(3) = e^{-0.135} = 0.8737$.
+
+$$
+C = \frac{100 \left[ 1 - 0.8737 \right]}{0.9704 + 0.9231 + 0.8737} = \frac{12.63}{2.7673} = 4.56
+$$
+
+El cupón anual es 4.56, así que el tipo par a 3 años es 4.56 %. Es mayor que con capitalización anual, porque los factores de descuento son menores. Este tipo par usa capitalización anual ($m = 1$), así que no es directamente comparable con el tipo cupón cero continuo del 4.5 %.
+
+**Los tipos par y la forma de la curva cupón cero**
+
+Un bono con cupones es un conjunto de pagos cupón cero, uno en cada fecha de cupón, y cada pago se descuenta a su propio tipo cupón cero. Un bono que cotiza a la par tiene un precio de 100, así que su rentabilidad al vencimiento es igual a su tipo de cupón, y el tipo par es por tanto el único tipo que sustituye a todos estos tipos cupón cero y da el mismo precio. Por ello se comporta como una media ponderada de los tipos cupón cero desde la primera fecha de cupón hasta $T$, con pesos proporcionales al valor actual de cada pago multiplicado por su plazo, de modo que la mayor parte del peso recae en el pago final del principal, mientras que el tipo cupón cero $r(T)$ es el tipo de la última fecha solamente. En una curva cupón cero con pendiente ascendente, los cupones anteriores a $T$ se descuentan a tipos más bajos, así que el tipo par queda por debajo de $r(T)$, como en el ejemplo anterior. En una curva con pendiente descendente los tipos anteriores son más altos, así que el tipo par queda por encima de $r(T)$, y en una curva plana los dos son iguales.
+
+El gráfico muestra, por defecto, una curva cupón cero con pendiente ascendente, en la que los tipos cupón cero suben un 0.6 % al año, con cupones anuales y capitalización anual. Representa la curva cupón cero, la curva de tipos par y la curva de tipos forward a 1 año que se deduce de esa misma curva cupón cero. Con esta curva ascendente, el tipo par queda por debajo del tipo cupón cero. Para ver el caso de una curva con pendiente descendente, mueve el control de la pendiente hasta que los tipos cupón cero bajen un 0.6 % al año: entonces el tipo par queda por encima del tipo cupón cero.
+
+{/* GRAFICO: ZeroParForwardCurves */}
+
+## Tipos forward
+
+Un tipo forward $f(t_1, t_2)$ es el tipo de interés de un periodo futuro que empieza en $t_1$ y termina en $t_2$. El mercado no cotiza este tipo directamente. Está implícito en la curva spot actual, y se deduce de los tipos cupón cero.
+
+Un tipo spot se acuerda hoy para un préstamo que empieza hoy. Un tipo forward también se acuerda hoy, pero para un préstamo que empieza en el futuro. El tipo forward está implícito en la curva spot de hoy, no en una previsión de los tipos spot futuros.
+
+Para tipos cupón cero y un tipo forward con $m$ periodos de capitalización al año, el tipo forward es
+
+$$
+f(t_1, t_2) = m \left[ \left( \frac{\left(1 + \frac{r(t_2)}{m}\right)^{m t_2}}{\left(1 + \frac{r(t_1)}{m}\right)^{m t_1}} \right)^{\frac{1}{m (t_2 - t_1)}} - 1 \right]
+$$
+
+- $m$ es la frecuencia de capitalización, el número de periodos de capitalización al año.
+- $t_1$ y $t_2$ son el inicio y el final del periodo futuro, en años.
+- $r(t_1)$ y $r(t_2)$ son los tipos cupón cero para los vencimientos $t_1$ y $t_2$.
+
+En el caso particular de la capitalización anual ($m = 1$), la fórmula pasa a ser
+
+$$
+f(t_1, t_2) = \left( \frac{(1 + r(t_2))^{t_2}}{(1 + r(t_1))^{t_1}} \right)^{\frac{1}{t_2 - t_1}} - 1
+$$
+
+Con capitalización continua ($m \to \infty$), el tipo forward es
+
+$$
+f(t_1, t_2) = \frac{r(t_2) t_2 - r(t_1) t_1}{t_2 - t_1}
+$$
+
+**Con factores de descuento**
+
+Una unidad invertida hoy crece hasta $\frac{1}{DF(t)}$ en $t$ (véase [Tipos cupón cero](#tipos-cupón-cero)), así que el crecimiento entre $t_1$ y $t_2$ al tipo forward es el cociente $\frac{DF(t_1)}{DF(t_2)}$. Los tipos del mercado monetario y los FRA usan interés simple durante el periodo de $\tau = t_2 - t_1$ años, lo que da
+
+$$
+1 + \tau f(t_1, t_2) = \frac{DF(t_1)}{DF(t_2)} \implies f(t_1, t_2) = \frac{1}{\tau} \left( \frac{DF(t_1)}{DF(t_2)} - 1 \right)
+$$
+
+Con $m$ periodos de capitalización al año y con capitalización continua, el mismo cociente da
+
+$$
+f(t_1, t_2) = m \left[ \left( \frac{DF(t_1)}{DF(t_2)} \right)^{\frac{1}{m (t_2 - t_1)}} - 1 \right] \qquad f(t_1, t_2) = \frac{\ln DF(t_1) - \ln DF(t_2)}{t_2 - t_1}
+$$
+
+Son las fórmulas de los tipos cupón cero de arriba, con cada tipo cupón cero sustituido por su factor de descuento.
+
+**Ejemplo**
+
+Definimos tipos de interés distintos para plazos distintos:
+
+ - r(1): 3.0%
+ - r(2): 4.0%
+ - r(3): 4.5%
+
+Con capitalización anual:
+
+Forward 1y1y: $f(1,2) = \frac{(1 + 0.04)^{2}}{(1 + 0.03)} - 1 = 0.0501$ (5.01 %)
+
+Forward 2y1y: $f(2,3) = \frac{(1 + 0.045)^{3}}{(1 + 0.04)^2}  - 1 = 0.0551$ (5.51 %)
+
+Los factores de descuento dan el mismo resultado. Con $DF(1) = \frac{1}{1.03} = 0.9709$ y $DF(2) = \frac{1}{1.04^2} = 0.9246$, el forward 1y1y es $f(1,2) = \frac{0.9709}{0.9246} - 1 = 0.0501$ (5.01 %).
+
+Si los mismos tipos cupón cero usan capitalización continua:
+
+Forward 1y1y: $f(1,2) = \frac{0.04 \cdot 2 - 0.03 \cdot 1}{2 - 1} = 0.0500$ (5.00 %)
+
+Forward 2y1y: $f(2,3) = \frac{0.045 \cdot 3 - 0.04 \cdot 2}{3 - 2} = 0.0550$ (5.50 %)
+
+Con capitalización continua, el tipo forward es una diferencia ponderada de los tipos cupón cero, así que el cálculo no necesita potencias ni raíces.
+
+**Derivación**
+
+La condición de ausencia de arbitraje da la relación. Sea $t_0 = 0$ el momento actual. Una inversión desde $t_0$ hasta $t_2$ debe dar el mismo resultado que una inversión desde $t_0$ hasta $t_1$ y después desde $t_1$ hasta $t_2$ al tipo forward. Consideremos la curva spot representada por la línea temporal siguiente:
+
+<Diagrama nombre="forward-rate-timeline" alt="Línea temporal de la relación de ausencia de arbitraje entre los tipos spot y el tipo forward" />
+
+Aplicando la condición de ausencia de arbitraje con $m$ periodos de capitalización al año:
+
+$$
+C_0\left(1+\frac{r(t_2)}{m}\right)^{m t_2} = C_0\left(1+\frac{r(t_1)}{m}\right)^{m t_1}\left(1+\frac{f(t_1,t_2)}{m}\right)^{m (t_2-t_1)}
+$$
+
+Por tanto:
+
+$$
+\left(1+\frac{r(t_2)}{m}\right)^{m t_2} = \left(1+\frac{r(t_1)}{m}\right)^{m t_1}\left(1+\frac{f(t_1,t_2)}{m}\right)^{m (t_2-t_1)}
+$$
+
+Podemos despejar $f(t_1,t_2)$:
+
+$$
+f(t_1,t_2) = m \left[ \left( \frac{\left(1+\frac{r(t_2)}{m}\right)^{m t_2}}{\left(1+\frac{r(t_1)}{m}\right)^{m t_1}} \right)^{\frac{1}{m (t_2-t_1)}} - 1 \right]
+$$
+
+Con $m = 1$, esta es la fórmula anual. Con capitalización continua, la condición de ausencia de arbitraje es
+
+$$
+C_0 e^{r(t_2) t_2} = C_0 e^{r(t_1) t_1} e^{f(t_1,t_2) (t_2-t_1)}
+$$
+
+$C_0$ se cancela, y el producto de las exponenciales es la exponencial de la suma de los exponentes. Por tanto, los exponentes son iguales.
+
+$$
+r(t_2) t_2 = r(t_1) t_1 + f(t_1,t_2) (t_2-t_1)
+$$
+
+Podemos despejar $f(t_1,t_2)$:
+
+$$
+f(t_1,t_2) = \frac{r(t_2) t_2 - r(t_1) t_1}{t_2 - t_1}
+$$
+
+**Cadena de tipos forward**
+
+La misma condición de ausencia de arbitraje se aplica a cada año de la curva. Si encadenamos un año tras otro, el tipo cupón cero en $T$ es el producto de todos los tipos forward anuales hasta $T$. Con capitalización anual, la cadena es
+
+$$
+(1 + r(T))^{T} = \prod_{i=1}^{T} (1 + f(i-1, i))
+$$
+
+Con capitalización continua, el producto de las exponenciales pasa a ser una suma de los tipos forward.
+
+$$
+r(T) T = \sum_{i=1}^{T} f(i-1, i)
+$$
+
+Por tanto, el tipo cupón cero continuo en $T$ es la media de los tipos forward anuales hasta $T$.
+
+El término $f(0,1)$ es el tipo spot del primer año, porque un préstamo que empieza hoy es un forward que empieza en $t = 0$. La relación funciona en los dos sentidos. Se obtienen los tipos forward a partir de los tipos cupón cero si se divide. Se obtienen los tipos cupón cero a partir de los tipos forward si se multiplica.
+
+## Bootstrapping
+
+En el mercado no podemos observar directamente la curva cupón cero. Lo que vemos son distintos instrumentos de renta fija que cotizan en el mercado a precios distintos. El bootstrapping es el proceso de construir una curva cupón cero a partir de los precios de mercado de estos instrumentos.
+
+El método es secuencial. Se ordenan los instrumentos por vencimiento, del más corto al más largo. Para cada instrumento, se usan los tipos cupón cero que ya se conocen para despejar el único tipo cupón cero desconocido, el de su vencimiento. Un bono con cupones y vencimiento $T$ da el tipo cupón cero en $T$, porque los tipos cupón cero de sus fechas de cupón anteriores ya se conocen.
+
+La condición de ausencia de arbitraje exige que el precio teórico sea igual al precio de mercado. La misma condición fija también el tipo que descuenta cada flujo de caja: un flujo de caja en el momento $t_i$ debe descontarse con el tipo cupón cero de esa fecha, $r(t_i)$.
+
+Para un instrumento con flujos de caja $C_i$ en los momentos $t_i$, el precio $P$ con capitalización anual es
+
+$$
+P = \sum_{i=1}^{n} \frac{C_i}{(1 + r(t_i))^{t_i}}
+$$
+
+En esta ecuación solo $r(t_n)$ es desconocido. El procedimiento tiene cuatro pasos.
+
+1. **Vencimiento más corto:** se calcula directamente el tipo cupón cero a partir del primer instrumento. Este instrumento paga un único flujo de caja $C_1$ en $t_1$, que incluye los intereses y el principal, y su precio hoy es $P$.
+
+   $$
+   r(t_1) = \left(\frac{C_1}{P}\right)^{\frac{1}{t_1}} - 1
+   $$
+
+2. **Vencimientos siguientes:** se escribe la ecuación de precio del instrumento siguiente con los tipos cupón cero conocidos.
+3. **Iteración:** se resuelve la ecuación de precio para el $r(T)$ desconocido y se repite para el vencimiento siguiente.
+4. **Verificación:** se comprueba que la curva cupón cero reproduce los precios de mercado de todos los instrumentos.
+
+**Ejemplo**
+
+El mercado cotiza tres instrumentos. El depósito da directamente el primer tipo cupón cero. Los dos bonos pagan cupones anuales y cotizan a la par, así que el precio de cada bono es igual a su valor a la par de 100 USD.
+
+| Instrumento | Vencimiento | Cupón  | Precio | Tipo cupón cero |
+| ----------- | ----------- | ------ | ------ | --------------- |
+| Depósito    | 1Y          | -      | -      | 3.00 %          |
+| Bono 1      | 2Y          | 4.20 % | a la par | ?             |
+| Bono 2      | 3Y          | 4.60 % | a la par | ?             |
+
+- Para el depósito ya conocemos el tipo cupón cero.
+
+- Para el bono 1 calculamos el tipo cupón cero a 2 años. Descontamos el primer cupón con el tipo cupón cero a 1 año, así que $r(2Y)$ es la única incógnita.
+
+$$
+100 = \frac{4.2}{(1+0.03)} + \frac{104.2}{(1+r(2Y))^2}
+$$
+
+  Despejamos $r(2Y)$.
+
+$$
+(1+r(2Y))^2 = \frac{104.2}{100 - \frac{4.2}{1.03}} \quad \Rightarrow \quad r(2Y) = \sqrt{\frac{104.2}{100 - \frac{4.2}{1.03}}} - 1 \approx 0.042255
+$$
+
+  El tipo cupón cero a 2 años es 4.23 %.
+
+- Para el bono 2 calculamos el tipo cupón cero a 3 años. Descontamos los dos primeros cupones con los tipos cupón cero a 1 año y a 2 años, así que $r(3Y)$ es la única incógnita. Mantenemos el valor completo de $r(2Y)$, porque un valor redondeado arrastra su error a todos los vencimientos más largos.
+
+$$
+100 = \frac{4.6}{(1+0.03)} + \frac{4.6}{(1+0.042255)^2} + \frac{104.6}{(1+r(3Y))^3}
+$$
+
+  Despejamos $r(3Y)$.
+
+$$
+(1+r(3Y))^3 = \frac{104.6}{100 - \frac{4.6}{1.03} - \frac{4.6}{(1.042255)^2}} \quad \Rightarrow \quad r(3Y) = \sqrt[3]{\frac{104.6}{100 - \frac{4.6}{1.03} - \frac{4.6}{(1.042255)^2}}} - 1 \approx 0.046376
+$$
+
+  El tipo cupón cero a 3 años es 4.64 %.
+
+## Carry y roll-down
+
+El **carry** es el rendimiento que se obtiene al mantener una posición con la rentabilidad al vencimiento del instrumento sin cambios. Procede de los ingresos por cupones y del efecto de convergencia hacia la par (_pull to par_): con el paso del tiempo, el precio de un instrumento se acerca a su valor a la par, al margen de cualquier movimiento de la curva de rentabilidades.
+
+El **roll-down** es la ganancia o pérdida adicional que devenga un instrumento, con la curva de rentabilidades sin cambios, porque con el paso del tiempo se le aplica un punto distinto de la curva. A medida que un instrumento se acerca al vencimiento, le queda menos plazo hasta el vencimiento, así que se le aplica un punto distinto de la misma curva de rentabilidades. Si esta nueva rentabilidad es menor, el precio del instrumento sube y el inversor gana.
+
+**Carry**:
+
+$$
+Carry = \frac{Coupon + Amortization}{P_{initial}}
+$$
+
+La amortización (_Amortization_) es el cambio de precio que procede solo del paso del tiempo, con la rentabilidad del instrumento sin cambios. Es la parte anual de la convergencia hacia la par (_pull to par_), positiva para un bono comprado por debajo de la par (con descuento) y negativa para un bono comprado por encima de la par (con prima).
+
+**Roll-down**:
+
+$$
+Roll\text{-}Down = \frac{P_{new} - P_{initial} - Amortization}{P_{initial}}
+$$
+
+La fórmula del roll-down resta la amortización porque el carry ya contiene la convergencia hacia la par. Mide solo el cambio de precio adicional que procede del nuevo punto, más bajo, de la curva, así que carry + roll-down es el rendimiento total con una curva estática.
+
+**Rendimiento total**:
+
+$$
+Total = Carry + Roll\text{-}Down = \frac{P_{new} - P_{initial} + Coupon}{P_{initial}}
+$$
+
+**Ejemplo**
+
+Situación: un bono a 5 años, cupón del 5.0 %, precio de 102.19 USD, rentabilidad del 4.5 %.
+
+Datos iniciales ($t=0$):
+
+- Precio: 102.19 USD
+- Rentabilidad: 4.5 %
+- Cupón anual: 5%
+- Vencimiento: 5 años
+
+Después de 1 año ($t=1$):
+
+- Nuevo vencimiento: 4 años
+- Rentabilidad a 4 años (curva estática): 4.3 %
+- Nuevo precio: 102.52 USD
+- Cupón recibido: 5.0
+
+Carry:
+
+$$
+Amortization = \frac{5}{(1+0.045)} + \frac{5}{(1+0.045)^2} + \frac{5}{(1+0.045)^3} + \frac{105}{(1+0.045)^4} - 102.19 = 101.79 - 102.19 = -0.40
+$$
+
+La amortización es -0.40 USD.
+
+$$
+Carry = \frac{5 - 0.40}{102.19} = 0.0450
+$$
+
+El carry es 4.50 %.
+
+Roll-down:
+
+$$
+Roll\text{-}Down = \frac{102.52 - 102.19 - (-0.40)}{102.19} = \frac{102.52 - 101.79}{102.19} = 0.0071
+$$
+
+El roll-down es 0.71 %.
+
+Rendimiento total:
+
+$$
+Total = Carry + Roll\text{-}Down = 0.0450 + 0.0071 = 0.0521
+$$
+
+El rendimiento total es 5.21 %.
+
+Del rendimiento total, un 4.50 % procede del cupón y de la convergencia hacia la par (carry), y un 0.71 % procede del paso al punto más bajo a 4 años de la curva estática (roll-down).
+
+{/* GRAFICO: CarryRollDown */}
+
+## Advertencias sobre las aplicaciones reales
+
+El bootstrapping de las secciones anteriores supone un conjunto limpio de instrumentos, uno para cada vencimiento, con un único precio. El mercado real no es tan limpio. La construcción práctica de una curva debe resolver algunos problemas que la teoría no muestra.
+
+**Dificultades prácticas**
+
+- **Huecos en los vencimientos:** el mercado no cotiza un instrumento para cada vencimiento. Hace falta una interpolación para rellenar los huecos entre los puntos cotizados.
+- **Liquidez variable:** no todos los instrumentos son igual de líquidos. Un instrumento líquido da un precio más fiable que uno ilíquido.
+- **Spreads bid–offer:** cada instrumento tiene un precio bid y un precio offer. La elección habitual es el precio medio (mid), pero el mid no siempre es representativo. Si el spread es amplio, si el mercado es unilateral o si las últimas operaciones están todas en un lado, el mid no refleja el precio al que se puede negociar.
+
+**Métodos de interpolación**
+
+- **Lineal:** sencillo, pero puede crear arbitraje entre los puntos cotizados, porque los tipos forward implícitos dan un salto en cada nodo.
+- **Log-lineal sobre los factores de descuento:** se interpola el logaritmo de los factores de descuento. Equivale a un tipo forward constante entre dos nodos.
+- **Spline cúbico:** una aproximación suave de la curva. Da tipos forward suaves, pero un movimiento en una cotización puede cambiar toda la curva.
+
+**Jerarquía de instrumentos**
+
+1. **Los más fiables:** OIS, swaps en EUR.
+2. **Fiables:** bonos del Estado, letras.
+3. **Menos fiables:** bonos corporativos.
+
+**Buenas prácticas**
+
+- Usar los instrumentos más líquidos.
+- Comprobar la coherencia entre clases de activos (cross-asset).
+- Vigilar los valores atípicos diarios.
+- Documentar la metodología con claridad.
+
+**Ejemplo real**
+
+El BCE publica curvas OIS diarias. Las construye con swaps OIS de hasta 30Y y usa una interpolación log-lineal sobre los factores de descuento.
+
+## Estrategias de inversión basadas en el análisis de la curva
+
+Los conceptos de las secciones anteriores (tipos cupón cero, tipos forward, carry y roll-down) son la base de varias estrategias de inversión. Cada estrategia adopta una opinión sobre una parte distinta de la curva.
+
+**1. Carry trades**
+
+- Comprar los bonos con un carry positivo alto.
+- Financiar la posición con instrumentos cortos.
+- Ganar el roll-down en una curva normal (con pendiente ascendente).
+
+**2. Empinamiento y aplanamiento de la curva**
+
+- Comparar los tipos forward implícitos con las expectativas propias sobre los tipos futuros.
+- Para una opinión de empinamiento, se toma una posición larga en el plazo corto y una posición corta en el plazo largo. Para una opinión de aplanamiento, se hace lo contrario.
+- Usar la duración por tipo clave para dimensionar cada pata con precisión.
+
+**3. Arbitraje de tipos forward**
+
+- Comparar los tipos forward implícitos con los forwards cotizados en el mercado.
+- Detectar incoherencias entre plazos.
+- Operarlas con estrategias de calendar spread.
+
+**Ejemplo: análisis del carry**
+
+| Bono | Rentabilidad | Carry | Roll-down |
+| ---- | ------------ | ----- | --------- |
+| 2Y   | 3.2 %        | 3.1 % | -0.1 %    |
+| 5Y   | 4.1 %        | 4.0 % | +0.3 %    |
+| 10Y  | 4.8 %        | 4.7 % | +0.5 %    |
+| 30Y  | 5.2 %        | 5.1 % | +0.2 %    |
+
+El bono a 10Y da el mejor total de carry más roll-down (5.2 %). Es la posición más atractiva para una estrategia de carry.
+
+**Riesgos que hay que considerar**
+
+- Cambios en la forma de la curva.
+- Volatilidad de los tipos.
