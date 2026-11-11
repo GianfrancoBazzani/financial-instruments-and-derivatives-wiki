@@ -1,0 +1,142 @@
+---
+title: Futuros y forwards
+description: Forwards largos y cortos, diferencias entre forwards y futuros, liquidación diaria y margen, especificación de un contrato de futuros y papel de la especulación.
+banner:
+  content: "Traducción pendiente de revisión"
+---
+
+{/* Fuente: 04-futures-and-forwards.md @ 627bb65c932601a19f45d2d83c7b9f99169740dd */}
+
+## Forwards largos y cortos
+
+Un **forward** es un acuerdo que se cierra hoy para comprar o vender un activo en una fecha futura a un precio de entrega fijo $K$. La parte larga se compromete a comprar el activo y la parte corta se compromete a venderlo. Al inicio no cambia nada de manos. El contrato se establece de modo que valga cero para ambas partes, y la operación se realiza al vencimiento.
+
+Los términos "largo" y "corto" describen su lado del contrato y en qué sentido se beneficia de los movimientos de precios. Estar largo significa que será propietario del activo, así que gana si el precio sube. Estar corto significa que lo entregará, así que gana si el precio baja. La diferencia se define por la obligación de comprar o de vender, no por las expectativas.
+
+Al vencimiento, con $S_T$ como precio spot, los payoffs de las dos partes son los siguientes.
+
+$$
+\text{Payoff largo} = S_T - K
+$$
+
+$$
+\text{Payoff corto} = K - S_T
+$$
+
+{/* GRAFICO: ForwardPayoff */}
+
+Como no hay coste inicial, el payoff es igual al beneficio. Ambas partes están obligadas, así que los payoffs son líneas rectas. La parte larga tiene ganancias ilimitadas y una pérdida máxima de $K$ si el precio cae a cero, y la parte corta tiene lo contrario.
+
+**Extensión a las opciones**
+
+En las opciones, "largo" significa que usted compró la opción (el tenedor) y "corto" significa que la vendió o la emitió (el emisor). El tenedor tiene un derecho, el emisor tiene una obligación, y el tenedor paga una prima por adelantado ($c$ en una call, $p$ en una put).
+
+| Posición | Derecho u obligación | Beneficio | Gana si |
+| ---------- | ------------------------------- | ---------------------- | ---------------------- |
+| Call larga | Derecho a comprar | $\max(S_T - K, 0) - c$ | El precio sube |
+| Call corta | Obligación de vender si se ejerce | $c - \max(S_T - K, 0)$ | El precio se mantiene por debajo de $K + c$ |
+| Put larga | Derecho a vender | $\max(K - S_T, 0) - p$ | El precio baja |
+| Put corta | Obligación de comprar si se ejerce | $p - \max(K - S_T, 0)$ | El precio se mantiene por encima de $K - p$ |
+
+La diferencia clave con los forwards es que, en las opciones, "largo" no siempre significa comprar el activo. Una put larga le da el derecho a vender. Como el tenedor solo ejerce cuando le conviene, los payoffs de las opciones tienen un quiebro en lugar de ser rectos. La pérdida máxima del tenedor es la prima, mientras que la ganancia máxima del emisor es esa prima, con pérdidas potencialmente grandes (ilimitadas en una call corta, de hasta $K - p$ en una put corta).
+
+**El vínculo de suma cero**
+
+Tanto en los forwards como en las opciones, el beneficio de la parte larga más el de la parte corta siempre es igual a cero, así que la ganancia de un lado es exactamente la pérdida del otro. La prima es el precio que paga el tenedor de la opción para sustituir la obligación de un forward por un derecho. Eso cambia cómo se reparte el riesgo entre las dos partes, pero no el total de suma cero.
+
+## Forwards frente a futuros
+
+Un **contrato de futuros** también es un acuerdo para comprar o vender un activo en una fecha futura a un precio fijado hoy. La idea económica es la misma que la de un forward, pero los dos contratos se negocian de formas distintas. Un forward es un contrato privado entre dos partes en el mercado OTC. Un contrato de futuros se negocia en un mercado organizado, con las condiciones estandarizadas, la cámara de compensación y el margen propios de un mercado organizado (véase la sección sobre mercados organizados y OTC en [Mercados, activos y tipos de operadores](/mercados-activos-y-operadores/)).
+
+| | Forward | Futuros |
+| ---------------- | -------------------------------------------- | ------------------------------------------------- |
+| Mercado | OTC, privado entre dos partes | Mercado organizado |
+| Condiciones | A medida | Estandarizadas por el mercado |
+| Liquidación | Una única liquidación al vencimiento | Liquidación diaria (marking to market) |
+| Riesgo de crédito | Cada parte depende de la otra | Muy reducido por la cámara de compensación y el margen |
+| Fecha de entrega | Normalmente una fecha concreta | A menudo un intervalo de fechas, elegido por la parte corta |
+| Fin del contrato | Normalmente se mantiene hasta la entrega o la liquidación en efectivo | Normalmente se cierra antes del vencimiento |
+
+**Liquidación diaria**
+
+La principal diferencia práctica es el momento en que se producen las ganancias y las pérdidas. Un forward paga toda la ganancia o pérdida al vencimiento. Un contrato de futuros la paga al final de cada día, en la cuenta de margen del operador o desde ella. Esto es el **marking to market** (valoración a precios de mercado).
+
+El margen es una garantía de cumplimiento. Asegura que los perdedores puedan pagar a los ganadores, evita que las pérdidas se acumulen y protege al bróker y a la cámara de compensación. Como es una pequeña parte del valor del contrato, también da apalancamiento, que amplifica tanto las ganancias como las pérdidas.
+
+- **Margen inicial.** El depósito cuando se abre la posición, normalmente un pequeño porcentaje del valor del contrato.
+- **Margen de mantenimiento.** El saldo mínimo, inferior al margen inicial. Por debajo de él, el operador recibe una llamada de margen.
+- **Margen de variación.** Los fondos que el operador aporta tras una llamada de margen, normalmente en un plazo de un día, para devolver el saldo al margen inicial. En la compensación, el término suele referirse a la ganancia o pérdida diaria. Si el operador no paga, el bróker cierra la posición.
+
+La cámara de compensación del mercado fija los márgenes mínimos y los aumenta cuando el precio se vuelve más volátil, y un bróker puede exigir más. El operador puede retirar el saldo que exceda el margen inicial. El margen puede ser efectivo o letras del Estado. Las letras conservan sus intereses, así que su coste de oportunidad es pequeño, pero algunos brókeres pagan pocos intereses o ninguno por el efectivo. Los operadores depositan el margen en sus brókeres, los brókeres en los miembros de la cámara de compensación, y los miembros depositan un **margen de compensación** en la cámara de compensación.
+
+**Ejemplo**
+
+Un operador toma una posición larga en un contrato de futuros a 100, con un margen inicial de 3 ($3\%$ del valor) y un margen de mantenimiento de 2.5. El operador lo mantiene hasta el vencimiento, donde el precio del futuro es igual al precio spot $S_T = 102$.
+
+| Día | Precio del futuro | Ganancia o pérdida diaria | Ganancia o pérdida acumulada | Saldo de margen | Margen de variación |
+| ------------ | ------------- | ------------------ | ----------------------- | -------------- | ---------------- |
+| 0 | 100 | - | - | 3 | - |
+| 1 | 101 | +1 | +1 | 4 | - |
+| 2 | 99 | -2 | -1 | 2 | +1 |
+| 3 (vencimiento) | 102 | +3 | +2 | 6 | - |
+
+{/* GRAFICO: DailySettlement */}
+
+El día 2 el saldo cae a 2, por debajo de 2.5, así que el operador recibe una llamada de margen y aporta 1. Al vencimiento el saldo es 6 para unos depósitos totales de $3 + 1 = 4$, una ganancia de 2, que es el precio final menos el precio inicial. Un forward largo con $K = 100$ da el mismo payoff, $S_T - K = 2$, si ignoramos el interés del margen, pero lo paga una sola vez al vencimiento y no día a día.
+
+## Especificación de un contrato de futuros
+
+Cuando un mercado crea un nuevo contrato de futuros, debe especificar las condiciones exactas del acuerdo entre las dos partes. Estas condiciones estándar son las que hacen que los contratos de futuros sean intercambiables. El objetivo del diseño es un contrato que atraiga a suficientes coberturistas y especuladores para dar buena liquidez. Los parámetros principales son los siguientes.
+
+- **El activo.** El mercado especifica el activo subyacente y, en una materia prima, las calidades que puede entregar la parte corta. Si la parte corta entrega una calidad distinta de la estándar, el precio recibe un ajuste, una prima o un descuento.
+- **El tamaño del contrato.** Es la cantidad de activo de un contrato. Un contrato demasiado grande excluye a los pequeños inversores y coberturistas. Un contrato demasiado pequeño tiene costes de negociación altos, porque negociar cada contrato tiene un coste.
+- **Las condiciones de entrega.** El mercado especifica el lugar de entrega. El lugar es importante cuando los costes de transporte son significativos, y el precio puede recibir un ajuste por un lugar distinto del estándar.
+- **Los meses de entrega.** El mercado especifica los meses del contrato y el periodo de cada mes en que puede producirse la entrega. Muchos futuros financieros usan el ciclo trimestral de marzo, junio, septiembre y diciembre.
+- **Las cotizaciones del precio.** El mercado especifica cómo cotiza el precio y el tamaño del tick, que es el movimiento mínimo del precio.
+- **Los límites diarios de precio.** Son los movimientos máximos del precio en un día. Un movimiento igual al límite es un movimiento límite (límite al alza o límite a la baja). Los límites evitan grandes movimientos de precio que provienen de excesos especulativos.
+- **Los límites de posición.** Son el número máximo de contratos que puede mantener un especulador. Los límites evitan que los especuladores tengan demasiada influencia sobre el mercado. Los coberturistas de buena fe (bona fide) suelen estar exentos.
+
+**Fechas clave de un contrato de futuros**
+
+| Fecha | Significado |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Primer día de negociación | El primer día en que el mercado puede negociar el contrato. |
+| Primer día de posición (primer día de intención) | El primer día en que la parte corta puede declarar a la cámara de compensación su intención de entregar. |
+| Primer día de aviso | El primer día en que la cámara de compensación notifica una entrega a una parte larga. Un operador largo que no quiere la entrega suele cerrar la posición antes de este día. |
+| Primer día de entrega | El primer día en que puede producirse la entrega. |
+| Último día de negociación | El último día en que el mercado puede negociar el contrato. Después de este día, las posiciones abiertas se liquidan mediante entrega o liquidación en efectivo. |
+| Último día de aviso | El último día en que la cámara de compensación puede notificar una entrega a una parte larga. |
+| Último día de entrega | El último día en que puede producirse la entrega. |
+| Fecha de liquidación final | En un contrato liquidado en efectivo, el día en que el mercado fija el precio de liquidación final y cierra las posiciones abiertas. |
+
+En los futuros del Tesoro y de cereales del CBOT, la entrega siempre dura tres días hábiles. El día de posición, la parte corta declara su intención de entregar, y la cámara de compensación la asigna a la posición larga abierta más antigua. El día de aviso, las dos partes reciben la asignación y la parte corta factura a la parte larga. El día de entrega, la parte corta entrega el activo y la parte larga paga. Por este motivo, el primer día de posición, el primer día de aviso y el primer día de entrega suelen ser tres días hábiles consecutivos.
+
+Las fechas exactas, y el orden del último día de negociación y del último día de aviso, cambian de un contrato a otro. Las especificaciones del contrato del mercado dan el calendario real de cada contrato.
+
+## ¿Es la especulación en los mercados de futuros un juego de azar?
+
+Una opinión habitual sostiene que la especulación en los mercados de futuros es puro juego de azar y que no debería permitirse a los especuladores operar en los mercados de futuros. La opinión tiene algo de verdad, pero ignora el papel de los especuladores.
+
+**Por qué la opinión parece razonable**
+
+Un especulador no tiene ninguna exposición que proteger y asume riesgo solo para obtener beneficio, así que una posición en futuros parece una apuesta. El apalancamiento hace mayor la apuesta, y antes de costes la negociación de futuros es un juego de suma cero. Además, las posiciones especulativas grandes pueden añadir volatilidad o utilizarse para intentar acaparar un mercado (corner).
+
+**Por qué la opinión es errónea**
+
+Un casino crea riesgo para entretener, mientras que un mercado de futuros transfiere un riesgo que ya existe. Un agricultor se enfrenta al precio del trigo exista o no un mercado organizado, y los especuladores son los operadores que aceptan ese riesgo.
+
+- **Contrapartes para los coberturistas.** Un productor de trigo que quiere vender a plazo puede no encontrar, el mismo día, a un molinero que quiera comprar la misma cantidad. Los especuladores llenan este vacío.
+- **Liquidez.** El volumen especulativo estrecha los spreads bid–offer, reduce los costes de los coberturistas y permite negociar posiciones grandes sin un gran movimiento del precio.
+- **Formación de precios.** Los especuladores solo ganan si pronostican bien, así que recogen información sobre la oferta y la demanda. Sus operaciones la incorporan al precio del futuro, que los productores y los consumidores usan para planificar.
+- **Compensación por el riesgo.** En teoría, los coberturistas pagan a los especuladores una prima por asumir su riesgo, de forma muy parecida a como un asegurador gana una prima, aunque la evidencia de esta prima es contradictoria.
+
+**La respuesta del interés público**
+
+Una prohibición haría que los mercados de futuros fueran poco profundos y costosos, y perjudicaría a los coberturistas a quienes pretende proteger. La preocupación real es la especulación excesiva o manipuladora, que los mercados y los reguladores controlan con las siguientes normas (véase [Forwards frente a futuros](#forwards-frente-a-futuros) para los márgenes y [Especificación de un contrato de futuros](#especificación-de-un-contrato-de-futuros) para los límites).
+
+- Los **requisitos de margen** hacen que cada operador cubra las pérdidas a diario, de modo que un impago no se propague.
+- Los **límites diarios de precio** acotan cuánto puede moverse el precio en una sesión, lo que frena los movimientos de pánico.
+- Los **límites de posición** acotan los contratos especulativos que puede mantener un operador, lo que dificulta los corners y los squeezes.
+- La **obligación de informar de las posiciones grandes** permite a los reguladores vigilar las posiciones importantes y actuar contra la manipulación.
+
+La especulación es, por tanto, una parte necesaria de un mercado de futuros que funcione. Debe regularse, no prohibirse.

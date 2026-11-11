@@ -23,12 +23,7 @@ export default defineConfig({
       locales: { root: { label: "Español", lang: "es" } },
       ...(sidebar.length > 0 ? { sidebar } : {}),
       plugins: [
-        starlightLinksValidator({
-          // Enlaces hacia páginas que aún no existen; cada tarea de página elimina su entrada.
-          exclude: [
-            "/futuros-y-forwards/**", // la tarea de la página 04 (futuros-y-forwards) elimina esta entrada
-          ],
-        }),
+        starlightLinksValidator(),
       ],
       customCss: ["katex/dist/katex.min.css", "./src/styles/tema.css"],
       components: {

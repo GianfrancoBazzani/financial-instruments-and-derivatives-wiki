@@ -184,3 +184,33 @@ En la primera mención de cada página se añade entre paréntesis el significad
 | carry trade | carry trade |
 | calendar spread | calendar spread |
 | steepening / flattening (estrategia) | empinamiento / aplanamiento |
+
+## Términos de la página 04 (futuros y forwards)
+
+| English | Español |
+| --- | --- |
+| long / short (forward) | largo / corto (la parte larga / la parte corta) |
+| delivery price | precio de entrega |
+| spot price | precio spot |
+| payoff | payoff |
+| holder / writer (opciones) | tenedor / emisor |
+| premium | prima |
+| kinked (payoff) | con un quiebro |
+| zero-sum | de suma cero |
+| futures contract | contrato de futuros |
+| daily settlement / marking to market | liquidación diaria / marking to market (valoración a precios de mercado) |
+| margin account | cuenta de margen |
+| performance bond | garantía de cumplimiento |
+| initial / maintenance / variation margin | margen inicial / de mantenimiento / de variación |
+| clearing margin | margen de compensación |
+| broker | bróker (pl. brókeres) |
+| cash settlement | liquidación en efectivo |
+| tick size | tamaño del tick |
+| daily price limit / limit move | límite diario de precio / movimiento límite |
+| position limit | límite de posición |
+| bona fide hedger | coberturista de buena fe (bona fide) |
+| first position (intention) / notice / delivery day | primer día de posición (de intención) / de aviso / de entrega |
+| final settlement date | fecha de liquidación final |
+| corner / squeeze | corner / squeeze |
+| price discovery | formación de precios |
+| large-trader reporting | obligación de informar de las posiciones grandes |
