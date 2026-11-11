@@ -9,6 +9,7 @@ banner:
 
 import PriceYield from "../../components/graficos/PriceYield.tsx";
 import CleanDirtyPrice from "../../components/graficos/CleanDirtyPrice.tsx";
+import MacaulayDuration from "../../components/graficos/MacaulayDuration.tsx";
 
 ## Instrumentos básicos de renta fija
 
@@ -276,7 +277,7 @@ $$
 D_{Mac}=\frac{1}{103.329}\left[1 \cdot 5 e^{-0.04} + 2 \cdot 5 e^{-0.08} + 3 \cdot 5 e^{-0.12} + 4 \cdot 105 e^{-0.16}\right]=\frac{385.239}{103.329}=3.73
 $$
 
-{/* GRAFICO: MacaulayDuration */}
+<MacaulayDuration client:visible />
 
 **Ejemplo con flujos de caja semestrales**
 
