@@ -1,0 +1,263 @@
+/* Chart kit. Colours come only from the theme tokens of src/styles/tema.css, so both themes work.
+   Sober by intent: thin rules, no shadow, no gradient, no rounded card, no transition or animation. */
+
+.grafico {
+  --grafico-fondo: var(--sl-color-black);
+  container-type: inline-size;
+  margin: 2rem 0;
+  padding: 0.875rem 0 1rem;
+  border-top: 1px solid var(--sl-color-gray-4);
+  border-bottom: 1px solid var(--sl-color-hairline);
+  color: var(--sl-color-white);
+  font-family: var(--sl-font);
+  font-size: var(--sl-text-sm);
+  line-height: 1.4;
+}
+
+.grafico *,
+.grafico *::before,
+.grafico *::after {
+  transition: none;
+  animation: none;
+}
+
+.grafico-titulo {
+  margin: 0 0 0.5rem;
+  font-size: var(--sl-text-base);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* Symbols of the formulas, in the math italic of KaTeX. */
+.grafico-simbolo {
+  font-family: KaTeX_Math, "Times New Roman", serif;
+  font-style: italic;
+  font-size: 1.12em;
+  line-height: 1;
+  white-space: nowrap;
+  /* The italic overhangs to the right; keep it off the label that follows. */
+  margin-inline-end: 0.15em;
+}
+.grafico-simbolo sub,
+.grafico-simbolo sup {
+  font-size: 0.72em;
+  line-height: 0;
+}
+
+/* Legend: a swatch and a name per series. */
+.grafico-leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+  margin: 0 0 0.25rem;
+  padding: 0;
+  list-style: none;
+  color: var(--sl-color-gray-2);
+}
+.grafico-leyenda li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+}
+.grafico-muestra {
+  flex: none;
+}
+
+/* Plot. */
+.grafico-plot {
+  width: 100%;
+  min-width: 0;
+}
+.grafico-plot svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.grafico svg text {
+  font-family: var(--sl-font);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  fill: var(--sl-color-gray-2);
+}
+.grafico .grafico-titulo-eje {
+  fill: var(--sl-color-gray-1);
+}
+.grafico-rejilla line {
+  stroke: var(--g-grid);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+.grafico-eje line,
+.grafico-cero {
+  stroke: var(--sl-color-gray-4);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+
+/* Series: each mark takes its colour from the data-serie of its group. */
+.grafico [data-serie='main'] {
+  --serie: var(--g-main);
+}
+.grafico [data-serie='b'] {
+  --serie: var(--g-b);
+}
+.grafico [data-serie='c'] {
+  --serie: var(--g-c);
+}
+.grafico [data-serie='muted'] {
+  --serie: var(--g-muted);
+}
+.grafico-linea {
+  fill: none;
+  stroke: var(--serie);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.grafico [data-serie='muted'] .grafico-linea {
+  stroke-width: 1.5;
+}
+.grafico-barra {
+  fill: var(--serie);
+}
+.grafico-punto {
+  fill: var(--serie);
+  stroke: var(--grafico-fondo);
+  stroke-width: 2;
+}
+/* Direct labels: text colour with a halo of the background, readable over grid and lines. */
+.grafico svg .grafico-etiqueta {
+  fill: var(--sl-color-white);
+  stroke: var(--grafico-fondo);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+  paint-order: stroke;
+}
+
+/* Controls and read-outs. */
+.grafico-mandos {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.grafico-controles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem 2rem;
+}
+@container (max-width: 479.98px) {
+  .grafico-controles {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.grafico-control {
+  min-width: 0;
+}
+.grafico-control-cabecera {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+.grafico-control label {
+  color: var(--sl-color-gray-2);
+  min-width: 0;
+}
+.grafico-valor {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+  color: var(--sl-color-white);
+}
+
+/* Native range input: a thin track and a round thumb in the main series colour. */
+.grafico input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 1.5rem;
+  margin: 0.125rem 0 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.grafico input[type='range']::-webkit-slider-runnable-track {
+  height: 2px;
+  background: var(--sl-color-gray-4);
+}
+.grafico input[type='range']::-moz-range-track {
+  height: 2px;
+  background: var(--sl-color-gray-4);
+}
+.grafico input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  margin-top: -7px;
+  border: 2px solid var(--grafico-fondo);
+  border-radius: 50%;
+  background: var(--g-main);
+}
+.grafico input[type='range']::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--grafico-fondo);
+  border-radius: 50%;
+  background: var(--g-main);
+}
+.grafico input[type='range']:focus-visible {
+  outline: 2px solid var(--sl-color-text-accent);
+  outline-offset: 2px;
+}
+
+.grafico-lecturas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 2rem;
+  margin: 0;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--sl-color-hairline);
+}
+.grafico-lectura {
+  min-width: 0;
+}
+.grafico-lectura dt {
+  margin: 0;
+  color: var(--sl-color-gray-2);
+  font-weight: 400;
+}
+.grafico-lectura dd {
+  margin: 0;
+  font-size: var(--sl-text-lg);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--sl-color-white);
+}
+
+.grafico-acciones {
+  margin-top: 0.875rem;
+}
+.grafico-restablecer {
+  font: inherit;
+  color: var(--sl-color-white);
+  background: transparent;
+  border: 1px solid var(--sl-color-gray-4);
+  border-radius: 0;
+  padding: 0.25rem 0.75rem;
+  cursor: pointer;
+}
+.grafico-restablecer:hover {
+  border-color: var(--sl-color-gray-2);
+}
+.grafico-restablecer:focus-visible {
+  outline: 2px solid var(--sl-color-text-accent);
+  outline-offset: 2px;
+}
+
+.grafico-pie {
+  margin-top: 0.875rem;
+  color: var(--sl-color-gray-2);
+}
