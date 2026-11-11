@@ -9,6 +9,7 @@ banner:
 
 import Diagrama from "../../components/Diagrama.astro";
 import ForwardValue from "../../components/graficos/ForwardValue.tsx";
+import ForwardPrice from "../../components/graficos/ForwardPrice.tsx";
 
 Los argumentos de arbitraje dan los precios forward y de futuros de un activo de inversión a partir de su precio spot y de otras variables observables del mercado. Esto no es posible para los activos de consumo, por las razones que se explican más adelante.
 
@@ -248,7 +249,7 @@ $$
 F_0 = S_0 e^{(c - y)T}
 $$
 
-{/* GRAFICO: ForwardPrice */}
+<ForwardPrice client:visible />
 
 | Activo | $c$ |
 | --- | --- |
