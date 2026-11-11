@@ -24,8 +24,8 @@ export default defineConfig({
       ...(sidebar.length > 0 ? { sidebar } : {}),
       plugins: [
         starlightLinksValidator({
-          // Enlaces a páginas que aún no existen. La tarea de la página 06 (cobertura-con-futuros) quita esta entrada.
-          exclude: ["/cobertura-con-futuros/"],
+          // Enlaces a páginas que aún no existen. La tarea de la página 07 (fras-y-futuros-de-tipos) quita esta entrada.
+          exclude: ["/fras-y-futuros-de-tipos/**"],
         }),
       ],
       customCss: ["katex/dist/katex.min.css", "./src/styles/tema.css"],

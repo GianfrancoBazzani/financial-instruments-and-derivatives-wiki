@@ -236,3 +236,25 @@ En la primera mención de cada página se añade entre paréntesis el significad
 | systematic / nonsystematic risk | riesgo sistemático / no sistemático |
 | normal backwardation / contango | normal backwardation / contango |
 | short hedger | coberturista en corto |
+
+## Términos de la página 06 (cobertura con futuros)
+
+| English | Español |
+| --- | --- |
+| short hedge / long hedge | cobertura corta / cobertura larga |
+| perfect hedge / imperfect hedge | cobertura perfecta / cobertura imperfecta |
+| short hedger / long hedger | coberturista en corto / coberturista en largo |
+| basis risk | riesgo de base |
+| basis strengthens / weakens | el basis se fortalece / se debilita |
+| contango / backwardation | contango / backwardation |
+| effective price | precio efectivo |
+| cross hedging | cobertura cruzada |
+| hedge ratio | ratio de cobertura |
+| minimum variance hedge ratio | ratio de cobertura de mínima varianza |
+| hedge effectiveness | eficacia de la cobertura |
+| tailing the hedge | ajuste de la cobertura (tailing) |
+| stack and roll | stack and roll |
+| duration-based hedge ratio | ratio de cobertura basado en la duración |
+| cheapest to deliver | el más barato de entregar |
+| duration matching / portfolio immunization | igualación de duraciones / inmunización de la cartera |
+| nonparallel shift | desplazamiento no paralelo |

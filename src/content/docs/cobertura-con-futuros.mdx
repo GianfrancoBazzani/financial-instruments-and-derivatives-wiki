@@ -1,0 +1,204 @@
+---
+title: Estrategias de cobertura con futuros
+description: Coberturas cortas y largas, riesgo de base, ratio de cobertura de mínima varianza, ajuste por liquidación diaria, stack and roll y coberturas basadas en la duración con futuros sobre tipos de interés.
+banner:
+  content: "Traducción pendiente de revisión"
+---
+
+{/* Fuente: 06-hedging-strategies-using-futures.md @ 627bb65c932601a19f45d2d83c7b9f99169740dd */}
+
+Cubrirse con futuros significa tomar una posición en contratos de futuros para compensar una exposición al precio de un activo. El objetivo de la cobertura es reducir el riesgo.
+
+## Coberturas cortas y largas
+
+Si la exposición es tal que la empresa gana cuando sube el precio del activo y pierde cuando baja, lo adecuado es una **cobertura corta**. Un ejemplo es un productor que posee el activo o que lo venderá en el futuro.
+
+Si la exposición es la contraria, de modo que la empresa gana cuando baja el precio del activo y pierde cuando sube, lo adecuado es una **cobertura larga**. Un ejemplo es una empresa que necesitará comprar el activo en el futuro.
+
+Como regla general, la posición en futuros es la opuesta a la exposición. Un coberturista que está efectivamente largo en el activo, como un agricultor que venderá trigo en la cosecha o una empresa que recibirá divisas, se pone corto en futuros. Un coberturista que está efectivamente corto en el activo, como una aerolínea que comprará queroseno o una empresa que ha vendido un activo que todavía no posee, se pone largo en futuros. La ganancia de la posición en futuros compensa la pérdida de la exposición cuando el precio se mueve en el sentido desfavorable. La cobertura también renuncia a la ganancia cuando el precio se mueve en el sentido favorable, porque su objetivo es reducir el riesgo, no aumentar el beneficio esperado.
+
+Una **cobertura perfecta** elimina por completo el riesgo, porque la ganancia o la pérdida de la posición en futuros compensa exactamente la pérdida o la ganancia de la exposición, de modo que el resultado queda fijado y se conoce de antemano. Esto exige que la cobertura coincida exactamente con el activo, la cantidad y el momento. Una **cobertura imperfecta** reduce el riesgo pero no lo elimina, normalmente por el riesgo de base (véase [Riesgos](#riesgos)), por cantidades que no coinciden o por diferencias de calendario. Una cobertura perfecta da certeza, no necesariamente un mejor resultado. Como elimina a la vez el riesgo a la baja y el potencial al alza, una cobertura imperfecta puede salir mejor cuando los precios se mueven a favor del coberturista, y peor cuando se mueven en su contra.
+
+Una cobertura perfecta no fija el precio spot actual $S_0$. Fija el precio de futuros $F_0$, que en general difiere de $S_0$ por el coste de carry (véase [Valoración de futuros y forwards](/valoracion-de-futuros-y-forwards/)).
+
+$$
+F_0 = S_0 e^{(c - y)T}
+$$
+
+Aquí $T$ es el plazo hasta el vencimiento, $c = r + u - q$ es el coste de carry (el tipo libre de riesgo $r$, más el coste de almacenamiento $u$, menos la rentabilidad por ingresos $q$ del activo) e $y$ es la rentabilidad de conveniencia de mantener una materia prima física. Los intereses y los costes de almacenamiento empujan el precio de futuros por encima del precio spot, mientras que los ingresos del activo y la rentabilidad de conveniencia lo empujan por debajo. Por tanto, una cobertura perfecta garantiza un precio conocido para la operación futura, pero ese precio es $F_0$, no $S_0$.
+
+## ¿Por qué cubrirse? ¿Por qué no?
+
+En un mercado perfecto, la cobertura no aporta valor, porque los accionistas pueden cubrirse por su cuenta. Las fricciones reales, como los costes de las dificultades financieras, cambian esto.
+
+**Razones para cubrirse**
+
+- **Centrarse en el negocio principal.** La mayoría de las empresas no tienen habilidad para predecir los tipos de cambio, los tipos de interés o los precios de las materias primas. La cobertura elimina estos riesgos y permite que la empresa se centre en lo que hace bien.
+- **Flujos de caja predecibles.** Un precio fijo para un insumo clave o para un pago en divisas facilita los presupuestos, la fijación de precios y los planes de inversión, y protege el efectivo necesario para invertir.
+- **Menor riesgo de dificultades financieras.** La cobertura protege frente a los movimientos extremos de precios que podrían dejar a la empresa sin capacidad de pagar sus deudas. Esto tranquiliza a los acreedores, los proveedores y los empleados, y permite que la empresa soporte más deuda.
+
+**Razones para no cubrirse**
+
+- **La cobertura es difícil de explicar.** Si la cobertura pierde mientras la exposición gana, el resultado neto es el mismo, pero el consejo puede ver solo la pérdida de la cobertura y culpar al tesorero.
+- **Los competidores no se cubren.** Si ninguna empresa del sector se cubre, los precios tienden a seguir a los costes, de modo que los márgenes se mantienen estables. Una empresa que se cubre sola rompe este patrón y puede acabar con más riesgo, no con menos.
+- **Los accionistas pueden diversificar.** Los accionistas bien diversificados quizá ya compensen el riesgo en sus carteras, así que la cobertura añade coste sin mucho beneficio. La empresa, sin embargo, suele tener mejor información sobre el riesgo y menores costes de cobertura que un accionista individual.
+
+## Riesgos
+
+**Riesgo de base**
+
+El **basis** es la diferencia entre el precio spot de un activo y su precio de futuros.
+
+$$
+\text{Basis} = \text{Precio spot} - \text{Precio de futuros}
+$$
+
+El **riesgo de base** es el riesgo de que una cobertura no compense por completo los cambios de precio, porque el basis cambia de forma imprevisible durante la vida de la cobertura. Los precios de futuros convergen a los precios spot en la entrega, pero los coberturistas suelen cerrar sus posiciones antes de esa fecha, cuando el basis es incierto. Como resultado, la ganancia o la pérdida de la posición en futuros no coincide exactamente con la pérdida o la ganancia del activo. El riesgo de base también surge cuando el activo cubierto difiere del activo subyacente del contrato de futuros (véase [Cobertura cruzada](#cobertura-cruzada)), o cuando la fecha de compra o de venta del activo es incierta.
+
+**Fortalecimiento y debilitamiento del basis**
+
+El basis se **fortalece** cuando aumenta y se **debilita** cuando disminuye. Con un basis negativo, que es habitual cuando el coste de carry es positivo (véase [Coberturas cortas y largas](#coberturas-cortas-y-largas)), un paso de −5 a −2 lo fortalece y un paso de −5 a −8 lo debilita, de modo que el fortalecimiento acerca los dos precios. Con un basis positivo, un paso de +3 a +6 lo fortalece y un paso de +3 a +1 lo debilita, de modo que el fortalecimiento aleja los dos precios. En ambos casos, el basis se fortalece cuando el precio spot gana frente al precio de futuros.
+
+| Coberturista          | Posición                      | Gana cuando el basis | Pierde cuando el basis |
+| --------------------- | ----------------------------- | -------------------- | ---------------------- |
+| Coberturista en corto | Largo en spot, corto en futuros | Se fortalece         | Se debilita            |
+| Coberturista en largo | Corto en spot, largo en futuros | Se debilita          | Se fortalece           |
+
+**Contango, backwardation y precio efectivo**
+
+El mercado está en **contango** cuando el precio de futuros está por encima del precio spot (basis negativo), normalmente por los intereses y los costes de almacenamiento. Está en **backwardation** cuando el precio de futuros está por debajo del precio spot (basis positivo), normalmente por una rentabilidad por ingresos o de conveniencia alta (véase el coste de carry en [Coberturas cortas y largas](#coberturas-cortas-y-largas)). Algunos autores definen ambos términos frente al precio spot futuro esperado, en lugar del precio spot actual.
+
+Una cobertura establecida en el momento 1 y cerrada en el momento 2 da el siguiente precio efectivo, que es el precio de venta para un coberturista en corto y el precio de compra para un coberturista en largo.
+
+$$
+\text{Precio efectivo} = S_2 - (F_2 - F_1) = F_1 + b_2
+$$
+
+$F_1$ se conoce cuando empieza la cobertura, así que la única incertidumbre es el basis final $b_2$, que es el riesgo de base. Si la cobertura se cierra al vencimiento, $b_2 = 0$ y el precio efectivo es $F_1$. Un $b_2$ más alto ayuda al coberturista en corto y un $b_2$ más bajo ayuda al coberturista en largo, como en la tabla anterior. Por ejemplo, con $S_1 = 2.50$, $F_1 = 2.20$, $S_2 = 2.00$ y $F_2 = 1.90$, el basis se debilita de 0.30 a 0.10 y el precio efectivo es $2.20 + 0.10 = 2.30$.
+
+El gráfico muestra, por defecto, este ejemplo. El basis se conoce en $t_1$ y converge a cero en $T$, pero una cobertura cerrada en $t_2$, antes del último día de negociación, obtiene un valor de entre los posibles de $b_2$. Mueva $b_2$ para ver cómo cambia el precio efectivo.
+
+{/* GRAFICO: BasisRisk */}
+
+El backwardation no favorece por sí solo a un coberturista en largo. El coberturista fija un precio cercano a $F_1$, que está por debajo del precio spot de hoy $S_1$, pero la alternativa a la cobertura es comprar a $S_2$, no a $S_1$. El resultado depende de cómo cambia el basis, no de su signo al principio.
+
+## Cobertura cruzada
+
+La **cobertura cruzada** usa futuros sobre un activo distinto pero correlacionado, porque no existen futuros líquidos sobre el activo cubierto. Por ejemplo, una aerolínea cubre el queroseno con futuros sobre gasóleo de calefacción. Los dos precios no se mueven exactamente a la vez, lo que añade riesgo de base.
+
+El **ratio de cobertura** es el tamaño de la posición en futuros dividido entre el tamaño de la exposición. Un ratio de 1.0 es adecuado para una cobertura sobre el mismo activo. En una cobertura cruzada, un ratio de 1.0 no siempre es óptimo, porque los dos precios pueden cambiar en cuantías distintas. El coberturista debe elegir, en cambio, el ratio de cobertura que minimiza la varianza del valor de la posición cubierta.
+
+### Ratio de cobertura de mínima varianza
+
+El objetivo de una cobertura es reducir el riesgo, no aumentar el beneficio esperado, y la varianza de la posición cubierta mide cuán incierto es el resultado final, así que el mejor ratio de cobertura es el que tiene la varianza más pequeña.
+
+Supongamos que el coberturista está largo en una unidad del activo y corto en $h$ unidades de futuros. Durante la vida de la cobertura, $\Delta S$ es el cambio del precio spot y $\Delta F$ es el cambio del precio de futuros, con desviaciones típicas $\sigma_S$ y $\sigma_F$ y correlación $\rho$. El cambio del valor de la posición cubierta es
+
+$$
+\Delta V = \Delta S - h \Delta F
+$$
+
+Para dos variables aleatorias, $\text{Var}(X - hY) = \text{Var}(X) + h^2 \text{Var}(Y) - 2h \text{Cov}(X, Y)$, y $\text{Cov}(\Delta S, \Delta F) = \rho \sigma_S \sigma_F$. Por tanto, la varianza de la posición cubierta es
+
+$$
+\sigma_V^2 = \sigma_S^2 + h^2 \sigma_F^2 - 2 h \rho \sigma_S \sigma_F
+$$
+
+Esta es una parábola en $h$ que se abre hacia arriba, así que su mínimo está donde la derivada es cero.
+
+$$
+\frac{d \sigma_V^2}{d h} = 2 h \sigma_F^2 - 2 \rho \sigma_S \sigma_F = 0
+\quad \Rightarrow \quad
+h^* = \rho \frac{\sigma_S}{\sigma_F}
+$$
+
+La segunda derivada $2 \sigma_F^2$ es positiva, lo que confirma un mínimo. El ratio de cobertura óptimo es la correlación escalada por la volatilidad relativa de los dos precios. Es igual a 1.0 solo si $\rho = 1$ y $\sigma_S = \sigma_F$, que es el caso de una cobertura sobre el mismo activo sin riesgo de base. Una correlación baja o un precio de futuros más volátil que el precio spot reducen $h^*$.
+
+Como $\rho \sigma_S \sigma_F = \text{Cov}(\Delta S, \Delta F)$, el ratio también puede escribirse como $h^* = \text{Cov}(\Delta S, \Delta F) / \text{Var}(\Delta F)$. Esta es la pendiente de la recta de mejor ajuste cuando se regresa $\Delta S$ sobre $\Delta F$, así que en la práctica $h^*$ se estima a partir de datos históricos con una regresión lineal.
+
+Al sustituir $h^*$ en $\sigma_V^2$ se obtiene la varianza que queda después de la cobertura.
+
+$$
+\sigma_V^2 = \sigma_S^2 (1 - \rho^2)
+$$
+
+{/* GRAFICO: MinVarianceHedge */}
+
+La **eficacia de la cobertura** es la parte de la varianza que elimina la cobertura, $1 - \sigma_V^2 / \sigma_S^2 = \rho^2$, que es el $R^2$ de la regresión. Una correlación de 0.9 elimina el 81% de la varianza, mientras que una correlación de 0.5 elimina solo el 25%.
+
+:::note
+**Estimación de la regresión en la práctica**
+
+El operador regresa los cambios históricos del precio spot de uno a tres años sobre los cambios del precio de futuros, medidos en periodos que no se solapan y que duran lo mismo que la cobertura, y sin los saltos de los cambios de contrato (rolls). La pendiente da $h^*$ y el $R^2$ da la eficacia de la cobertura (`SLOPE` y `RSQ` en una hoja de cálculo). El operador vuelve a estimar ambos con regularidad, porque la relación entre los precios cambia con el tiempo.
+:::
+
+### Número óptimo de contratos
+
+Si $Q_A$ es el tamaño de la posición que se cubre y $Q_F$ es el tamaño de un contrato de futuros, ambos en unidades del activo, la posición en futuros debe cubrir $h^* Q_A$ unidades. El número óptimo de contratos es
+
+$$
+N^* = \frac{h^* Q_A}{Q_F}
+$$
+
+Por ejemplo, una aerolínea comprará 2 millones de galones de queroseno dentro de un mes y se cubre con futuros sobre gasóleo de calefacción de 42,000 galones cada uno. Los cambios mensuales de precios dan $\sigma_S = 0.0263$, $\sigma_F = 0.0313$ y $\rho = 0.928$. Entonces $h^* = 0.928 \times 0.0263 / 0.0313 = 0.78$ y $N^* = 0.78 \times 2{,}000{,}000 / 42{,}000 = 37.1$, así que la aerolínea compra 37 contratos.
+
+### Impacto de la liquidación diaria
+
+Las ganancias y las pérdidas de los futuros se liquidan a diario, así que la cobertura debe compensar los cambios diarios de valor, no los cambios de precio por unidad. Este ajuste se llama **ajuste de la cobertura** (en inglés, _tailing the hedge_). Sea $V_A$ el valor de la posición cubierta (el precio spot por $Q_A$), $V_F$ el valor de un contrato (el precio de futuros por $Q_F$) y $r_S$, $r_F$ los cambios porcentuales de precio en un día, con desviaciones típicas $\hat\sigma_S$, $\hat\sigma_F$ y correlación $\hat\rho$. Con $N$ contratos, el cambio diario de valor es
+
+$$
+\Delta V = V_A r_S - N V_F r_F
+$$
+
+La misma minimización de antes, con $V_A r_S$ en lugar de $\Delta S$ y $N V_F r_F$ en lugar de $h \Delta F$, da
+
+$$
+N^* = \hat\rho \frac{\hat\sigma_S}{\hat\sigma_F} \frac{V_A}{V_F} = \hat h \frac{V_A}{V_F}
+$$
+
+Como $V_A$ y $V_F$ se mueven con los precios, el coberturista ajusta $N^*$ con el tiempo. En el ejemplo de la aerolínea, con un precio spot de 1.94 y un precio de futuros de 1.99, $V_A = 3{,}880{,}000$ y $V_F = 83{,}580$. Si $\hat h \approx 0.78$, entonces $N^* = 36.2$, así que la cobertura ajustada usa 36 contratos en lugar de 37.
+
+## Stack and roll
+
+Cuando no hay ningún contrato de futuros líquido que venza después del fin de la cobertura, puede ser adecuada una estrategia conocida como **stack and roll**. Consiste en entrar en una sucesión de contratos de futuros.
+
+1. Cuando el primer contrato de futuros está cerca del vencimiento, el coberturista lo cierra y entra en un segundo contrato con un mes de entrega posterior.
+2. Cuando el segundo contrato está cerca del vencimiento, el coberturista lo cierra y entra en un tercer contrato con un mes de entrega posterior.
+3. El coberturista continúa de la misma manera hasta el final de la cobertura.
+
+El resultado es un contrato de futuros a largo plazo creado negociando una serie de contratos a corto plazo.
+
+## Estrategias de cobertura basadas en la duración con futuros sobre tipos de interés
+
+Los futuros sobre tipos de interés pueden cubrir la rentabilidad de una cartera de bonos en un momento futuro. Si las rentabilidades forward cambian en el mismo $\Delta y$ para todos los vencimientos, lo que es un desplazamiento paralelo de la curva de tipos, entonces
+
+$$
+\Delta P \approx -P D_P \Delta y \qquad \Delta V_F \approx -V_F D_F \Delta y
+$$
+
+- $P$ es el valor forward de la cartera en el vencimiento de la cobertura, que en la práctica suele ser su valor de hoy.
+- $D_P$ es la duración modificada (véase [Instrumentos de renta fija](/renta-fija/#duración-modificada)) de la cartera en el vencimiento de la cobertura.
+- $V_F$ es el precio de un contrato de futuros.
+- $D_F$ es la duración modificada del activo subyacente de los futuros en el vencimiento de los futuros.
+
+Para una posición corta en $N$ contratos, la posición cubierta no cambia para ningún $\Delta y$ cuando
+
+$$
+\Delta P - N \Delta V_F \approx -(P D_P - N V_F D_F) \Delta y = 0 \quad \Rightarrow \quad N^* = \frac{P D_P}{V_F D_F}
+$$
+
+Este es el **ratio de cobertura basado en la duración**, o **ratio de cobertura por sensibilidad del precio**. Su numerador y su denominador son las duraciones monetarias de la cartera y de un contrato (véase [Instrumentos de renta fija](/renta-fija/#duración-monetaria-o-duración-en-dólares)), así que la posición cubierta tiene duración monetaria cero. También es la cobertura de mínima varianza ajustada $N^* = \hat h V_A / V_F$ (véase [Impacto de la liquidación diaria](#impacto-de-la-liquidación-diaria)) con $V_A = P$, porque un desplazamiento paralelo hace que los cambios porcentuales $-D_P \Delta y$ y $-D_F \Delta y$ estén perfectamente correlacionados, así que $\hat h = D_P / D_F$. La cobertura es de primer orden, así que solo funciona bien para desplazamientos paralelos pequeños de la curva de tipos.
+
+Con los futuros sobre bonos o notas del Tesoro, el bono entregado es desconocido, así que $D_F$ es la duración del bono que el coberturista espera, cuando empieza la cobertura, que sea el más barato de entregar (véase [FRAs y futuros sobre tipos de interés](/fras-y-futuros-de-tipos/#futuros-sobre-bonos-del-tesoro)). Si luego los tipos se mueven de modo que otro bono parezca el más barato, el coberturista debe ajustar la cobertura, que entonces puede rendir peor de lo esperado.
+
+Los precios de los futuros sobre tipos de interés se mueven en sentido contrario a los tipos, porque siguen los precios de los bonos o son 100 menos un tipo. Por tanto, un coberturista que pierde cuando los tipos bajan se pone largo en futuros, y uno que pierde cuando los tipos suben se pone corto (véase [Coberturas cortas y largas](#coberturas-cortas-y-largas)).
+
+El coberturista elige el contrato cuyo activo subyacente tiene la duración más cercana a la del activo cubierto. Así, los futuros SOFR a 3 meses, que sustituyeron a los futuros Eurodollar en 2023 (véase [FRAs y futuros sobre tipos de interés](/fras-y-futuros-de-tipos/#futuros-eurodollar-y-sofr)), cubren los tipos a corto plazo, y los futuros Ultra T-bond, T-bond y sobre notas del Tesoro cubren los tipos a plazos más largos.
+
+Por ejemplo, un gestor de fondos con \$10 millones en bonos del Estado ($D_P = 6.80$ años) pierde si los tipos suben y se cubre con futuros T-bond. El precio de futuros es 93-02, o 93.0625 por cada \$100 de valor nominal, así que un contrato sobre \$100,000 tiene $V_F = 93{,}062.50$, y el bono más barato de entregar esperado tiene $D_F = 9.20$ años. Entonces $N^* = (10{,}000{,}000 \times 6.80) / (93{,}062.50 \times 9.20) = 79.42$, así que el gestor vende 79 contratos.
+
+### Cobertura de carteras de activos y pasivos
+
+Las instituciones financieras cubren el riesgo de tipo de interés con la **igualación de duraciones** (duration matching), o **inmunización de la cartera**, que hace que la duración media de sus activos sea igual a la de sus pasivos. Los pasivos actúan como posiciones cortas en bonos, así que, tras un desplazamiento paralelo pequeño de la curva de tipos, la ganancia (pérdida) de los activos compensa la pérdida (ganancia) de los pasivos.
+
+La igualación de duraciones no protege frente a los desplazamientos no paralelos de la curva cupón cero. Los tipos a corto plazo suelen ser más volátiles que los tipos a largo plazo y no están perfectamente correlacionados con ellos, y a veces los dos se mueven en sentidos opuestos. Por tanto, la igualación de duraciones es solo un primer paso, y las instituciones usan otras herramientas para gestionar su exposición al tipo de interés.
