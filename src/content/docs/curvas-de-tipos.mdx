@@ -9,6 +9,7 @@ banner:
 
 import Diagrama from "../../components/Diagrama.astro";
 import ZeroParForwardCurves from "../../components/graficos/ZeroParForwardCurves.tsx";
+import CarryRollDown from "../../components/graficos/CarryRollDown.tsx";
 
 ## Estructura de los tipos de interés
 
@@ -429,7 +430,7 @@ El rendimiento total es 5.21 %.
 
 Del rendimiento total, un 4.50 % procede del cupón y de la convergencia hacia la par (carry), y un 0.71 % procede del paso al punto más bajo a 4 años de la curva estática (roll-down).
 
-{/* GRAFICO: CarryRollDown */}
+<CarryRollDown client:visible />
 
 ## Advertencias sobre las aplicaciones reales
 
