@@ -84,10 +84,10 @@ Contents of `pages` (titles and slugs from the spec §2):
 | 01 | `tipos-de-interes` | — | — |
 | 02 | `curvas-de-tipos` | `example-zero-rates-discount-factors`, `forward-rate-timeline` | `ZeroParForwardCurves`, `CarryRollDown` |
 | 03 | `mercados-activos-y-operadores` | — | — |
-| 04 | `futuros-y-forwards` | `futures-daily-settlement-timeline` | `ForwardPayoff`, `DailySettlement` |
+| 04 | `futuros-y-forwards` | — | `ForwardPayoff`, `DailySettlement` |
 | 05 | `valoracion-de-futuros-y-forwards` | `interest-rate-parity` (new, from the Mermaid flowchart) | `ForwardValue`, `ForwardPrice` |
 | 06 | `cobertura-con-futuros` | — | `BasisRisk`, `MinVarianceHedge` |
-| 07 | `fras-y-futuros-de-tipos` | `fra-libor-vs-sofr-timeline`, `conversion-factor-whole-periods`, `conversion-factor-3-month-offset`, `cheapest-to-deliver-yields`, `sofr-futures-bootstrap-timeline` | `FraPayoff`, `ConversionFactor` |
+| 07 | `fras-y-futuros-de-tipos` | `futures-daily-settlement-timeline`, `fra-libor-vs-sofr-timeline`, `conversion-factor-whole-periods`, `conversion-factor-3-month-offset`, `cheapest-to-deliver-yields`, `sofr-futures-bootstrap-timeline` | `FraPayoff`, `ConversionFactor` |
 | 08 | `swaps` | `swap-transform-liability`, `swap-transform-asset`, `ccs-cash-flows` | `ParSwapRate`, `SwapValue` |
 | 09 | `swaps-no-estandar` | — | `CapFloorCollarPayoff`, `SabrSmile`, `CmsVsSwap` |
 | 10 | `repos` | — | `RepoHaircutCarry` |
@@ -255,10 +255,10 @@ One task per page, in site order. Each task follows this procedure.
 | 6 | 01 `tipos-de-interes` | — |
 | 7 | 02 `curvas-de-tipos` | Two diagrams kept; `zero-vs-par-rates` replaced. |
 | 8 | 03 `mercados-activos-y-operadores` | — |
-| 9 | 04 `futuros-y-forwards` | One diagram kept. |
+| 9 | 04 `futuros-y-forwards` | — |
 | 10 | 05 `valoracion-de-futuros-y-forwards` | Draw `interest-rate-parity.svg` by hand from the Mermaid flowchart (same four boxes and arrows, Spanish labels). Delete the fence. |
 | 11 | 06 `cobertura-con-futuros` | `basis-risk-early-close-out` replaced. Display formulas here use multi-line `$$` blocks. |
-| 12 | 07 `fras-y-futuros-de-tipos` | Five diagrams kept. Many `\$` amounts. Same-page anchors (`#payoff`, `#eurodollar-and-sofr-futures`). |
+| 12 | 07 `fras-y-futuros-de-tipos` | Six diagrams kept. Many `\$` amounts. Same-page anchors (`#payoff`, `#eurodollar-and-sofr-futures`). |
 | 13 | 08 `swaps` | Three diagrams kept; `swap-payer-vs-receiver-convexity` replaced. Callouts. Anchor to `renta-fija#convexidad`. |
 | 14 | 09 `swaps-no-estandar` | `cms-vs-vanilla-swap-payoff` replaced. |
 | 15 | 10 `repos` | — |
