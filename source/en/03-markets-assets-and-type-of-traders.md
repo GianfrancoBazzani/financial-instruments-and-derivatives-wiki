@@ -1,0 +1,64 @@
+# Markets, Assets, and Types of Traders
+
+## Exchange-traded vs. over-the-counter markets
+
+An **exchange-traded market** is a centralized, organized marketplace (such as the CME Group or Eurex) where standardized contracts are traded. The exchange defines the contract terms, such as the underlying asset, the contract size, and the delivery or expiration dates. Trades go through a clearing house, which stands between buyer and seller and requires margin from both, so counterparty credit risk is greatly reduced. Prices and trading volumes are publicly visible. Futures contracts trade on exchanges, while forward contracts trade OTC (see [Futures and Forwards](04-futures-and-forwards.md) for the comparison of the two contracts).
+
+The **over-the-counter (OTC) market** is a decentralized network in which participants, typically banks, other financial institutions, fund managers, and corporations, deal directly with one another, traditionally by phone and now increasingly through electronic platforms. Because each deal is negotiated privately, contracts can be customized to fit the parties' exact needs, such as an unusual maturity, notional amount, or underlying asset. The trade-off is that OTC transactions have historically carried more counterparty credit risk and less transparency. Since the 2008 financial crisis, regulators have narrowed this gap by requiring many standardized OTC derivatives to be cleared through central counterparties and reported to trade repositories.
+
+**Bid and offer quotes of a market maker**
+
+In the OTC market, large financial institutions often act as market makers. A market maker stands ready to trade with clients and quotes two prices at the same time, a bid and an offer.
+
+The **bid** is the price at which the market maker is prepared to *buy*. The **offer** (also called the **ask**) is the price at which the market maker is prepared to *sell*.
+
+The offer is always higher than the bid. The difference between them, the **bid–offer spread**, is how the market maker earns a profit and is compensated for the risk of holding positions. For example, a dealer quoting a currency at 1.0850 / 1.0852 will buy at 1.0850 and sell at 1.0852. A client who wants to sell receives the lower price, and a client who wants to buy pays the higher one.
+
+## Types of orders
+
+An order tells the broker how to execute a trade. The main types are the following.
+
+| Order                                        | Meaning                                                                                                                                                  |
+| -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Market order                                 | Trade immediately at the best available price.                                                                                                          |
+| Limit order                                  | Trade only at a specified price or at a price more favorable to the trader.                                                                              |
+| Stop order (stop-loss order)                 | When a bid or offer reaches the specified price or a worse one, the order becomes a market order.                                                       |
+| Stop-limit order                             | When the stop price is reached, the order becomes a limit order. The order therefore needs two prices, the stop price and the limit price.               |
+| Market-if-touched (MIT) order (board order)  | When a trade occurs at the specified price or a more favorable one, the order becomes a market order. Traders use it to take profits after favorable moves. |
+| Discretionary order (market-not-held order)  | A market order that the broker can delay to try to get a better price.                                                                                   |
+
+## Types of assets
+
+In markets it is important to distinguish between investment assets and consumption assets.
+
+An **investment asset** is an asset that is held solely for investment purposes by at least some significant number of traders. Stocks and bonds are clearly investment assets. Gold and silver are also examples of investment assets, because a significant number of investors hold them only as a store of value, even though industry also uses them. The holder of an investment asset expects a return from the price or the income of the asset, not from its use.
+
+A **financial asset** is an investment asset whose value comes from a contractual claim rather than from a physical good. A stock is a claim on the equity of a company, a bond is a claim on the coupons and the principal that the issuer promises, and a currency or a bank deposit is a claim on a central bank or a commercial bank. Financial assets have no storage costs, and many of them pay an income to the holder, such as dividends, coupons, or the interest rate of a foreign currency. Every financial asset is an investment asset, but not every investment asset is a financial asset, since gold and silver are physical goods that must be stored and insured.
+
+A **consumption asset** is an asset that is held primarily for consumption. It is not normally held for investment. Examples of consumption assets are commodities such as copper, crude oil, corn, and pork bellies. A refinery keeps crude oil to process it and a food producer keeps corn to use it, so these holders do not sell their inventories only to exploit a small difference in price.
+
+| Type                      | Main reason to hold              | Examples                              | Storage costs | Typical income               |
+| ------------------------- | -------------------------------- | ------------------------------------- | ------------- | ---------------------------- |
+| Financial asset           | Investment                       | Stocks, bonds, currencies             | None          | Dividends, coupons, interest |
+| Physical investment asset | Investment                       | Gold, silver                          | Yes           | None                         |
+| Consumption asset         | Use in production or consumption | Copper, crude oil, corn, pork bellies | Yes           | None                         |
+
+## Types of traders
+
+In the market we can identify three types of traders, the hedgers, the speculators and the arbitrageurs.
+
+**Hedgers** use derivatives to **reduce risk** they already face. Forwards and futures lock in a future price, which removes uncertainty but also gives up favourable moves. Options act like insurance, because they protect against bad moves and keep the upside, for an upfront premium. Hedging makes outcomes more certain, not necessarily better.
+
+**Speculators** **take on risk** by betting on price direction, with no exposure to protect. Derivatives give them **leverage**. Futures need only a small margin, and options buy more exposure per dollar. For example, 2,000 USD in call options can earn far more than 2,000 USD in shares, or be lost entirely. Leverage magnifies both gains and losses. The note on futures and forwards discusses [whether speculation in futures markets is gambling](04-futures-and-forwards.md#is-speculation-in-futures-markets-gambling).
+
+**Arbitrageurs** lock in a **riskless profit** through simultaneous trades in two or more markets, exploiting price differences. An example is buying a stock cheaply in New York and selling it higher in London. Such opportunities disappear quickly because arbitrage trading closes the gap. The pricing of derivatives relies on the **no-arbitrage** assumption.
+
+| Trader      | Goal                    | Risk   | Existing exposure? |
+| ----------- | ----------------------- | ------ | ------------------ |
+| Hedger      | Reduce risk             | Avoids | Yes                |
+| Speculator  | Profit from price moves | Seeks  | No                 |
+| Arbitrageur | Riskless profit         | None   | No                 |
+
+**Drift into speculation**
+
+Hedgers or arbitrageurs can drift into speculating, as in the Barings and Société Générale losses, so firms need strict risk limits.

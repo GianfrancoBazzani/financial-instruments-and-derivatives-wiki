@@ -5,6 +5,15 @@ import starlightLinksValidator from "starlight-links-validator";
 import { unified } from "@astrojs/markdown-remark";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
+import { existsSync } from "node:fs";
+import { pageNumber, pages } from "./site/pages";
+
+// Sidebar generated from the page list, only for pages whose MDX file exists.
+// With no translated page yet, Starlight's default sidebar keeps the other pages reachable.
+const sidebar = pages
+  .map((p, i) => ({ ...p, i }))
+  .filter((p) => existsSync(new URL(`./src/content/docs/${p.slug}.mdx`, import.meta.url)))
+  .map((p) => ({ label: `${pageNumber(p.i)} · ${p.title}`, slug: p.slug }));
 
 export default defineConfig({
   integrations: [
@@ -12,6 +21,7 @@ export default defineConfig({
       title: "Derivados Financieros",
       defaultLocale: "root",
       locales: { root: { label: "Español", lang: "es" } },
+      ...(sidebar.length > 0 ? { sidebar } : {}),
       plugins: [starlightLinksValidator()],
       customCss: ["katex/dist/katex.min.css"],
     }),
