@@ -1,0 +1,85 @@
+---
+title: Repos
+description: Repos o pactos de recompra, colateral general y repo especial, curva de repo y haircuts, con ejemplos numéricos.
+banner:
+  content: "Traducción pendiente de revisión"
+---
+
+{/* Fuente: 10-repos.md @ 627bb65c932601a19f45d2d83c7b9f99169740dd */}
+
+## Repos
+
+Un repo (**REPurchase agreement**, pacto de recompra) es un préstamo con colateral en el que el prestatario entrega un bono al prestamista como garantía.
+
+**Ejemplo**
+
+Un banco necesita €60M durante 21 días y usa un Bund (bono del Estado alemán) como colateral. El tipo del repo es del 2%.
+
+- **Día 0:** el banco entrega un Bund por valor de €60M y recibe €60M en efectivo.
+- **Día 21:** el banco devuelve los €60M más los intereses y recupera su Bund.
+
+Los intereses usan la convención de cómputo de días ACT/360.
+
+$$
+\text{Interés} = 60M \times 2\% \times \frac{21}{360} = €0.07M
+$$
+
+| Día | El banco entrega | El banco recibe |
+| --- | --- | --- |
+| 0 | Bund | €60M |
+| 21 | €60.07M | Bund |
+
+El reembolso total es de €60.07M (€60M de principal más €70,000 de intereses).
+
+### Colateral general frente a repo especial
+
+| | Colateral general (GC) | Repo especial |
+| --- | --- | --- |
+| Colateral | Cualquier bono admisible | Un bono concreto |
+| Tipo del repo | Tipo normal de mercado | Inferior al tipo GC |
+| Tipo de ejemplo | 3.2% | 2.5% |
+| Facilidad de ejecución | Fácil | Difícil |
+
+Un repo especial es más barato porque el bono tiene mucha demanda y es escaso. Los prestamistas de efectivo que necesitan ese bono concreto (por ejemplo, para cubrir una posición corta) aceptan un tipo menor por su efectivo con tal de conseguirlo. Por tanto, el tenedor del bono puede endeudarse en mejores condiciones que con GC. El spread entre el tipo GC y el tipo especial (0.7% en el ejemplo) muestra lo "especial" que es el bono.
+
+### Curva de repo
+
+La curva de repo muestra el tipo del repo para cada plazo, desde un día (1D) hasta varios meses.
+
+| Plazo | 1D | 1W | 1M | 3M | 6M |
+| --- | --- | --- | --- | --- | --- |
+| Tipo del repo | 2.8% | 3.0% | 3.2% | 3.5% | 3.8% |
+
+Una curva con pendiente positiva, como la de la tabla, es la situación normal, y los plazos más largos pagan tipos más altos por dos motivos.
+
+- **Prima de plazo.** Un prestamista de efectivo que inmoviliza su efectivo durante un plazo más largo renuncia a liquidez y exige un tipo más alto.
+- **Expectativas de tipos.** El tipo de un repo a plazo es cercano a la media de los tipos a un día esperados durante ese plazo. Una curva muy empinada señala subidas de tipos esperadas, y una curva invertida señala bajadas de tipos esperadas.
+
+La curva interesa a los operadores por tres motivos.
+
+- **Coste de financiación.** Un dealer que compra un bono y lo financia con un repo obtiene el carry, que es el ingreso por cupones menos el coste del repo. Con un bono que rinde el 3.4%, la financiación a un día al 2.8% da un carry positivo del 0.6%, mientras que la financiación a 6M al 3.8% da un carry negativo del 0.4%.
+- **Elección del plazo.** La financiación a un día es la más barata, pero el dealer debe renovarla cada día y queda expuesto a una subida de tipos o a una pérdida de financiación. Un repo a plazo fija el tipo y el efectivo durante todo el plazo, a un coste mayor.
+- **Valoración de forwards y futuros sobre bonos.** El tipo del repo para el plazo de entrega es el tipo de financiación en el coste de carry de un bono (véase [Valoración de futuros y forwards](/valoracion-de-futuros-y-forwards/)), y entra en el basis neto de los futuros sobre bonos (véase [FRAs y futuros sobre tipos de interés](/fras-y-futuros-de-tipos/)).
+
+### Haircuts
+
+Un haircut (recorte de valoración) es un margen de seguridad para el prestamista de efectivo. El prestamista presta menos efectivo que el valor de mercado del colateral, de modo que queda protegido si el colateral pierde valor.
+
+$$
+\text{Efectivo prestado} = \text{Valor de mercado del colateral} \times (1 - \text{Haircut})
+$$
+
+**Ejemplo**
+
+Un bono vale €100M en el mercado. Con un haircut del 2%, el prestamista presta solo €98M. En el ejemplo anterior del Bund, un haircut del 2% significa que el banco debe entregar un Bund por valor de €60M / 0.98 ≈ €61.22M para recibir €60M.
+
+| Colateral | Haircut típico |
+| --- | --- |
+| Bund alemán a 10 años | 1–2% |
+| Bono del Estado español a 10 años | 3–4% |
+| Bono corporativo AAA | 5–8% |
+| Bono de alto rendimiento (high yield) | 15–25% |
+
+El haircut aumenta cuando disminuye la calidad crediticia o la liquidez del colateral, porque el prestamista puede tener que venderlo, tras un impago, a un precio más bajo.
+
+{/* GRAFICO: RepoHaircutCarry */}
