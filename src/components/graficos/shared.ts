@@ -1,5 +1,6 @@
 // Small building blocks that several graphics share and the kit does not hold.
 // No financial formula here: the numbers come from src/lib/finance.
+import { num } from "./kit/fmt";
 import type { SliderProps } from "./kit/Slider";
 
 /** n evenly spaced numbers from a to b, both included (n ≥ 2). */
@@ -16,6 +17,12 @@ export function widen(base: [number, number], values: number[], step: number): [
     if (v > hi) hi = Math.ceil(v / step) * step;
   }
   return [lo, hi];
+}
+
+/** A tick label with only the decimals it needs, at most 2: 4 → "4", 0.5 → "0.5", 0.25 → "0.25". */
+export function tickNum(v: number): string {
+  const decimals = [0, 1].find((d) => Math.abs(v * 10 ** d - Math.round(v * 10 ** d)) < 1e-9) ?? 2;
+  return num(v, decimals);
 }
 
 /** Coupon frequencies a reader can choose, as in the notes: 1, 2, or 4 coupons a year. */

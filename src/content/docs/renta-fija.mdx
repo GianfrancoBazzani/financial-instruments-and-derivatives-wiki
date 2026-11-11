@@ -8,6 +8,7 @@ banner:
 {/* Fuente: 00-fixed-income-securities.md @ 627bb65c932601a19f45d2d83c7b9f99169740dd */}
 
 import PriceYield from "../../components/graficos/PriceYield.tsx";
+import CleanDirtyPrice from "../../components/graficos/CleanDirtyPrice.tsx";
 
 ## Instrumentos básicos de renta fija
 
@@ -107,7 +108,7 @@ Para un bono anual ($f = 1$) con un cupón de 5, el cupón corrido 3 meses despu
 
 El gráfico muestra, por defecto, un bono a 10 años con un cupón del 3%, pagado en dos partes de 1.5 cada seis meses, y una rentabilidad constante del 5%.
 
-{/* GRAFICO: CleanDirtyPrice */}
+<CleanDirtyPrice client:visible />
 
 - El precio sucio dibuja un **diente de sierra**. Sube con el cupón corrido y baja el importe del cupón en cada fecha de cupón. Esta caída **no es una pérdida**, porque el dinero pasa del precio a la caja del titular.
 - El precio limpio sube **suavemente** hacia la par. Se mantiene por debajo de 100, porque el cupón del 3% es menor que la rentabilidad del 5%. Su variación **no es el rendimiento**, porque no incluye el cupón corrido.
