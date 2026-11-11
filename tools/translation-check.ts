@@ -115,6 +115,20 @@ export function shapeOfPage(mdx: string): DocShape {
   };
 }
 
+const ONE_LINE_DISPLAY = /(?<!\\)\$\$[^$\n]+\$\$/;
+
+/** 1-based line numbers of one-line `$$…$$` formulas, outside code fences. */
+function oneLineDisplayLines(mdx: string): number[] {
+  const text = mdx
+    .replace(/\r\n/g, "\n")
+    .replace(FENCE, (m) => "\n".repeat(m.split("\n").length - 1));
+  const lines: number[] = [];
+  text.split("\n").forEach((line, i) => {
+    if (ONE_LINE_DISPLAY.test(line)) lines.push(i + 1);
+  });
+  return lines;
+}
+
 const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
 
 export function comparePage(
@@ -134,6 +148,10 @@ export function comparePage(
     s.displayFormulas.forEach((f, i) => {
       if (f !== p.displayFormulas[i]) err(`display formula ${i + 1} differs: ${f} != ${p.displayFormulas[i]}`);
     });
+  }
+
+  for (const n of oneLineDisplayLines(page)) {
+    err(`line ${n}: one-line display formula; write $$ alone on a line, the formula, then $$ alone`);
   }
 
   const si = new Set(s.inlineFormulas);

@@ -14,7 +14,7 @@ const def: PageDef = {
 const src =
   "# T\n\nPays \\$100 and $x$.\n\n$$\na = b\n$$\n\n$$c=d$$\n\n| a | b |\n| - | - |\n| 1 | 2 |\n\n> [!NOTE]\n> n\n\n![alt](Attachments/x.svg)\n";
 const page =
-  '---\ntitle: T\n---\n\nPaga \\$100 y $x$.\n\n$$\na = b\n$$\n\n$$c=d$$\n\n| a | b |\n| - | - |\n| 1 | 2 |\n\n:::note\nn\n:::\n\n<Diagrama nombre="x" alt="alt" />\n\n{/* GRAFICO: PriceYield */}\n';
+  '---\ntitle: T\n---\n\nPaga \\$100 y $x$.\n\n$$\na = b\n$$\n\n$$\nc=d\n$$\n\n| a | b |\n| - | - |\n| 1 | 2 |\n\n:::note\nn\n:::\n\n<Diagrama nombre="x" alt="alt" />\n\n{/* GRAFICO: PriceYield */}\n';
 
 describe("translation-check", () => {
   test("normaliseFormula drops \\text content and whitespace", () => {
@@ -47,6 +47,14 @@ describe("translation-check", () => {
 
   test("a faithful page has no errors", () => {
     expect(comparePage(def, src, page, [])).toEqual([]);
+  });
+
+  test("a one-line display formula in a page is reported with slug and line", () => {
+    const oneLine = page.replace("$$\nc=d\n$$", () => "$$c=d$$");
+    const errors = comparePage(def, src, oneLine, []);
+    expect(errors).toHaveLength(1);
+    expect(errors[0]).toContain("x: line 11");
+    expect(comparePage(def, src, page + "\n```\n$$a=b$$\n```\n", [])).toEqual([]);
   });
 
   test("a changed formula is reported", () => {
