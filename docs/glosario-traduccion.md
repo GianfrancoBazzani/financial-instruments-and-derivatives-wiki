@@ -214,3 +214,25 @@ En la primera mención de cada página se añade entre paréntesis el significad
 | corner / squeeze | corner / squeeze |
 | price discovery | formación de precios |
 | large-trader reporting | obligación de informar de las posiciones grandes |
+
+## Términos de la página 05 (valoración de futuros y forwards)
+
+| English | Español |
+| --- | --- |
+| arbitrage / arbitrageur | arbitraje / arbitrajista |
+| overpriced / underpriced | sobrevalorado / infravalorado |
+| borrowing fee | comisión de préstamo |
+| known income / known yield | ingresos conocidos / rentabilidad conocida |
+| dividend yield | rentabilidad por dividendo |
+| stock index | índice bursátil |
+| interest rate parity | paridad de tipos de interés |
+| storage costs | costes de almacenamiento |
+| investment / consumption commodity | materia prima de inversión / de consumo |
+| convenience yield | rentabilidad de conveniencia |
+| gold lease rate | tipo de arrendamiento del oro |
+| cost of carry | coste de carry |
+| expected spot price | precio spot esperado |
+| required return | rendimiento exigido |
+| systematic / nonsystematic risk | riesgo sistemático / no sistemático |
+| normal backwardation / contango | normal backwardation / contango |
+| short hedger | coberturista en corto |

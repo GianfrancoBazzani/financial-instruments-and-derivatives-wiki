@@ -1,0 +1,309 @@
+---
+title: Valoración de futuros y forwards
+description: Precios forward y de futuros por ausencia de arbitraje para activos de inversión, divisas y materias primas, valor de un forward, coste de carry y relación con el precio spot esperado.
+banner:
+  content: "Traducción pendiente de revisión"
+---
+
+{/* Fuente: 05-futures-and-forwards-pricing.md @ 627bb65c932601a19f45d2d83c7b9f99169740dd */}
+
+import Diagrama from "../../components/Diagrama.astro";
+
+Los argumentos de arbitraje dan los precios forward y de futuros de un activo de inversión a partir de su precio spot y de otras variables observables del mercado. Esto no es posible para los activos de consumo, por las razones que se explican más adelante.
+
+Las ecuaciones de valoración de más abajo suponen que algunos participantes del mercado:
+
+1. No pagan costes de transacción cuando operan.
+2. Pagan el mismo tipo impositivo sobre todos los beneficios netos de la negociación.
+3. Piden prestado y prestan al mismo tipo libre de riesgo.
+4. Aprovechan las oportunidades de arbitraje en cuanto se presentan.
+
+Estos supuestos no tienen que cumplirse para todos los participantes del mercado, sino solo para unos pocos clave, como los grandes operadores de derivados (dealers). La negociación de estos participantes clave, y su afán por explotar el arbitraje, fija la relación entre los precios forward y spot.
+
+## Venta en corto
+
+La **venta en corto** es la venta de un activo que el inversor no posee. El bróker toma prestado el activo de otro cliente y lo vende en el mercado. Para cerrar la posición, el inversor recompra el activo y se lo devuelve al prestamista. El inversor gana si el precio baja y pierde si sube, sin límite superior para la pérdida.
+
+Mientras la posición está abierta, el inversor paga al prestamista cualquier ingreso del activo, como dividendos o cupones. El bróker mantiene una **cuenta de margen** como colateral, cobra una comisión por prestar el activo y puede forzar el cierre de la posición si el prestamista reclama el activo.
+
+Algunas estrategias de arbitraje empiezan con la venta de un activo, así que exigen que el arbitrajista tenga el activo de antemano. La venta en corto suele eliminar este requisito, a cambio de la **comisión de préstamo**.
+
+La venta en corto no siempre está disponible, pero los inversores que tienen el activo únicamente como inversión pueden realizar igualmente estas operaciones. Venden el activo en lugar de tomarlo prestado y, al final de la estrategia, tienen el mismo activo más el beneficio.
+
+## Activos de inversión
+
+En el caso de los activos de inversión consideramos tres situaciones distintas: el activo no proporciona ingresos, el activo proporciona un ingreso conocido en dólares y el activo proporciona una rentabilidad conocida.
+
+Las ecuaciones de valoración usan la notación siguiente.
+
+- $T$ es el tiempo hasta la fecha de entrega del contrato, en años.
+- $S_0$ es el precio del activo subyacente hoy.
+- $F_0$ es el precio forward o de futuros hoy.
+- $r$ es el tipo cupón cero libre de riesgo para el vencimiento $T$, anual con capitalización continua.
+
+### Activos sin ingresos
+
+El forward más sencillo de valorar es el de un activo de inversión que no proporciona ingresos y no tiene costes de almacenamiento, como una acción que no paga dividendos o un bono cupón cero.
+
+En ausencia de arbitraje, el precio forward es
+
+$$
+F_0 = S_0 e^{rT}
+$$
+
+Si $F_0 > S_0 e^{rT}$, el forward está sobrevalorado. Un arbitrajista pide prestado $S_0$ al tipo $r$, compra el activo y toma una posición corta en el forward. En $T$, el arbitrajista entrega el activo por $F_0$ y devuelve $S_0 e^{rT}$, con un beneficio de
+
+$$
+F_0 - S_0 e^{rT} > 0
+$$
+
+Si $F_0 < S_0 e^{rT}$, el forward está infravalorado. Un arbitrajista vende el activo en corto, invierte $S_0$ al tipo $r$ y toma una posición larga en el forward. En $T$, el arbitrajista recibe $S_0 e^{rT}$, compra el activo por $F_0$ y se lo devuelve al prestamista, con un beneficio de
+
+$$
+S_0 e^{rT} - F_0 > 0
+$$
+
+Los arbitrajistas explotan cualquiera de las dos diferencias hasta que sus operaciones llevan $F_0$ de vuelta a $S_0 e^{rT}$.
+
+### Activos con ingresos conocidos
+
+Si el activo proporciona durante la vida del contrato un ingreso con un valor actual conocido $I$, el precio forward de ausencia de arbitraje es
+
+$$
+F_0 = (S_0 - I) e^{rT}
+$$
+
+Los bonos con cupón y las acciones con dividendos conocidos son ejemplos de estos activos. $I$ es la suma de los pagos de ingresos, cada uno descontado al tipo libre de riesgo.
+
+El ingreso reduce el precio forward, porque lo recibe el tenedor del activo y no el tenedor del forward.
+
+Si $F_0 > (S_0 - I) e^{rT}$, el forward está sobrevalorado. Un arbitrajista pide prestado $S_0$ al tipo $r$, compra el activo y toma una posición corta en el forward. El ingreso devuelve parte del préstamo cuando llega. En $T$, el arbitrajista entrega el activo por $F_0$ y devuelve los $(S_0 - I) e^{rT}$ restantes, con un beneficio de
+
+$$
+F_0 - (S_0 - I) e^{rT} > 0
+$$
+
+Si $F_0 < (S_0 - I) e^{rT}$, el forward está infravalorado. Un arbitrajista vende el activo en corto, invierte $S_0$ al tipo $r$ y toma una posición larga en el forward. Parte de la inversión paga el ingreso que se debe al prestamista del activo. En $T$, el arbitrajista recibe los $(S_0 - I) e^{rT}$ restantes, compra el activo por $F_0$ y se lo devuelve al prestamista, con un beneficio de
+
+$$
+(S_0 - I) e^{rT} - F_0 > 0
+$$
+
+Los arbitrajistas explotan cualquiera de las dos diferencias hasta que sus operaciones llevan $F_0$ de vuelta a $(S_0 - I) e^{rT}$.
+
+### Activos con rentabilidad conocida
+
+Si el activo proporciona un ingreso igual a una rentabilidad conocida $q$ de su precio, el precio forward de ausencia de arbitraje es
+
+$$
+F_0 = S_0 e^{(r - q)T}
+$$
+
+Un índice bursátil con su rentabilidad por dividendo y una divisa extranjera con su tipo de interés son ejemplos de estos activos. $q$ es la rentabilidad media anual durante la vida del contrato, con capitalización continua.
+
+La rentabilidad reduce el precio forward por la misma razón que un ingreso conocido.
+
+Si el ingreso se reinvierte en el activo, $e^{-qT}$ unidades hoy crecen hasta una unidad en $T$. Las operaciones de arbitraje usan este hecho.
+
+Si $F_0 > S_0 e^{(r - q)T}$, el forward está sobrevalorado. Un arbitrajista pide prestado $S_0 e^{-qT}$ al tipo $r$, compra $e^{-qT}$ unidades del activo, reinvierte el ingreso en el activo y toma una posición corta en el forward sobre una unidad. En $T$, el arbitrajista entrega una unidad por $F_0$ y devuelve $S_0 e^{(r - q)T}$, con un beneficio de
+
+$$
+F_0 - S_0 e^{(r - q)T} > 0
+$$
+
+Si $F_0 < S_0 e^{(r - q)T}$, el forward está infravalorado. Un arbitrajista vende en corto $e^{-qT}$ unidades del activo, invierte $S_0 e^{-qT}$ al tipo $r$ y toma una posición larga en el forward sobre una unidad. El arbitrajista paga el ingreso que se debe al prestamista vendiendo en corto más cantidad del activo, de modo que la posición corta crece hasta una unidad en $T$. En $T$, el arbitrajista recibe $S_0 e^{(r - q)T}$, compra una unidad por $F_0$ y se la devuelve al prestamista, con un beneficio de
+
+$$
+S_0 e^{(r - q)T} - F_0 > 0
+$$
+
+Los arbitrajistas explotan cualquiera de las dos diferencias hasta que sus operaciones llevan $F_0$ de vuelta a $S_0 e^{(r - q)T}$.
+
+## Valoración de un forward
+
+Al inicio de un forward no se intercambia dinero, así que el precio de entrega $K$ es igual al precio forward de ese día y el contrato vale cero. Más tarde, $K$ permanece fijo mientras el precio forward $F_0$ para la misma fecha de entrega cambia, así que el contrato gana o pierde valor. Aquí $T$ es el tiempo que queda hasta la entrega.
+
+Para hallar el valor $f$ de un forward largo con precio de entrega $K$, consideremos una cartera formada por este contrato y un nuevo forward corto al precio forward de hoy $F_0$. Entrar en el nuevo forward corto no cuesta nada. Con $S_T$ como precio spot en $T$, los payoffs son los siguientes.
+
+| Posición | Valor hoy | Payoff en $T$ |
+| --- | --- | --- |
+| Forward largo a $K$ | $f$ | $S_T - K$ |
+| Forward corto a $F_0$ | $0$ | $F_0 - S_T$ |
+| Cartera | $f$ | $F_0 - K$ |
+
+La cartera paga $F_0 - K$ sea cual sea $S_T$, así que, en ausencia de arbitraje, vale el valor actual de ese importe. Por tanto, el valor de un forward largo es
+
+$$
+f_{\text{long}} = (F_0 - K) e^{-rT}
+$$
+
+y, con las posiciones opuestas, el valor de un forward corto es
+
+$$
+f_{\text{short}} = (K - F_0) e^{-rT}
+$$
+
+{/* GRAFICO: ForwardValue */}
+
+Al inicio $K = F_0$, así que ambos valores son cero. Estas fórmulas valen para los tres tipos de activo de inversión. La tabla siguiente sustituye $F_0$ en cada caso y da los valores para activos sin ingresos, con ingresos conocidos y con rentabilidad conocida.
+
+| Activo | $f_{\text{long}}$ | $f_{\text{short}}$ |
+| --- | --- | --- |
+| Sin ingresos | $S_0 - K e^{-rT}$ | $K e^{-rT} - S_0$ |
+| Ingresos conocidos $I$ | $S_0 - I - K e^{-rT}$ | $K e^{-rT} - S_0 + I$ |
+| Rentabilidad conocida $q$ | $S_0 e^{-qT} - K e^{-rT}$ | $K e^{-rT} - S_0 e^{-qT}$ |
+
+Un forward solo carece de valor cuando $K = F_0$, como al inicio. Más tarde, $F_0$ se aleja de $K$ a medida que cambian el precio spot, los tipos de interés, el ingreso o la rentabilidad esperados y el tiempo hasta la entrega. En los mercados reales, los spreads bid–offer, los costes de transacción, los costes de financiación por encima de $r$ y el riesgo de impago de la contraparte pueden dar un pequeño valor incluso a un contrato nuevo.
+
+## Precios forward frente a precios de futuros
+
+Con un tipo libre de riesgo constante, los precios forward y de futuros para la misma fecha de entrega pueden considerarse iguales. La liquidación diaria solo cambia el momento de los flujos de caja. Con un tipo conocido, un inversor puede escalar cada día la posición en futuros de modo que las ganancias liquidadas, más los intereses, igualen el payoff de un forward al vencimiento. Ambas estrategias no cuestan nada al inicio y pagan lo mismo, así que los dos precios deben ser iguales.
+
+Con tipos de interés impredecibles, el momento importa y los dos precios difieren. Supongamos que el precio del activo tiene una correlación positiva con los tipos de interés. Cuando el precio sube, una posición larga en futuros recibe efectivo de inmediato y lo invierte a un tipo que probablemente es alto. Cuando el precio baja, paga efectivo de inmediato y financia la pérdida a un tipo que probablemente es bajo. Un forward no tiene flujos de caja antes del vencimiento, así que no obtiene ninguno de los dos beneficios. Los inversores prefieren la posición larga en futuros, y el precio de futuros es mayor que el precio forward. Con una correlación negativa, como en los futuros sobre bonos, el precio de futuros es menor.
+
+Para contratos de unos pocos meses la diferencia es insignificante, así que esta nota trata los dos precios como iguales. En los contratos a largo plazo, los intereses de los flujos de caja diarios se capitalizan y la diferencia puede llegar a ser grande. Los impuestos, los costes de transacción, el tratamiento del margen y el menor riesgo de impago de los futuros también pueden hacer que los precios difieran.
+
+## Divisas
+
+Una divisa extranjera es un activo que gana el tipo libre de riesgo extranjero $r_f$, con capitalización continua. Aquí $S_0$ y $F_0$ son los precios spot y forward, en dólares, de una unidad de la divisa extranjera.
+
+Un inversor puede convertir una unidad de la divisa extranjera en dólares en $T$ de dos maneras libres de riesgo.
+
+<Diagrama nombre="interest-rate-parity" alt="Dos caminos para convertir una unidad de divisa extranjera en dólares en el momento T. Primer camino: se invierte al tipo extranjero r_f hasta obtener e^(r_f T) unidades de divisa extranjera en T, y se venden a plazo al precio F_0, lo que da F_0 e^(r_f T) dólares en T. Segundo camino: se convierte hoy al precio spot S_0, lo que da S_0 dólares en el momento 0, y se invierten al tipo en dólares r hasta obtener S_0 e^(rT) dólares en T." />
+
+En ausencia de arbitraje, ambas maneras dan el mismo importe en dólares en $T$.
+
+$$
+F_0 e^{r_f T} = S_0 e^{rT} \quad \Rightarrow \quad F_0 = S_0 e^{(r - r_f)T}
+$$
+
+Este es el precio forward de un activo con rentabilidad conocida con $q = r_f$, y se conoce como paridad de tipos de interés.
+
+## Materias primas
+
+Los costes de almacenamiento actúan como un ingreso negativo, porque los paga el tenedor de la materia prima y no el tenedor del forward.
+
+### Materias primas de inversión
+
+Para una materia prima de inversión como el oro o la plata, con costes de almacenamiento de valor actual conocido $U$ durante la vida del contrato, el precio forward de ausencia de arbitraje es
+
+$$
+F_0 = (S_0 + U) e^{rT}
+$$
+
+Si los costes de almacenamiento son una fracción constante $u$ del precio al año, actúan como una rentabilidad negativa, y
+
+$$
+F_0 = S_0 e^{(r + u)T}
+$$
+
+Si $F_0 > (S_0 + U) e^{rT}$, un arbitrajista pide prestado $S_0 + U$, compra la materia prima, paga los costes de almacenamiento y toma una posición corta en el forward, con un beneficio de $F_0 - (S_0 + U) e^{rT}$ en $T$. Si $F_0 < (S_0 + U) e^{rT}$, un inversor que tiene la materia prima la vende, ahorra los costes de almacenamiento, invierte lo obtenido y toma una posición larga en el forward, con un beneficio de $(S_0 + U) e^{rT} - F_0$ en $T$.
+
+:::note
+**Cobertura del oro y tipo de arrendamiento del oro**
+
+Una empresa minera de oro cubre su producción futura con un contrato forward corto con un banco, que fija el precio que recibirá. El banco cubre su forward largo pidiendo prestado oro a un banco central, vendiéndolo al contado e invirtiendo lo obtenido al tipo $r$. En $T$, el banco compra el oro a la empresa minera por $F_0$ y se lo devuelve al banco central. El banco central cobra intereses por el préstamo, en oro, que se llaman tipo de arrendamiento del oro $\ell$. Como los tenedores de oro pueden ganar $\ell$ prestándolo, el oro actúa como un activo con rentabilidad $\ell$ y, sin tener en cuenta los costes de almacenamiento,
+
+$$
+F_0 = S_0 e^{(r - \ell)T}
+$$
+:::
+
+### Materias primas de consumo
+
+Para una materia prima de consumo como el petróleo o el cobre, solo funciona la primera operación. Esa operación solo requiere pedir prestado, comprar y almacenar la materia prima, y entregarla en $T$, así que cualquiera puede hacerla y $F_0$ no puede mantenerse por encima de $(S_0 + U) e^{rT}$. La segunda operación falla. Los tenedores conservan la materia prima porque piensan usarla de alguna manera, no como inversión, así que son muy reacios a venderla y tomar una posición larga en un forward. Un forward entrega la materia prima solo en $T$ y no puede usarse antes, mientras que la falta de inventario hoy puede detener la producción. Por tanto, el arbitraje da únicamente una cota superior.
+
+$$
+F_0 \le (S_0 + U) e^{rT} \qquad F_0 \le S_0 e^{(r + u)T}
+$$
+
+La diferencia es la rentabilidad de conveniencia $y$, el beneficio de tener la materia prima física, por ejemplo para mantener una fábrica en funcionamiento. Se define por
+
+$$
+F_0 e^{yT} = (S_0 + U) e^{rT} \qquad F_0 = S_0 e^{(r + u - y)T}
+$$
+
+Un $y$ alto significa que los usuarios esperan escasez y valoran la materia prima en mano. Para los activos de inversión $y = 0$.
+
+:::note
+**Oro y cobre**
+
+El oro es un activo de inversión. Muchos inversores lo tienen solo como reserva de valor, así que el arbitraje funciona en ambos sentidos. Si $F_0 > (S_0 + U) e^{rT}$, los operadores compran oro al contado, lo almacenan y venden futuros. Si $F_0 < (S_0 + U) e^{rT}$, los tenedores venden su oro al contado, invierten el efectivo y compran futuros, de modo que recuperan su oro en $T$ por menos. Las dos operaciones fijan $F_0$ exactamente en $(S_0 + U) e^{rT}$, que depende solo de variables observables.
+
+El cobre es un activo de consumo. La mayoría de los tenedores son usuarios que necesitan el metal para producir, así que no venden su inventario para comprar futuros cuando los futuros están baratos. Solo funciona la primera operación, y solo se cumple la cota superior $F_0 \le (S_0 + U) e^{rT}$. La diferencia por debajo de esta cota es la rentabilidad de conveniencia $y$. Nadie puede observar $y$ directamente, así que se deduce de los precios de futuros y no se usa para calcularlos.
+:::
+
+## Coste de carry
+
+El coste de carry $c$ es el coste de almacenamiento más los intereses pagados para financiar el activo, menos el ingreso obtenido con él, todo anual con capitalización continua. Resume todos los casos anteriores en dos fórmulas. Para un activo de inversión
+
+$$
+F_0 = S_0 e^{cT}
+$$
+
+{/* GRAFICO: ForwardPrice */}
+
+y para un activo de consumo
+
+$$
+F_0 = S_0 e^{(c - y)T}
+$$
+
+| Activo | $c$ |
+| --- | --- |
+| Activo sin ingresos | $r$ |
+| Activo con rentabilidad conocida, como un índice bursátil | $r - q$ |
+| Divisa | $r - r_f$ |
+| Materia prima con rentabilidad por ingresos $q$ y coste de almacenamiento $u$ | $r - q + u$ |
+
+## Precios de futuros frente a precios spot esperados
+
+Llamamos precio spot esperado de un activo en un momento futuro determinado a la opinión media del mercado sobre cuál será el precio spot del activo en ese momento.
+
+Cuanto mayor es el riesgo de una inversión, mayor es el rendimiento esperado que exige un inversor. El modelo de valoración de activos de capital (CAPM) muestra que solo uno de los dos tipos de riesgo gana este rendimiento adicional.
+
+- El **riesgo no sistemático** es específico de la inversión. Una cartera bien diversificada casi lo elimina, así que un inversor no exige ningún rendimiento adicional por él.
+- El **riesgo sistemático** proviene de la correlación entre los rendimientos de la inversión y los rendimientos del conjunto del mercado bursátil. La diversificación no puede eliminarlo, así que es el único que fija el rendimiento esperado.
+  - Con un riesgo sistemático positivo, el inversor exige un rendimiento esperado superior al tipo libre de riesgo.
+  - Con un riesgo sistemático negativo, el inversor acepta un rendimiento esperado inferior al tipo libre de riesgo, porque la inversión tiende a ganar cuando el mercado cae y así reduce el riesgo de la cartera.
+
+Consideremos un especulador que toma una posición larga en un contrato de futuros. Ignoremos la liquidación diaria, de modo que el contrato de futuros pueda tratarse como un forward. El especulador coloca el valor actual del precio de futuros en una inversión libre de riesgo y, al mismo tiempo, toma la posición larga en futuros. En la fecha de entrega, lo obtenido de la inversión libre de riesgo compra el activo, que se vende inmediatamente a su precio de mercado. Los flujos de caja del especulador son
+
+| Momento | Flujo de caja |
+| --- | --- |
+| Hoy | $-F_0 e^{-rT}$ |
+| Final del contrato de futuros | $+S_T$ |
+
+donde $F_0$ es el precio de futuros hoy, $S_T$ es el precio del activo en el momento $T$ y $r$ es el tipo de interés libre de riesgo para una inversión de duración $T$.
+
+El tipo de descuento del flujo de caja esperado en el momento $T$ es igual al rendimiento exigido $k$ por el inversor en la inversión. Este $k$ es el rendimiento esperado del activo anual con capitalización continua, así que para un activo sin ingresos $E(S_T) = S_0 e^{kT}$. Es igual a $r$ más una prima por el riesgo sistemático del activo. El valor actual de esta inversión es
+
+$$
+-F_0 e^{-rT} + E(S_T) e^{-kT}
+$$
+
+donde $E(S_T)$ es el precio spot esperado en el momento $T$.
+
+En un mercado competitivo, el precio de toda inversión se ajusta hasta que su valor actual es cero. Si el valor actual fuera positivo, los inversores tomarían posiciones largas en futuros y empujarían $F_0$ al alza. Si fuera negativo, los inversores tomarían posiciones cortas y empujarían $F_0$ a la baja. Por tanto,
+
+$$
+-F_0 e^{-rT} + E(S_T) e^{-kT} = 0
+$$
+
+y
+
+$$
+F_0 = E(S_T) e^{(r - k)T}
+$$
+
+El signo de $r - k$ depende del riesgo sistemático del activo.
+
+| Riesgo sistemático del activo | Rendimiento exigido | Precio de futuros |
+| --- | --- | --- |
+| Positivo | $k > r$ | $F_0 < E(S_T)$ |
+| Cero | $k = r$ | $F_0 = E(S_T)$ |
+| Negativo | $k < r$ | $F_0 > E(S_T)$ |
+
+Con un riesgo sistemático positivo, el especulador largo soporta un riesgo que la diversificación no puede eliminar. Por tanto, el precio de futuros está por debajo del precio spot esperado, de modo que la ganancia esperada $E(S_T) - F_0$ remunera al especulador por este riesgo. Los coberturistas en corto pagan esta prima para transferir su riesgo.
+
+La situación $F_0 < E(S_T)$ se llama **normal backwardation**, y $F_0 > E(S_T)$ se llama **contango**. Aquí los dos términos comparan el precio de futuros con el precio spot esperado, no con el precio spot de hoy como en [Estrategias de cobertura con futuros](/cobertura-con-futuros/).

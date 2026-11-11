@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 320" font-size="14">
+<defs>
+<marker id="irp-flecha-main" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--g-main)"/></marker>
+<marker id="irp-flecha-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--g-b)"/></marker>
+</defs>
+<rect x="110" y="10" width="240" height="54" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<text x="230" y="33" text-anchor="middle">1 unidad de divisa extranjera</text>
+<text x="230" y="53" text-anchor="middle">en el momento 0</text>
+
+<path d="M230,64 V92 H115 V128" fill="none" stroke="var(--g-main)" stroke-width="1.5" marker-end="url(#irp-flecha-main)"/>
+<text x="125" y="116">invierte a r<tspan dy="4" font-size="10">f</tspan></text>
+<path d="M230,64 V92 H345 V128" fill="none" stroke="var(--g-b)" stroke-width="1.5" marker-end="url(#irp-flecha-b)"/>
+<text x="355" y="116">convierte a S<tspan dy="4" font-size="10">0</tspan></text>
+
+<rect x="10" y="130" width="210" height="54" rx="6" fill="none" stroke="var(--g-main)" stroke-width="1.5"/>
+<text x="115" y="153" text-anchor="middle">e<tspan dy="-6" font-size="10">r</tspan><tspan dy="4" font-size="8">f</tspan><tspan dy="-4" font-size="10">T</tspan><tspan dy="6"> unidades de divisa</tspan></text>
+<text x="115" y="173" text-anchor="middle">extranjera en el momento T</text>
+<rect x="240" y="130" width="210" height="54" rx="6" fill="none" stroke="var(--g-b)" stroke-width="1.5"/>
+<text x="345" y="153" text-anchor="middle">S<tspan dy="4" font-size="10">0</tspan><tspan dy="-4"> dólares</tspan></text>
+<text x="345" y="173" text-anchor="middle">en el momento 0</text>
+
+<path d="M115,184 V248" fill="none" stroke="var(--g-main)" stroke-width="1.5" marker-end="url(#irp-flecha-main)"/>
+<text x="125" y="220">vende a plazo a F<tspan dy="4" font-size="10">0</tspan></text>
+<path d="M345,184 V248" fill="none" stroke="var(--g-b)" stroke-width="1.5" marker-end="url(#irp-flecha-b)"/>
+<text x="355" y="220">invierte a r</text>
+
+<rect x="10" y="250" width="210" height="54" rx="6" fill="none" stroke="var(--g-main)" stroke-width="1.5"/>
+<text x="115" y="273" text-anchor="middle">F<tspan dy="4" font-size="10">0</tspan><tspan dy="-4"> e</tspan><tspan dy="-6" font-size="10">r</tspan><tspan dy="4" font-size="8">f</tspan><tspan dy="-4" font-size="10">T</tspan><tspan dy="6"> dólares</tspan></text>
+<text x="115" y="293" text-anchor="middle">en el momento T</text>
+<rect x="240" y="250" width="210" height="54" rx="6" fill="none" stroke="var(--g-b)" stroke-width="1.5"/>
+<text x="345" y="273" text-anchor="middle">S<tspan dy="4" font-size="10">0</tspan><tspan dy="-4"> e</tspan><tspan dy="-6" font-size="10">rT</tspan><tspan dy="6"> dólares</tspan></text>
+<text x="345" y="293" text-anchor="middle">en el momento T</text>
+</svg>
