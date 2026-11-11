@@ -8,6 +8,7 @@ banner:
 {/* Fuente: 07-fras-and-interest-rate-futures.md @ 627bb65c932601a19f45d2d83c7b9f99169740dd */}
 
 import Diagrama from "../../components/Diagrama.astro";
+import FraPayoff from "../../components/graficos/FraPayoff.tsx";
 
 ## Forward rate agreements
 
@@ -33,7 +34,7 @@ $$
 
 a los 2.25 años. En la práctica, el LIBOR se conoce en el año 2, así que el pago se hace a los 2 años y es $125{,}000 / (1 + 0.035 \times 0.25) = \text{\textdollar}123{,}916$.
 
-{/* GRAFICO: FraPayoff */}
+<FraPayoff client:visible />
 
 ### Valoración
 
