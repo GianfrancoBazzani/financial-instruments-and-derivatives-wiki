@@ -41,3 +41,49 @@ En la primera mención de cada página se añade entre paréntesis el significad
 | discount factor | factor de descuento |
 | convexity | convexidad |
 | duration | duración |
+
+## Términos de la página 00 (renta fija)
+
+| English | Español |
+| --- | --- |
+| fixed-income security | valor de renta fija |
+| principal | principal |
+| face value | valor nominal |
+| maturity / time to maturity | vencimiento / plazo hasta el vencimiento |
+| notes (heading) | notas |
+| bills (heading) | letras; Treasury bill → letra del Tesoro |
+| CD (certificate of deposit) | CD (certificado de depósito) |
+| demand deposit | depósito a la vista |
+| negotiable CD / secondary market | CD negociable / mercado secundario |
+| cash flow | flujo de caja |
+| present value | valor actual |
+| yield to maturity (YTM) | rentabilidad al vencimiento (TIR) |
+| internal rate of return | tasa interna de retorno (TIR) |
+| compounding / continuous compounding | capitalización / capitalización continua |
+| discount rate (bills) | tipo de descuento |
+| dirty price / full price | precio sucio / precio completo |
+| clean price | precio limpio |
+| accrued interest | cupón corrido |
+| quote / quoted price / cash price | cotización / precio cotizado / precio en efectivo |
+| day count convention | convención de cómputo de días |
+| money market | mercado monetario |
+| commercial paper | pagarés de empresa |
+| basis point (bp) | punto básico (pb) |
+| Macaulay duration | duración de Macaulay |
+| modified duration | duración modificada |
+| money duration / dollar duration | duración monetaria / duración en dólares |
+| key rate duration | duración por tipo clave |
+| key rates | tipos clave |
+| yield curve | curva de tipos |
+| spot curve | curva spot |
+| parallel shift | desplazamiento paralelo |
+| triangular shift | desplazamiento triangular |
+| immunization | inmunización |
+| callable bond | bono rescatable |
+| mortgage-backed securities | bonos de titulización hipotecaria |
+| profit and loss (PnL) | pérdidas y ganancias (PnL) |
+| zero-coupon bond | bono cupón cero |
+| long position | posición larga |
+| par (price of 100) | la par |
+| saw-tooth | diente de sierra |
+| Taylor polynomial | polinomio de Taylor |

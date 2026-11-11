@@ -1,0 +1,800 @@
+---
+title: Instrumentos de renta fija
+description: Bonos, letras y CDs, valoración por descuento de flujos, rentabilidad, duración, DV01, convexidad y duración por tipo clave.
+banner:
+  content: "Traducción pendiente de revisión"
+---
+
+{/* Fuente: 00-fixed-income-securities.md @ 627bb65c932601a19f45d2d83c7b9f99169740dd */}
+
+## Instrumentos básicos de renta fija
+
+### Bonos
+
+- Un plazo hasta el vencimiento de más de 1 año (más de 10 años para los bonos del Tesoro de EE. UU.)
+- Pagos periódicos de intereses (cupones)
+- El principal se devuelve al vencimiento (el importe prestado)
+- Por ejemplo, un bono del Estado con un cupón del 5% y un vencimiento a 30 años
+
+Un bono es un préstamo que un inversor concede a un emisor de bonos (por ejemplo, un gobierno o una empresa). El emisor recibe el principal hoy y promete devolverlo en la fecha de vencimiento. A cambio, el emisor paga un importe fijo de intereses, el cupón, a intervalos regulares (por ejemplo, cada 3 meses, 6 meses o 1 año) hasta el vencimiento. El tipo del cupón y la fecha de vencimiento se fijan cuando se emite el bono. El precio de mercado del bono puede cambiar si cambian los tipos de interés o la calidad crediticia del emisor. El inversor conoce de antemano los flujos de caja futuros, y por eso un bono es un valor de renta fija.
+
+Los bonos también pueden negociarse públicamente. Algunos son muy líquidos y cambian de manos todos los días en el mercado abierto. La idea de fondo es que el inversor presta dinero al emisor, pero no tiene que mantener el préstamo hasta el vencimiento. El inversor puede vender el bono a otro inversor, que entonces recibe los cupones restantes y el principal al vencimiento.
+
+### Notas
+
+Las notas son bonos con un plazo hasta el vencimiento de entre 1 y 10 años. El término se usa sobre todo para la deuda pública (por ejemplo, las notas del Tesoro de EE. UU.). En el mercado del Tesoro de EE. UU., el nombre "bono" se reserva para vencimientos de más de 10 años. La mecánica de una nota es la misma que la de un bono, con pagos periódicos de cupones y la devolución del principal al vencimiento.
+
+### Letras
+
+Las letras tienen un plazo corto hasta el vencimiento (1 año o menos). Como el vencimiento es tan corto, los pagos periódicos de cupones tienen poco sentido, así que las letras no pagan cupones. En su lugar, el inversor compra la letra con descuento sobre su valor nominal y recibe el valor nominal completo al vencimiento. La diferencia entre los dos importes es el interés. Por este motivo, podemos valorar una letra directamente con un factor de descuento. El precio es el valor nominal descontado desde la fecha de vencimiento hasta hoy.
+
+Las letras con vencimientos muy cortos (por ejemplo, 1 mes o 90 días) son muy habituales.
+
+### CDs (certificados de depósito)
+
+Los depósitos normalmente son exigibles a la vista, lo que significa que el cliente puede retirar el dinero en cualquier momento, sin previo aviso. Como el dinero puede retirarse en cualquier instante, un depósito a la vista tiene una duración muy corta, cercana a cero, y su valor no es sensible a los cambios en los tipos de interés.
+
+Un certificado de depósito (CD) es distinto. El cliente se compromete a dejar un importe fijo en el banco hasta una fecha de vencimiento (por ejemplo, 3 meses, 6 meses o 1 año). A cambio, el banco paga un tipo de interés fijo, normalmente más alto que el de un depósito a la vista. Si el cliente retira el dinero antes del vencimiento, el banco aplica una penalización. Como los flujos de caja están fijados de antemano, un CD es un instrumento de renta fija, igual que un bono o una letra.
+
+El principal problema de un CD es su liquidez limitada. A diferencia de los bonos y las letras, un CD es un contrato entre el cliente y un solo banco, y no existe un mercado donde el cliente pueda revender fácilmente esta deuda a otro inversor. La única forma de recuperar el dinero antes del vencimiento es pagar la penalización al banco. Solo los CDs grandes emitidos a instituciones (CDs negociables) pueden venderse en un mercado secundario.
+
+## Valoración de un valor de renta fija
+
+El precio de un valor de renta fija es el valor actual de todos los flujos de caja que el valor paga en el futuro. Debemos descontar cada flujo de caja hasta hoy, y el tamaño del descuento depende de dos cosas: la rentabilidad y el momento en que llega el flujo de caja. El precio es la suma de todos estos flujos de caja descontados.
+
+$$
+P=\sum_{t=1}^{n} \frac{CF_t}{(1+y)^t}
+$$
+
+- $P$ es el precio del valor hoy.
+- $t$ es el momento de cada flujo de caja, en años.
+- $n$ es el número de flujos de caja.
+- $CF_t$ es el flujo de caja pagado en el momento $t$ (un cupón, o el último cupón más el principal al vencimiento).
+- $y$ es la rentabilidad al vencimiento (TIR), es decir, el tipo de descuento que el mercado aplica al valor.
+
+El término $1/(1+y)^t$ es el factor de descuento. Convierte una unidad de dinero pagada en el momento $t$ en dinero de hoy. Dos efectos controlan su tamaño.
+
+- La rentabilidad. Una rentabilidad alta da un factor de descuento pequeño, así que el precio es bajo. Una rentabilidad baja da un factor de descuento grande, así que el precio es alto. Por eso el precio de un valor de renta fija se mueve en sentido contrario a la rentabilidad.
+- El tiempo. El exponente $t$ crece con el tiempo que falta para el flujo de caja, así que un flujo de caja lejano recibe un descuento más fuerte que un flujo de caja cercano del mismo tamaño. Un flujo de caja en el año 10 contribuye mucho menos al precio que el mismo flujo de caja en el año 1.
+
+{/* GRAFICO: PriceYield */}
+
+La rentabilidad $y$ es el único tipo que hace que la suma de los flujos de caja descontados sea igual al precio de mercado. Es, por tanto, la tasa interna de retorno (TIR) del valor. Si el inversor compra al precio $P$, mantiene el valor hasta el vencimiento y reinvierte cada cupón al tipo $y$, el inversor gana exactamente $y$ al año.
+
+Con capitalización continua, el factor de descuento de cada flujo de caja es $e^{-y t}$, y el precio es
+
+$$
+P=\sum_{t=1}^{n} CF_t e^{-y t}
+$$
+
+### Rentabilidad
+
+La rentabilidad de un valor de renta fija es el único tipo de descuento que da un precio igual al precio de mercado, cuando se aplica a todos los flujos de caja del valor.
+
+**Ejemplo**
+
+Un bono tiene un principal de 100 y un vencimiento de 2 años. Paga un cupón del 5% anual en dos partes de 2.5 cada seis meses. El precio de mercado del bono es 97.50. Si $y$ es la rentabilidad del bono con capitalización continua, el mismo tipo $y$ descuenta todos los flujos de caja.
+
+$$
+2.5 e^{-y \cdot 0.5} + 2.5 e^{-y \cdot 1.0} + 2.5 e^{-y \cdot 1.5} + 102.5 e^{-y \cdot 2.0} = 97.50
+$$
+
+No existe una fórmula cerrada para $y$, así que debemos resolver la ecuación con un método numérico, como el de prueba y error o el de Newton-Raphson. Un tipo del 6% da un precio de 97.97, que es demasiado alto, y un tipo del 7% da un precio de 96.11, que es demasiado bajo. Así pues, $y$ está entre el 6% y el 7%, y el método numérico da
+
+$$
+y = 0.0625 \quad (6.25\%)
+$$
+
+### Precios limpio y sucio
+
+Para un valor de renta fija que paga cupones, definimos el **precio sucio**, o **precio completo**, como el precio $P_{dirty}$. Es el **importe efectivo que realmente se intercambian comprador y vendedor cuando se compra el bono**. Entre dos fechas de cupón, los momentos $t$ no son años enteros; por ejemplo, 3 meses después del último cupón de un bono anual, los flujos de caja llegan en $t = 0.75, 1.75, \dots$
+
+El **precio limpio** es el precio sucio menos el **cupón corrido** ($AI$, del inglés _accrued interest_), la parte del próximo cupón que el vendedor ha devengado desde la fecha del último cupón hasta la fecha de la venta. Así, el cupón corrido crece con el tiempo. El importe efectivo intercambiado es el precio limpio más el cupón corrido, es decir, el precio sucio, porque el comprador recibe el cupón siguiente completo. El precio limpio es solo la cotización.
+
+$$
+P_{clean} = P_{dirty} - AI
+$$
+
+$$
+AI = \frac{\text{cupón anual}}{f} \times \frac{\text{tiempo desde el último cupón}}{\text{tiempo entre dos cupones}} = \text{cupón anual} \times \text{años desde el último cupón}
+$$
+
+Aquí $f$ es la frecuencia de pago (1, 2 o 4 cupones en un año), así que el cupón anual dividido entre $f$ es un cupón. Medida en años, la frecuencia se cancela, porque un cupón se devenga en $\frac{1}{f}$ años. La convención de cómputo de días del valor fija cómo se cuenta el tiempo (véase [Convenciones de cómputo de días](#convenciones-de-cómputo-de-días)).
+
+Para un bono anual ($f = 1$) con un cupón de 5, el cupón corrido 3 meses después del último cupón es $AI = 5 \times \frac{3}{12} = 1.25$. Los otros 9 meses, hasta el próximo cupón, pertenecen al comprador.
+
+El gráfico muestra, por defecto, un bono a 10 años con un cupón del 3%, pagado en dos partes de 1.5 cada seis meses, y una rentabilidad constante del 5%.
+
+{/* GRAFICO: CleanDirtyPrice */}
+
+- El precio sucio dibuja un **diente de sierra**. Sube con el cupón corrido y baja el importe del cupón en cada fecha de cupón. Esta caída **no es una pérdida**, porque el dinero pasa del precio a la caja del titular.
+- El precio limpio sube **suavemente** hacia la par. Se mantiene por debajo de 100, porque el cupón del 3% es menor que la rentabilidad del 5%. Su variación **no es la rentabilidad obtenida**, porque no incluye el cupón corrido.
+
+**Por qué el mercado cotiza el precio limpio**
+
+El cupón corrido crece linealmente y vuelve a cero en la fecha del cupón, así que absorbe el salto del precio sucio. El precio limpio se mantiene continuo, de modo que permite comparar los precios de distintos valores de renta fija, también cuando sus calendarios de cupones son diferentes. Las pantallas, las mesas de contratación y los futuros cotizan el precio limpio. La liquidación y la rentabilidad obtenida usan siempre el precio sucio.
+
+### Convenciones de cómputo de días
+
+El interés de un valor de renta fija se devenga día a día. Para calcular el interés entre dos fechas, debemos convertir el número de días en una fracción de año. La **convención de cómputo de días** del valor fija esta regla.
+
+$$
+\text{interés} = \text{valor nominal} \times \text{tipo anual} \times \frac{\text{días del periodo}}{\text{días del año}}
+$$
+
+Cada convención fija cómo contar los días del periodo y los días del año. En Estados Unidos, el mercado usa tres convenciones.
+
+**1. Actual/Actual**
+
+Los días del periodo son los días naturales reales. Con $f$ cupones al año, los días del año son $f$ veces los días reales del periodo del cupón. Así, el interés es
+
+$$
+\text{interés} = \frac{\text{cupón anual}}{f} \times \frac{\text{días reales desde el último cupón}}{\text{días reales entre los dos cupones}}
+$$
+
+Los bonos y las notas del Tesoro de EE. UU. usan esta convención. Los años bisiestos y los meses de distinta duración quedan incluidos automáticamente, porque la convención cuenta los días reales.
+
+**2. 30/360**
+
+Cada mes tiene 30 días y el año tiene 360 días. Entre la fecha $D_1/M_1/Y_1$ y la fecha $D_2/M_2/Y_2$ (día, mes, año), el número de días es
+
+$$
+\text{días} = 360 (Y_2 - Y_1) + 30 (M_2 - M_1) + (D_2 - D_1)
+$$
+
+Si $D_1$ es el día 31, pasa a ser el 30. Si $D_2$ es el día 31 y $D_1$ es el 30 o el 31, $D_2$ también pasa a ser el 30. Algunas variantes de EE. UU. tienen además casos especiales para el último día de febrero. Los bonos corporativos, los bonos municipales y los bonos de agencias de EE. UU. usan esta convención. El cálculo es sencillo, porque cada mes completo da el mismo interés.
+
+**3. Actual/360**
+
+Los días del periodo son los días naturales reales, pero el año tiene 360 días. Las letras del Tesoro de EE. UU. y la mayoría de los instrumentos del mercado monetario usan esta convención, por ejemplo los pagarés de empresa, los depósitos y los tipos a un día. Un año completo de 365 días da el interés de $\frac{365}{360}$ años, así que el interés es ligeramente superior al tipo anual. El [tipo de descuento](#tipo-de-descuento) de una letra usa esta convención.
+
+### Tipo de descuento
+
+Algunos instrumentos, como las [letras](#letras), no pagan cupones. Solo pagan el valor nominal al vencimiento. El interés ganado es el valor nominal menos el precio. El mercado suele cotizar estos instrumentos con un **tipo de descuento**. El tipo de descuento es el interés ganado como porcentaje del **valor nominal final**, no como porcentaje del precio inicial pagado por el instrumento. Además, usa un año de 360 días.
+
+Por ejemplo, si la cotización de una letra del Tesoro a 91 días es 8, el interés ganado es el 8% del valor nominal por cada 360 días. Con un valor nominal de 100, el interés ganado durante los 91 días de vida de la letra es
+
+$$
+100 \times 0.08 \times \frac{91}{360} = 2.022
+$$
+
+Así pues, el precio en efectivo de la letra es $100 - 2.022 = 97.978$.
+
+En general, para un valor nominal de 100, la relación entre el precio cotizado y el precio en efectivo de una letra del Tesoro en Estados Unidos es
+
+$$
+P = \frac{360}{n}(100 - Y)
+$$
+
+o, de forma equivalente,
+
+$$
+Y = 100 - \frac{n}{360}P
+$$
+
+- $P$ es el precio cotizado, es decir, el tipo de descuento en porcentaje.
+- $Y$ es el precio en efectivo, el precio que paga el comprador por un valor nominal de 100.
+- $n$ es la vida restante de la letra, en días naturales.
+
+El término $100 - Y$ es el interés que gana el titular hasta el vencimiento. El factor $\frac{360}{n}$ convierte este interés de $n$ días en un interés de 360 días.
+
+**Ejemplo**
+
+Una letra del Tesoro tiene un valor nominal de 100 y una vida restante de 90 días. El comprador paga un precio en efectivo de 99.
+
+1. El titular paga 99 hoy y recibe 100 dentro de 90 días. El interés ganado durante los 90 días es $100 - 99 = 1$, es decir, el 1% del valor nominal.
+2. Un periodo de 360 días contiene $\frac{360}{90} = 4$ periodos de 90 días.
+3. Por tanto, el interés de 360 días es $1\% \times 4 = 4\%$ del valor nominal.
+
+La fórmula hace los mismos pasos en una sola línea.
+
+$$
+P = \frac{360}{90}(100 - 99) = 4 \times 1 = 4
+$$
+
+Así pues, el mercado cotiza la letra a 4, pero el comprador paga 99. El cálculo también funciona en sentido inverso. A partir de una cotización de 4, el interés de 90 días es $4 \times \frac{90}{360} = 1$, así que el precio en efectivo es $Y = 100 - 1 = 99$.
+
+**Por qué la cotización está anualizada**
+
+El descuento $100 - Y$ depende de dos cosas: el tipo de interés y la vida restante de la letra. Una letra larga tiene un descuento grande y una letra corta tiene un descuento pequeño, incluso cuando las dos letras pagan el mismo tipo. La tabla muestra dos letras que pagan el mismo tipo.
+
+|   Letra   | Precio en efectivo $Y$ | Descuento $100 - Y$ | Precio cotizado $P$ |
+| :------: | :------------: | :----------------: | :--------------: |
+| 30 días  |     99.667     |       0.333        |        4         |
+| 180 días |     98.000     |       2.000        |        4         |
+
+Los descuentos de 0.333 y 2 no muestran que las dos letras paguen el mismo tipo. Los precios cotizados son ambos 4, así que la comparación es inmediata. La anualización aporta dos ventajas más.
+
+- La cotización se mantiene estable en el tiempo. El descuento de una letra disminuye cada día, porque la letra se acerca al vencimiento. Si los tipos no cambian, la cotización anualizada no cambia.
+- La cotización es comparable con otros tipos. Los depósitos, los préstamos y los demás tipos del mercado monetario también son tipos anuales, así que un operador puede comparar una letra con estos instrumentos.
+
+**Por qué 360 días y no 365**
+
+El año de 360 días es una antigua convención del mercado monetario. El número 360 tiene muchos divisores (2, 3, 4, 5, 6, 8, 9, 10, 12 y más), así que se divide fácilmente en meses y trimestres. Esto facilitaba los cálculos a mano antes de los ordenadores. Las letras del Tesoro de EE. UU. y muchos otros instrumentos del mercado monetario siguen usando esta convención.
+
+## Duración de Macaulay
+
+La duración de Macaulay es el tiempo medio ponderado, en años, en que un inversor recibe los flujos de caja de un valor de renta fija. Cada flujo de caja se pondera por su valor actual. La intuición es que es el tiempo medio en que se recupera el dinero invertido. Cada momento cuenta en proporción al dinero, en valor de hoy, que llega en ese momento. Para un valor con $m$ flujos de caja al año, la fórmula es
+
+$$
+D_{Mac}=\frac{1}{P}\sum_{k=1}^{N} t_k \cdot \frac{CF_{t_k}}{\left(1+\frac{y}{m}\right)^{m t_k}}
+$$
+
+- $m$ es la frecuencia de capitalización, el número de flujos de caja al año (por ejemplo, $m = 2$ para cupones semestrales).
+- $t_k = k/m$ es el momento del $k$-ésimo flujo de caja, en años.
+- $N = m T$ es el número de flujos de caja, y $T$ es el vencimiento en años.
+- $CF_{t_k}$ es el flujo de caja pagado en el momento $t_k$ (cupón, o cupón más principal al vencimiento).
+- $P$ es el precio del valor.
+- $y$ es la TIR, cotizada como un tipo anual nominal con $m$ periodos de capitalización al año. Es el tipo de descuento que hace que la suma de los flujos de caja descontados sea igual a $P$.
+
+En el caso particular de un flujo de caja al año ($m = 1$), los momentos son años enteros ($t_k = k$), y la fórmula pasa a ser
+
+$$
+D_{Mac}=\frac{1}{P}\sum_{t=1}^{n} t \cdot \frac{CF_t}{(1+y)^t}
+$$
+
+La fórmula suma todos los flujos de caja, cada uno multiplicado por el momento en que se paga y descontado a la TIR con interés compuesto. Después, la suma se divide entre el precio del valor. La división entre $P$ es lo que convierte la suma en una media. Una media ponderada de los momentos $t$ es la suma de cada $t$ multiplicado por un peso, donde todos los pesos suman 1. En la fórmula, el peso de cada momento $t$ es su flujo de caja descontado dividido entre $P$. La rentabilidad $y$ es el tipo que hace que los flujos de caja descontados sumen el precio.
+
+$$
+\sum_{t=1}^{n} \frac{CF_t}{(1+y)^t} = P
+$$
+
+Así, los pesos suman exactamente 1, y $D_{Mac}$ es una media auténtica de los momentos $t$. Cada momento $t$ cuenta en proporción a la parte del precio que representa su flujo de caja. Un flujo de caja grande o pagado pronto tiene un valor actual grande y acerca la media a su momento. Un flujo de caja pequeño o pagado tarde tiene un valor actual pequeño y acerca menos la media.
+
+Un bono cupón cero es la comprobación más sencilla. Tiene un único flujo de caja al vencimiento, así que ese flujo de caja es todo el precio, su peso es 1 y la duración de Macaulay es igual al vencimiento. Un valor con cupones paga parte del precio antes del vencimiento, así que su duración de Macaulay es más corta que el vencimiento.
+
+Los momentos $t_k$ están siempre en años, así que la duración de Macaulay es un tiempo en años para todas las frecuencias de capitalización. Con capitalización continua ($m \to \infty$), el factor de descuento pasa a ser $e^{-y t_k}$, y la duración de Macaulay es
+
+$$
+D_{Mac}=\frac{1}{P}\sum_{k=1}^{N} t_k \cdot CF_{t_k} e^{-y t_k}
+$$
+
+**Ejemplo**
+
+Un bono tiene un valor nominal de 100 y un vencimiento de 4 años. Paga un cupón anual del 5%. La rentabilidad al vencimiento (TIR) es del 4%.
+
+| Año ($t$) | Flujo de caja ($CF_t$) | Valor actual del flujo de caja ($PV_t$) | $t \times PV_t$ |
+| :--------: | :----------------: | :-------------------------------------: | :--------------: |
+|     1      |         5          |                  4.808                  |      4.808       |
+|     2      |         5          |                  4.623                  |      9.246       |
+|     3      |         5          |                  4.445                  |      13.335      |
+|     4      |        105         |                 89.754                  |     359.016      |
+| **Total**  |                    |                 103.630                 |     386.405      |
+
+Con capitalización anual ($m = 1$), la duración de Macaulay es
+
+$$
+D_{Mac}=\frac{1}{103.630}\left[1 \cdot \frac{5}{1.04} + 2 \cdot \frac{5}{1.04^2} + 3 \cdot \frac{5}{1.04^3} + 4 \cdot \frac{105}{1.04^4}\right]=\frac{386.405}{103.630}=3.73
+$$
+
+Si la rentabilidad del 4% usa capitalización continua, el precio es 103.329 y la duración de Macaulay es
+
+$$
+D_{Mac}=\frac{1}{103.329}\left[1 \cdot 5 e^{-0.04} + 2 \cdot 5 e^{-0.08} + 3 \cdot 5 e^{-0.12} + 4 \cdot 105 e^{-0.16}\right]=\frac{385.239}{103.329}=3.73
+$$
+
+{/* GRAFICO: MacaulayDuration */}
+
+**Ejemplo con flujos de caja semestrales**
+
+El mismo bono paga su cupón del 5% en dos partes de 2.5 cada seis meses ($m = 2$). La TIR es del 4% con capitalización semestral, así que cada periodo tiene un tipo del 2%.
+
+| Momento ($t_k$) | Flujo de caja ($CF_{t_k}$) | Valor actual ($PV_{t_k}$) | $t_k \times PV_{t_k}$ |
+| :----------: | :--------------------: | :------------------------: | :-------------------: |
+|     0.5      |          2.5           |           2.451            |         1.225         |
+|     1.0      |          2.5           |           2.403            |         2.403         |
+|     1.5      |          2.5           |           2.356            |         3.534         |
+|     2.0      |          2.5           |           2.310            |         4.619         |
+|     2.5      |          2.5           |           2.264            |         5.661         |
+|     3.0      |          2.5           |           2.220            |         6.660         |
+|     3.5      |          2.5           |           2.176            |         7.617         |
+|     4.0      |         102.5          |           87.483           |        349.931        |
+|  **Total**   |                        |          103.663           |        381.650        |
+
+Con capitalización semestral ($m = 2$), la duración de Macaulay es
+
+$$
+D_{Mac}=\frac{1}{103.663}\left[\sum_{k=1}^{7} \frac{k}{2} \cdot \frac{2.5}{1.02^{k}} + 4 \cdot \frac{102.5}{1.02^{8}}\right]=\frac{381.650}{103.663}=3.68
+$$
+
+Si la rentabilidad del 4% usa capitalización continua, el precio es 103.512 y la duración de Macaulay es
+
+$$
+D_{Mac}=\frac{1}{103.512}\left[\sum_{k=1}^{7} \frac{k}{2} \cdot 2.5 e^{-0.04 \cdot \frac{k}{2}} + 4 \cdot 102.5 e^{-0.16}\right]=\frac{381.067}{103.512}=3.68
+$$
+
+La duración de Macaulay es más corta que los 3.73 años del bono anual, porque la mitad de cada cupón llega seis meses antes.
+
+## Duración modificada
+
+La duración modificada mide la sensibilidad del precio del valor ante los cambios en los tipos de interés. Cuando la rentabilidad sube, el precio de un valor de renta fija baja. La duración modificada mide cuánto baja el precio. Por ejemplo, una duración modificada de 3.59 significa que el precio baja aproximadamente un 3.59% cuando la rentabilidad sube 1 punto porcentual (por ejemplo, del 4% al 5%). Para un valor con $m$ flujos de caja al año, es la duración de Macaulay dividida entre $\left(1 + \frac{y}{m}\right)$
+
+$$
+D_{Mod}=\frac{D_{Mac}}{1+\frac{y}{m}}
+$$
+
+- $D_{Mac}$ es la duración de Macaulay, en años.
+- $m$ es la frecuencia de capitalización, el número de flujos de caja al año.
+- $y$ es la TIR, cotizada como un tipo anual nominal con $m$ periodos de capitalización al año.
+
+En el caso particular de un flujo de caja al año ($m = 1$), la fórmula pasa a ser
+
+$$
+D_{Mod}=\frac{D_{Mac}}{1+y}
+$$
+
+Con capitalización continua ($m \to \infty$), el término $\frac{y}{m}$ tiende a cero, y la duración modificada es igual a la duración de Macaulay
+
+$$
+D_{Mod}=D_{Mac}
+$$
+
+Con la duración modificada, la variación porcentual del precio ante un cambio pequeño de la rentabilidad es
+
+$$
+\frac{\Delta P}{P}\approx -D_{Mod}\times\Delta y
+$$
+
+- $\Delta y$ es el cambio en la rentabilidad (por ejemplo, $0.01$ para una subida del 4% al 5%).
+- $\Delta P / P$ es la variación porcentual del precio.
+- El signo menos indica que el precio se mueve en sentido contrario a la rentabilidad.
+
+Las dos duraciones miden cosas distintas. La duración de Macaulay es un tiempo, en años. La duración modificada es una sensibilidad del precio a la rentabilidad. La división entre $\left(1 + \frac{y}{m}\right)$ convierte el tiempo en la sensibilidad. Con capitalización continua, el tiempo y la sensibilidad tienen el mismo valor.
+
+:::note
+**¿Por qué es una aproximación?**
+
+La derivación de más abajo da un resultado exacto, $\frac{1}{P}\frac{\mathrm{d}P}{\mathrm{d}y} = -D_{Mod}$, pero solo para un cambio infinitamente pequeño de la rentabilidad. Esta es la pendiente de la curva de precios en la rentabilidad actual. La fórmula anterior sustituye el cambio infinitamente pequeño $\mathrm{d}y$ por un cambio finito $\Delta y$, así que sigue la recta con esa pendiente en lugar de la curva. La curva de precios es convexa (se curva hacia arriba), y la recta queda por debajo de la curva en todas partes salvo en la rentabilidad actual. Para un $\Delta y$ pequeño, la diferencia es despreciable. Para un $\Delta y$ grande, la diferencia crece, y la caída real del precio es menor que la que predice la fórmula. En términos del desarrollo de Taylor, la fórmula conserva solo el término de primer orden y omite el término de convexidad. Véase el [Apéndice 1](#apéndice-1-polinomio-de-taylor-y-la-variación-relativa-del-precio) para ver cómo el polinomio de Taylor da esta aproximación y su error.
+:::
+
+**Ejemplo**
+
+El bono anterior tiene $D_{Mac}=3.73$ e $y=4$%, así que $D_{Mod}=3.73/1.04=3.59$. Si la rentabilidad sube un 1% (del 4% al 5%), el precio baja aproximadamente $\Delta P/P \approx -D_{Mod} \times \Delta y = -3.59 \times 0.01 = -3.59$%. La aproximación es de primer orden. Para cambios grandes en la rentabilidad, la convexidad de la curva de precios hace que la caída real sea menor y la subida real sea mayor.
+
+Con flujos de caja semestrales ($m = 2$), el mismo bono tiene $D_{Mac}=3.68$, así que $D_{Mod}=3.68/1.02=3.61$. Si la rentabilidad del 4% usa capitalización continua, $D_{Mod}=D_{Mac}=3.73$ para el bono anual y $D_{Mod}=D_{Mac}=3.68$ para el bono semestral.
+
+**Derivación**
+
+Para derivar la duración modificada, partimos del precio del valor descontado con interés compuesto.
+
+$$
+P = \sum_{t=1}^{n} \frac{CF_t}{(1+y)^t}
+$$
+
+Derivamos después respecto de la TIR $y$.
+
+$$
+\frac{\mathrm{d} P }{\mathrm{d} y} = \frac{\mathrm{d}}{\mathrm{d} y} \sum_{t=1}^{n} \frac{CF_t}{(1+y)^t} = \frac{\mathrm{d}}{\mathrm{d} y} \sum_{t=1}^{n} CF_t (1+y)^{-t}
+$$
+
+Aplicamos la regla de la cadena.
+
+$$
+\frac{\mathrm{d} f(g(x))}{\mathrm{d} x} = \frac{\mathrm{d} f(g(x))}{\mathrm{d} g(x)} \frac{\mathrm{d} g(x)}{\mathrm{d} x}
+$$
+
+Sustituimos $u = 1 + y$.
+
+$$
+\frac{\mathrm{d}}{\mathrm{d} y} \sum_{t=1}^{n} CF_t (1+y)^{-t} = \left[\frac{\mathrm{d}}{\mathrm{d} u} \sum_{t=1}^{n} CF_t u^{-t}\right] \frac{\mathrm{d} u}{\mathrm{d} y}
+$$
+
+Usamos la regla de la derivada de una suma, la regla del múltiplo constante, la regla de la derivada de una constante y la regla de la derivada de la variable. En estas reglas, $\alpha$ es una constante cualquiera.
+
+$$
+\frac{\mathrm{d} (f(x) + g(x))}{\mathrm{d} x} = \frac{\mathrm{d} f(x)}{\mathrm{d} x} + \frac{\mathrm{d} g(x)}{\mathrm{d} x}
+$$
+
+$$
+\frac{\mathrm{d} (\alpha f(x))}{\mathrm{d} x} = \alpha \frac{\mathrm{d} f(x)}{\mathrm{d} x}
+$$
+
+$$
+\frac{\mathrm{d}\alpha}{\mathrm{d} x} = 0
+$$
+
+$$
+\frac{\mathrm{d}x}{\mathrm{d} x} = 1
+$$
+
+Con estas reglas, la derivada de $u$ respecto de $y$ es 1, así que el factor de la regla de la cadena desaparece.
+
+$$
+\frac{\mathrm{d} u}{\mathrm{d} y} = \frac{\mathrm{d} 1}{\mathrm{d} y} + \frac{\mathrm{d} y}{\mathrm{d} y} = 1
+$$
+
+$$
+\left[\frac{\mathrm{d}}{\mathrm{d} u} \sum_{t=1}^{n} CF_t u^{-t}\right] \frac{\mathrm{d} u}{\mathrm{d} y} = \frac{\mathrm{d}}{\mathrm{d} u} \sum_{t=1}^{n} CF_t u^{-t}
+$$
+
+Aplicamos la regla de la potencia.
+
+$$
+\frac{\mathrm{d} x^n}{\mathrm{d} x} = n x ^{n-1}
+$$
+
+$$
+\frac{\mathrm{d}}{\mathrm{d} u} \sum_{t=1}^{n} CF_t u^{-t} = \sum_{t=1}^{n} - t CF_t u^{-t - 1} = \sum_{t=1}^{n} -t \frac{CF_t}{u^{t + 1}} =  \sum_{t=1}^{n} -t \frac{CF_t}{(1+y)^{t + 1}} = - \frac{1}{1 + y} \sum_{t=1}^{n} t \cdot \frac{CF_t}{(1+y)^t}
+$$
+
+Dividimos los dos lados entre $P$.
+
+$$
+\frac{1}{P} \frac{\mathrm{d} P }{\mathrm{d} y} = - \frac{1}{1 + y} \frac{1}{P} \sum_{t=1}^{n} t \cdot \frac{CF_t}{(1+y)^t} = - \frac{D_{Mac}}{1+y} = -D_{Mod}
+$$
+
+Con $m$ flujos de caja al año, los mismos pasos con $u = 1 + \frac{y}{m}$ dan $\frac{\mathrm{d} u}{\mathrm{d} y} = \frac{1}{m}$. Este factor cancela el $m$ del exponente $-m t_k$.
+
+$$
+\frac{1}{P} \frac{\mathrm{d} P }{\mathrm{d} y} = \frac{1}{P} \sum_{k=1}^{N} CF_{t_k} \left(-m t_k\right) \left(1+\frac{y}{m}\right)^{-m t_k - 1} \frac{1}{m} = - \frac{1}{1 + \frac{y}{m}} \frac{1}{P} \sum_{k=1}^{N} t_k \cdot \frac{CF_{t_k}}{\left(1+\frac{y}{m}\right)^{m t_k}} = - \frac{D_{Mac}}{1+\frac{y}{m}} = -D_{Mod}
+$$
+
+Con capitalización continua, la derivada de $e^{-y t_k}$ es $-t_k e^{-y t_k}$, así que no queda ningún factor.
+
+$$
+\frac{1}{P} \frac{\mathrm{d} P }{\mathrm{d} y} = \frac{1}{P} \sum_{k=1}^{N} -t_k \cdot CF_{t_k} e^{-y t_k} = -D_{Mac} = -D_{Mod}
+$$
+
+## Duración monetaria o duración en dólares
+
+La duración monetaria, o duración en dólares, es la duración modificada multiplicada por el valor completo de la posición. La duración modificada da la sensibilidad como porcentaje del valor. La duración monetaria da la misma sensibilidad como un importe en moneda.
+
+$$
+D_{Money} = D_{Mod} \times \frac{P}{100} \times F
+$$
+
+- $F$ es el valor nominal de la posición.
+- $P$ es el precio completo (sucio) por cada 100 de valor nominal, así que $\frac{P}{100} \times F$ es el valor completo de la posición.
+
+Para 100 de valor nominal ($F = 100$), la fórmula pasa a ser $D_{Money} = D_{Mod} \times P$. El cambio en el valor $V$ de la posición ante un cambio en la rentabilidad es entonces
+
+$$
+\Delta V \approx -D_{Money} \times \Delta y
+$$
+
+La duración monetaria es un importe en moneda, así que la duración monetaria de una cartera es la suma de las de sus posiciones. La duración modificada es un porcentaje, así que no se suma, y la de la cartera es la media ponderada por valor (véase [Duración y convexidad de una cartera](#duración-y-convexidad-de-una-cartera)).
+
+$$
+D_{Money}^{Port} = \sum_i D_{Money,i}
+$$
+
+## DV01
+
+El DV01 (_dollar value of an 01_, valor en dólares de un punto básico) es el cambio en el valor de una posición, con su signo, cuando su rentabilidad sube un punto básico (0.01%, o 0.0001). Una posición larga pierde valor cuando la rentabilidad sube, así que su DV01 es negativo. Algunos textos cambian el signo, de modo que una posición larga tiene un DV01 positivo.
+
+Con $\Delta y = 0.0001$, la fórmula de la duración monetaria da el DV01 de una posición.
+
+$$
+DV01 = -D_{Money} \times 0.0001 = -D_{Mod} \times \frac{P}{100} \times F \times 0.0001
+$$
+
+La duración monetaria da el cambio de valor para un cambio de rentabilidad de 1 (100%), mucho mayor que cualquier movimiento real del mercado. Un punto básico es un movimiento realista, así que los informes de riesgo suelen expresar el riesgo de tipo de interés como un DV01.
+
+Por la misma razón, el DV01 de una cartera es la suma de los DV01 de sus posiciones, cada uno con su signo.
+
+$$
+DV01^{Port} = \sum_i DV01_i
+$$
+
+**Ejemplo**
+
+Para el bono anterior, con un precio de 103.630 y $D_{Mod}=3.5853$, la duración monetaria y el DV01 por cada 100 de valor nominal ($F = 100$) son
+
+$$
+D_{Money} = 3.5853 \times \frac{103.630}{100} \times 100 = 371.54 \qquad DV01 = -371.54 \times 0.0001 = -0.03715
+$$
+
+La revaloración a 3.99% y 4.01% da el mismo valor. Una posición con un valor nominal de $F = 10{,}000{,}000$ tiene una duración monetaria y un DV01 de
+
+$$
+D_{Money} = 3.5853 \times \frac{103.630}{100} \times 10{,}000{,}000 = 37{,}154{,}000 \qquad DV01 = -37{,}154{,}000 \times 0.0001 = -3{,}715
+$$
+
+Si la rentabilidad sube 10 puntos básicos, el valor de la posición cambia aproximadamente $10 \times (-3{,}715) = -37{,}150$ (-37,067 exactamente, por la convexidad).
+
+## Convexidad
+
+Como vimos, la duración modificada es una aproximación lineal. Si el cambio en la rentabilidad es grande, esta aproximación deja de ser fiable, porque la curva de precios es convexa, no una recta. La convexidad es el término de segundo orden que corrige este error.
+
+La convexidad mide la curvatura de la curva precio-rentabilidad. Mejora la aproximación añadiendo un término de segundo orden a la fórmula. La convexidad es la segunda derivada del precio respecto de la rentabilidad, dividida entre el precio. Para un valor con $m$ flujos de caja al año, la fórmula es
+
+$$
+C=\frac{1}{P}\frac{\mathrm{d}^2P}{\mathrm{d}y^2}=\frac{1}{P}\sum_{k=1}^{N} \frac{t_k \left(t_k+\frac{1}{m}\right) \cdot CF_{t_k}}{\left(1+\frac{y}{m}\right)^{m t_k+2}}
+$$
+
+- $m$ es la frecuencia de capitalización, el número de flujos de caja al año.
+- $t_k = k/m$ es el momento del $k$-ésimo flujo de caja, en años.
+- $N = m T$ es el número de flujos de caja, y $T$ es el vencimiento en años.
+- $CF_{t_k}$ es el flujo de caja pagado en el momento $t_k$.
+- $P$ es el precio del valor.
+- $y$ es la TIR, cotizada como un tipo anual nominal con $m$ periodos de capitalización al año.
+
+En el caso particular de un flujo de caja al año ($m = 1$), los momentos son años enteros ($t_k = k$), y la fórmula pasa a ser
+
+$$
+C=\frac{1}{P}\sum_{t=1}^{n} \frac{t(t+1) \cdot CF_t}{(1+y)^{t+2}}
+$$
+
+Con capitalización continua ($m \to \infty$), el término $\frac{1}{m}$ y el término $\frac{y}{m}$ tienden a cero, y la convexidad es la media de los tiempos al cuadrado ponderada por el valor actual
+
+$$
+C=\frac{1}{P}\sum_{k=1}^{N} t_k^2 \cdot CF_{t_k} e^{-y t_k}
+$$
+
+Para un bono cupón cero con vencimiento $T$, la fórmula da $C = \frac{T \left(T + \frac{1}{m}\right)}{\left(1+\frac{y}{m}\right)^2}$, que es $\frac{T(T+1)}{(1+y)^2}$ para $m = 1$ y $T^2$ con capitalización continua.
+
+Con este término, la aproximación de segundo orden de la variación del precio es
+
+$$
+\frac{\Delta P}{P} \approx -D_{Mod} \cdot \Delta y + \frac{1}{2} C \cdot (\Delta y)^2
+$$
+
+:::note
+Esta fórmula es un polinomio de Taylor de segundo orden del precio alrededor de la rentabilidad actual. El término de primer orden es la duración. El término de segundo orden es la convexidad. La fórmula ignora los términos de orden tres y superior, así que sigue siendo una aproximación. Véase el [Apéndice 1](#apéndice-1-polinomio-de-taylor-y-la-variación-relativa-del-precio) para la justificación del polinomio de Taylor y cómo cada término se corresponde con la duración y la convexidad.
+:::
+
+Para un valor de renta fija con flujos de caja fijos, la convexidad es siempre positiva. La convexidad negativa solo puede aparecer cuando los flujos de caja dependen de la rentabilidad, por ejemplo en los bonos rescatables o en los bonos de titulización hipotecaria. La fórmula anterior no se aplica a esos valores, porque trata los $CF_t$ como constantes. Con una convexidad positiva, el resultado real para el titular es siempre mejor que el que predice la aproximación lineal, hagan lo que hagan los tipos de interés. Si los tipos de interés suben, el término de convexidad reduce la caída del precio que calcula la aproximación lineal. Si los tipos de interés bajan, el término de convexidad aumenta la subida del precio que calcula la aproximación lineal.
+
+El efecto de la convexidad es pequeño para cambios pequeños en los tipos de interés. Se vuelve importante para cambios grandes, por ejemplo cuando ha pasado mucho tiempo y los tipos de interés se han alejado mucho de su nivel inicial.
+
+**Ejemplo**
+
+Continuamos con el bono anterior, con $D_{Mod}=3.59$ e $y=4$%. Con capitalización anual, la convexidad del bono es
+
+$$
+C=\frac{1}{103.630}\left[\frac{1 \cdot 2 \cdot 5}{1.04^{3}} + \frac{2 \cdot 3 \cdot 5}{1.04^{4}} + \frac{3 \cdot 4 \cdot 5}{1.04^{5}} + \frac{4 \cdot 5 \cdot 105}{1.04^{6}}\right]=\frac{1743.510}{103.630}=16.82
+$$
+
+Con flujos de caja semestrales ($m = 2$), el mismo bono tiene un precio de 103.663, y la convexidad es
+
+$$
+C=\frac{1}{103.663}\left[\sum_{k=1}^{7} \frac{\frac{k}{2}\left(\frac{k}{2}+\frac{1}{2}\right) \cdot 2.5}{1.02^{k+2}} + \frac{4 \cdot 4.5 \cdot 102.5}{1.02^{10}}\right]=\frac{1604.091}{103.663}=15.47
+$$
+
+Si la rentabilidad del 4% usa capitalización continua, la convexidad es $C=\frac{1494.779}{103.329}=14.47$ para el bono anual y $C=\frac{1475.777}{103.512}=14.26$ para el bono semestral. La convexidad baja cuando $m$ sube, porque el término $t_k \left(t_k + \frac{1}{m}\right)$ tiende a $t_k^2$.
+
+El resto del ejemplo usa el bono anual.
+
+El cambio exacto es el precio del bono con la nueva rentabilidad dividido entre el precio de 103.630, menos 1.
+
+El primer caso es un cambio pequeño, $\Delta y=0.002$.
+
+- **Lineal:** $-D_{Mod}\cdot\Delta y = -3.59\times0.002 = -0.718$%
+- **Término de convexidad:** $\tfrac{1}{2}C\cdot(\Delta y)^2 = \tfrac{1}{2}\times16.82\times0.002^2 = +0.003$%
+- **Segundo orden:** $-0.718 + 0.003 = -0.715$%
+- **Exacto:** $\frac{102.890}{103.630} - 1 = -0.714$%
+
+El segundo caso es un cambio grande, $\Delta y=0.02$.
+
+- **Lineal:** $-D_{Mod}\cdot\Delta y = -3.59\times0.02 = -7.180$%
+- **Término de convexidad:** $\tfrac{1}{2}C\cdot(\Delta y)^2 = \tfrac{1}{2}\times16.82\times0.02^2 = +0.336$%
+- **Segundo orden:** $-7.180 + 0.336 = -6.844$%
+- **Exacto:** $\frac{96.535}{103.630} - 1 = -6.846$%
+
+| Cambio en la rentabilidad | Aproximación lineal | Término de convexidad | Aproximación de segundo orden | Cambio exacto |
+| :-------------: | :------------------: | :------------: | :------------------------: | :----------: |
+|     +0.2%       |       -0.718%        |    +0.003%     |          -0.715%           |   -0.714%    |
+|     +2%         |       -7.180%        |    +0.336%     |          -6.844%           |   -6.846%    |
+
+El término lineal crece en proporción a $\Delta y$. El término de convexidad crece en proporción a $(\Delta y)^2$. El cambio en la rentabilidad es 10 veces mayor, así que el término lineal es 10 veces mayor, pero el término de convexidad es 100 veces mayor. Para el cambio pequeño, la corrección es del 0.003% sobre una caída del 0.718%, y las dos aproximaciones son casi iguales. Para el cambio grande, la corrección es del 0.336% sobre una caída del 7.180%, alrededor del 5% del resultado lineal. La aproximación lineal sobrestima la caída del precio en un 0.334%, pero la aproximación de segundo orden es casi exacta, con -6.844% frente a un cambio exacto de -6.846%. Esta es la razón por la que la convexidad puede ignorarse para cambios pequeños pero no para cambios grandes.
+
+El gráfico de abajo muestra las dos aproximaciones para el mismo bono ($D_{Mod}=3.59$, $C=16.82$): el bono a 4 años con cupón anual del 5% y una rentabilidad del 4%. Por defecto está seleccionado un cambio en la rentabilidad de +2%, y el gráfico muestra la aproximación lineal, la aproximación de segundo orden y el cambio exacto. Cerca de $\Delta y=0$, la recta y la curva son casi iguales. A medida que crece $\Delta y$, la curva se curva hacia arriba y se aleja de la recta. La diferencia entre ellas es el término de convexidad.
+
+{/* GRAFICO: DurationConvexityApprox */}
+
+**Derivación**
+
+La segunda derivada es la derivada de la primera derivada que calculamos antes.
+
+$$
+\frac{\mathrm{d}^2P}{\mathrm{d}y^2}=\frac{\mathrm{d}}{\mathrm{d}y}\sum_{t=1}^{n} -t \frac{CF_t}{(1+y)^{t + 1}}
+$$
+
+Usamos la misma sustitución $u = 1 + y$. La primera derivada en términos de $u$ es
+
+$$
+\frac{\mathrm{d}P}{\mathrm{d}y} = \sum_{t=1}^{n} -t  CF_t  u^{-(t+1)}
+$$
+
+Por la regla de la cadena, y porque $\frac{\mathrm{d}u}{\mathrm{d}y}=1$, la segunda derivada es
+
+$$
+\frac{\mathrm{d}^2P}{\mathrm{d}y^2} = \left[\frac{\mathrm{d}}{\mathrm{d}u}\sum_{t=1}^{n} -t  CF_t  u^{-(t+1)}\right]\frac{\mathrm{d}u}{\mathrm{d}y} = \frac{\mathrm{d}}{\mathrm{d}u}\sum_{t=1}^{n} -t  CF_t  u^{-(t+1)}
+$$
+
+Aplicamos la regla de la potencia.
+
+$$
+\frac{\mathrm{d}}{\mathrm{d}u}\sum_{t=1}^{n} -t  CF_t  u^{-(t+1)} = \sum_{t=1}^{n} (-t) CF_t  \big(-(t+1)\big) u^{-(t+2)} = \sum_{t=1}^{n} t(t+1) CF_t  u^{-(t+2)}
+$$
+
+Deshacemos la sustitución $u = 1 + y$.
+
+$$
+\frac{\mathrm{d}^2P}{\mathrm{d}y^2} = \sum_{t=1}^{n} \frac{t(t+1) CF_t}{(1+y)^{t+2}}
+$$
+
+Por tanto, la convexidad es
+
+$$
+C = \frac{1}{P}\frac{\mathrm{d}^2P}{\mathrm{d}y^2} = \frac{1}{P}\sum_{t=1}^{n} \frac{t(t+1) CF_t}{(1+y)^{t+2}}
+$$
+
+Con $m$ flujos de caja al año, los mismos pasos con $u = 1 + \frac{y}{m}$ dan $\frac{\mathrm{d} u}{\mathrm{d} y} = \frac{1}{m}$. La primera derivada es $-\sum_{k=1}^{N} t_k CF_{t_k} u^{-(m t_k+1)}$. La regla de la potencia da el factor $-(m t_k + 1)$, y la regla de la cadena da el factor $\frac{1}{m}$, así que el producto es $-\left(t_k + \frac{1}{m}\right)$.
+
+$$
+\frac{\mathrm{d}^2P}{\mathrm{d}y^2} = \sum_{k=1}^{N} (-t_k) CF_{t_k} \big(-(m t_k + 1)\big) u^{-(m t_k+2)} \frac{1}{m} = \sum_{k=1}^{N} \frac{t_k \left(t_k + \frac{1}{m}\right) CF_{t_k}}{\left(1+\frac{y}{m}\right)^{m t_k+2}}
+$$
+
+Dividimos entre $P$.
+
+$$
+C = \frac{1}{P}\frac{\mathrm{d}^2P}{\mathrm{d}y^2} = \frac{1}{P}\sum_{k=1}^{N} \frac{t_k \left(t_k+\frac{1}{m}\right) \cdot CF_{t_k}}{\left(1+\frac{y}{m}\right)^{m t_k+2}}
+$$
+
+Con capitalización continua, la segunda derivada de $e^{-y t_k}$ es $t_k^2 e^{-y t_k}$, así que no queda ningún factor.
+
+$$
+C = \frac{1}{P}\sum_{k=1}^{N} t_k^2 \cdot CF_{t_k} e^{-y t_k}
+$$
+
+Todos los términos de la suma son positivos, porque $t$, $CF_t$ y $(1+y)$ son positivos. Esta es la razón por la que la convexidad de un valor de renta fija con flujos de caja fijos y positivos es siempre positiva.
+
+## Duración y convexidad de una cartera
+
+Una cartera de valores de renta fija es un conjunto de flujos de caja en distintos momentos, así que los métodos anteriores se le aplican igual que a un solo activo, con su rentabilidad de flujos de caja (la tasa interna de retorno de todos sus flujos de caja) como rentabilidad. En la práctica, su duración y su convexidad se calculan como las medias ponderadas por valor de las de sus valores, lo que da un resultado cercano, y su duración monetaria es la simple suma de las duraciones monetarias de sus valores.
+
+$$
+D_P = \sum_i w_i D_i \qquad C_P = \sum_i w_i C_i \qquad w_i = \frac{P_i}{\sum_j P_j}
+$$
+
+La media ponderada supone que las rentabilidades de todos los valores cambian aproximadamente en el mismo importe. Cuando sus vencimientos difieren mucho, esto solo se cumple para un desplazamiento paralelo de la curva de tipos.
+
+Una entidad financiera cuyos activos y pasivos tienen el mismo valor actual y la misma duración (**inmunización**) elimina su exposición a los desplazamientos paralelos pequeños de la curva de tipos. Si los valores actuales difieren, debe igualar en su lugar las duraciones monetarias. Sigue expuesta a los desplazamientos grandes, que cubre manteniendo la convexidad de sus activos por encima de la de sus pasivos, y a los desplazamientos no paralelos, que mide la duración por tipo clave que se explica más abajo.
+
+## Interpretación práctica de las duraciones y la convexidad
+
+La duración modificada y la convexidad se usan mucho para evaluar las pérdidas y ganancias (PnL, del inglés _profit and loss_) de una cartera de valores de renta fija ante cambios en los tipos de interés. Aproximan cómo cambia el precio de la cartera cuando se mueven los tipos de interés. La duración y la convexidad de la cartera son las medias ponderadas por valor de las duraciones y convexidades de sus activos. Con estos dos números, la fórmula de dos términos da el cambio en el precio de toda la cartera, sin necesidad de recalcular el valor descontado de todos los flujos de caja de todos los activos. El resultado es una aproximación, y supone que todas las rentabilidades se mueven en el mismo importe (un desplazamiento paralelo de la curva de tipos).
+
+**Factores de sensibilidad**
+
+Tres características de un valor de renta fija determinan lo sensible que es su precio a los cambios en los tipos de interés.
+
+- **Vencimiento:** un vencimiento más largo da un precio más sensible. Los flujos de caja están más lejos, así que un cambio en la rentabilidad los descuenta más.
+- **Cupón:** un cupón más bajo da un precio más sensible. Una parte mayor del precio procede del pago final, así que la duración es más larga. Un bono cupón cero es el más sensible para un vencimiento dado.
+- **Rentabilidad:** una rentabilidad más baja da un precio más sensible. Con una rentabilidad baja, los factores de descuento disminuyen más despacio con el tiempo, así que los flujos de caja tardíos pesan más.
+
+## Duración por tipo clave
+
+La duración y la convexidad nos dan una forma de estimar la sensibilidad de nuestros valores de renta fija ante un cambio en los tipos de interés. Sin embargo, no hemos definido qué cambios de los tipos de interés. Los tipos de interés no son un único número. Forman una curva, con un tipo para cada vencimiento (la curva de tipos). Los tipos en distintos puntos de esta curva pueden moverse de maneras distintas. Por ejemplo, el tipo a 10 años puede subir mientras el tipo a 1 año baja. La duración y la convexidad suponen un desplazamiento paralelo, en el que todos los tipos se mueven en el mismo importe. La duración por tipo clave elimina este supuesto.
+
+La duración por tipo clave mide la sensibilidad del precio de un valor de renta fija ante un cambio en el tipo de un vencimiento concreto, mientras todos los demás tipos de la curva permanecen constantes. Es una construcción teórica. En el mercado, los tipos de vencimientos cercanos rara vez se mueven de forma aislada.
+
+**Cálculo**
+
+La duración por tipo clave para el vencimiento $i$ es
+
+$$
+KRD_i=-\frac{\Delta P/P}{\Delta y_i}
+$$
+
+- $\Delta y_i$ es el cambio en el tipo del vencimiento $i$, mientras todos los demás tipos de la curva permanecen constantes.
+- $\Delta P/P$ es la variación porcentual del precio del valor que produce este cambio en el tipo.
+
+En la práctica, cada duración por tipo clave sale de revalorar sobre una curva spot desplazada.
+
+1. Elegimos los tipos clave $k_1 < \dots < k_n$ (por ejemplo, 2, 5, 10, 30 años) y calculamos $P_0$ sobre la curva spot.
+2. Para cada $k_i$, partimos de la curva original y aplicamos un desplazamiento triangular de $\Delta y$ (normalmente 1 pb). Es plano en $\Delta y$ antes de $k_1$ para el primer tipo clave y después de $k_n$ para el último.
+
+3. Revaloramos con la curva desplazada hacia arriba ($P_{+}$) y hacia abajo ($P_{-}$), lo que requiere $2n+1$ precios en total.
+
+$$
+KRD_i=\frac{P_{-}-P_{+}}{2 P_0 \Delta y}
+$$
+
+Las duraciones por tipo clave de un valor suman su duración modificada. Si todos los tipos se mueven en el mismo importe $\Delta y$, la suma de los efectos de cada tipo clave es el efecto de un desplazamiento paralelo, así que
+
+$$
+\sum_{i} KRD_i = D_{Mod}
+$$
+
+:::note
+**Por qué las duraciones por tipo clave suman la duración**
+
+La igualdad es aproximada por dos motivos. Primero, cada duración por tipo clave se calcula con un desplazamiento finito, así que los términos de segundo orden (convexidad) no se cancelan exactamente. Segundo, las duraciones por tipo clave miden desplazamientos de la curva spot, mientras que la duración modificada mide un desplazamiento de la TIR del valor de renta fija. Por tanto, la suma es la duración efectiva para un desplazamiento paralelo. Para un valor de renta fija simple, este número es muy cercano a la duración modificada, y la mayoría de los textos las tratan como iguales.
+:::
+
+**Por qué es importante**
+
+- **Curva no paralela:** las rentabilidades no se mueven en el mismo importe en todos los vencimientos. La curva puede empinarse, aplanarse o girar. La duración modificada no puede captar estos movimientos.
+- **Riesgo específico:** las duraciones por tipo clave muestran la exposición de la cartera por tramo de la curva. Un gestor puede ver, por ejemplo, que la cartera está expuesta al tipo a 10 años pero no al tipo a 2 años.
+- **Cobertura precisa:** con la exposición por tramo, un gestor puede cubrir cada tramo con un instrumento del mismo vencimiento. La cobertura es más eficaz que una cobertura basada solo en la duración total.
+
+**Ejemplo**
+
+La tabla da las duraciones por tipo clave de un bono a 10 años en tres puntos de la curva de tipos.
+
+| Vencimiento | $KRD_i$ |
+| :------: | :-----: |
+| 2 años  |   0.3   |
+| 5 años  |   2.1   |
+| 10 años |   5.2   |
+
+El bono es más sensible a los cambios en el tipo a 10 años ($KRD=5.2$) y moderadamente sensible a los cambios en el tipo a 5 años ($KRD=2.1$). Es casi insensible al tipo a 2 años ($KRD=0.3$). La suma de las tres duraciones por tipo clave, 7.6, es la duración modificada del bono.
+
+Si el tipo a 10 años sube un 0.5% ($\Delta y_{10}=0.005$) y los demás tipos permanecen constantes, la variación relativa del precio es aproximadamente
+
+$\Delta P/P \approx -KRD_{10}\cdot\Delta y_{10} = -5.2\times0.005 = -0.026$, es decir, una caída del 2.6%.
+
+Para un movimiento no paralelo, sumamos el efecto de cada tipo clave. Si el tipo a 2 años sube un 1%, el tipo a 5 años sube un 0.5% y el tipo a 10 años baja un 0.2%, la variación relativa del precio es aproximadamente
+
+$\Delta P/P \approx -(0.3\times0.01) - (2.1\times0.005) - (5.2\times(-0.002)) = -0.0030 - 0.0105 + 0.0104 = -0.0031$, es decir, una caída del 0.31%.
+
+La duración modificada por sí sola no puede calcular este resultado, porque los tipos no se movieron en el mismo importe.
+
+## Apéndice 1: polinomio de Taylor y la variación relativa del precio
+
+Un polinomio de Taylor sustituye una función complicada por un polinomio simple que se comporta como la función cerca de un punto elegido. En ese punto, el polinomio tiene el mismo valor, la misma pendiente, la misma curvatura, y así sucesivamente, hasta el grado que elijamos. Cuantas más derivadas coinciden, más lejos del punto se mantiene el polinomio cerca de la función.
+
+**Por qué lo necesitamos para el precio de un valor de renta fija**
+
+El precio de cualquier valor de renta fija con flujos de caja fijos es $P(y)=\sum_{t} CF_t (1+y)^{-t}$. La fórmula puede calcularse exactamente para cualquier rentabilidad. La dificultad es la variación del precio. Obsérvese que las derivadas nos dan cambios infinitesimales. Sin embargo, la variación relativa exacta para un movimiento finito de la rentabilidad necesita dos puntos de la curva de precios, que son el precio actual en $y_0$ y el nuevo precio en $y_0+\Delta y$. Por tanto, la variación relativa del precio para una variación concreta de la rentabilidad es
+
+$$
+\begin{aligned}
+\frac{\Delta P}{P}
+&= \frac{P(y_1)-P(y_0)}{P(y_0)} \\
+&= \frac{\displaystyle\sum_{t} CF_t (1+y_1)^{-t} - \displaystyle\sum_{t} CF_t (1+y_0)^{-t}}{\displaystyle\sum_{t} CF_t (1+y_0)^{-t}} \\
+&= \frac{\displaystyle\sum_{t} CF_t (1+y_1)^{-t}}{\displaystyle\sum_{t} CF_t (1+y_0)^{-t}} - 1
+\end{aligned}
+$$
+
+El cambio en la rentabilidad es $\Delta y = y_1 - y_0$, así que $y_1 = y_0 + \Delta y$, y la variación relativa del precio es
+
+$$
+\frac{\Delta P}{P} = \frac{\displaystyle\sum_{t} CF_t (1+y_0+\Delta y)^{-t}}{\displaystyle\sum_{t} CF_t (1+y_0)^{-t}} - 1
+$$
+
+Esta expresión es exacta, pero tiene tres problemas prácticos.
+
+- **No tiene una forma simple en $\Delta y$.** El numerador es una suma de $n$ términos, cada uno con una potencia distinta de $(1+y_0+\Delta y)$. Ninguna factorización elimina la suma, así que la expresión no se reduce a un polinomio corto como $a + b \Delta y + c \Delta y^2$. El denominador también es una suma de potencias, pero no contiene $\Delta y$, porque es el precio actual $P(y_0)$, una única constante.
+- **No separa el valor del choque.** Los flujos de caja $CF_t$, la rentabilidad $y_0$ y el choque $\Delta y$ están mezclados dentro de las mismas potencias. No es posible calcular un número que describa el valor una sola vez y aplicarle después cualquier $\Delta y$. Cada nuevo $\Delta y$ requiere revalorar por completo todos los flujos de caja.
+- **No resume la cartera.** El cambio de una cartera es la suma de los cambios de sus valores, así que es aditivo. Pero no existe un único número que describa la sensibilidad de toda la cartera. Cada valor debe revalorarse por separado y los resultados deben sumarse.
+
+La diferencial $\mathrm{d}P = P'(y) \mathrm{d}y$ es exacta y simple, pero solo para un $\mathrm{d}y$ infinitamente pequeño. El polinomio de Taylor conecta ambas cosas. El punto de desarrollo es la rentabilidad actual $y_0$, así que el polinomio se construye alrededor del precio $P(y_0)$ antes de que cambie el tipo de interés. Expresa el cambio finito con unos pocos números ($D_{Mod}$, $C$) que se calculan una sola vez con la rentabilidad actual, son funciones simples de $\Delta y$ y se agregan en una cartera como medias ponderadas.
+
+El polinomio de Taylor de grado $n$ de una función $f(x)$ centrado en $x=a$ es
+
+$$
+P_{n}(x)=\sum _{k=0}^{n}\frac{f^{(k)}(a)}{k!}(x-a)^{k}
+$$
+
+El factor $1/k!$ aparece porque la derivada $k$-ésima de $(x-a)^k$ es $k!$. Se cancela, así que la derivada $k$-ésima de $P_n$ en $a$ es igual a $f^{(k)}(a)$. Si nos detenemos en el grado $n$, el error es proporcional a $(x-a)^{n+1}$, que es pequeño cuando $x$ está cerca de $a$.
+
+**Aplicación al precio de un valor de renta fija**
+
+Aquí la función es el precio $P(y)$ del valor, el punto es la rentabilidad actual $y_0$, y la distancia al punto es el cambio en la rentabilidad $\Delta y = y - y_0$. El polinomio de Taylor de segundo grado da
+
+$$
+P(y_0+\Delta y) = P(y_1) \approx P(y_0) + P'(y_0) \Delta y + \frac{1}{2}P''(y_0) (\Delta y)^2
+$$
+
+Queremos la variación relativa del precio, no el nuevo precio. Pasamos $P(y_0)$ al lado izquierdo y dividimos entre $P(y_0)$.
+
+$$
+\frac{\Delta P}{P} = \frac{P(y_1)-P(y_0)}{P(y_0)} \approx \frac{P'(y_0)}{P(y_0)} \Delta y + \frac{1}{2} \frac{P''(y_0)}{P(y_0)} (\Delta y)^2
+$$
+
+Los dos cocientes son la duración modificada y la convexidad.
+
+$$
+D_{Mod} = -\frac{P'(y_0)}{P(y_0)} \qquad C = \frac{P''(y_0)}{P(y_0)}
+$$
+
+Así, la variación relativa del precio es
+
+$$
+\frac{\Delta P}{P} \approx -D_{Mod} \Delta y + \frac{1}{2} C (\Delta y)^2
+$$
+
+La fórmula de la [duración modificada](#duración-modificada) conserva solo el término de primer grado. Sigue la recta tangente. La fórmula de la [convexidad](#convexidad) añade el término de segundo grado. Sigue una parábola que se curva como la curva de precios. Los términos omitidos son proporcionales a $(\Delta y)^3$ y superiores. Para un movimiento de la rentabilidad de 100 pb, $(\Delta y)^3 = 10^{-6}$, así que dos términos bastan para los movimientos normales del mercado.
