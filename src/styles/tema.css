@@ -139,3 +139,22 @@ header.header {
   margin: 0.15rem 0 0;
   color: var(--sl-color-gray-2);
 }
+
+/* Diagrama: static SVG inlined by src/components/Diagrama.astro. Inlined markup is not
+   scoped by Astro, so the rules live here. The SVGs take colours from the --g-* tokens. */
+figure.diagrama {
+  margin: 1.5rem 0;
+}
+
+figure.diagrama svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+  color: var(--sl-color-text);
+}
+
+figure.diagrama text {
+  font-family: var(--sl-font);
+  fill: currentColor;
+}

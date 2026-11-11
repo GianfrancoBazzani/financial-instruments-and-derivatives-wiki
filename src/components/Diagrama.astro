@@ -1,0 +1,19 @@
+---
+interface Props {
+  nombre: string;
+  alt: string;
+}
+
+const { nombre, alt } = Astro.props;
+const svgs = import.meta.glob<string>("../assets/diagramas/*.svg", {
+  query: "?raw",
+  import: "default",
+  eager: true,
+});
+const svg = svgs[`../assets/diagramas/${nombre}.svg`];
+if (svg === undefined) {
+  throw new Error(`Diagrama: no existe src/assets/diagramas/${nombre}.svg`);
+}
+---
+
+<figure class="diagrama" role="img" aria-label={alt} set:html={svg} />
