@@ -43,6 +43,17 @@ describe("diagram lint rules", () => {
     expect(themedColours('<svg><path fill="none" stroke="currentColor"/><path fill="var(--g-c)"/></svg>')).toEqual([]);
   });
 
+  test("colours hidden in style, <style>, single quotes, or other attributes are rejected", () => {
+    expect(themedColours('<svg><path style="fill:#fff"/></svg>')).toHaveLength(1);
+    expect(themedColours('<svg><path style="stroke:red"/></svg>')).toHaveLength(1);
+    expect(themedColours("<svg><style>path{fill:#fff}</style></svg>")).toHaveLength(1);
+    expect(themedColours("<svg><path fill='#fff'/></svg>")).toHaveLength(1);
+    expect(themedColours('<svg><stop stop-color="#fff"/></svg>')).toHaveLength(1);
+    expect(themedColours('<svg><feFlood flood-color="red"/></svg>')).toHaveLength(1);
+    expect(themedColours('<svg><g color="red"/></svg>')).toHaveLength(1);
+    expect(themedColours("<svg><path fill='var(--g-b)'/><stop stop-color=\"currentColor\"/></svg>")).toEqual([]);
+  });
+
   test("font-family is rejected", () => {
     expect(noFontFamily('<svg><text font-family="Arial">a</text></svg>')).toHaveLength(1);
     expect(noFontFamily("<svg><text>a</text></svg>")).toEqual([]);

@@ -33,14 +33,20 @@ export const noBackgroundRect: Rule = (svg) => {
   return errors;
 };
 
+const COLOUR_ATTRS = "fill|stroke|stop-color|flood-color|lighting-color|color";
+
 export const themedColours: Rule = (svg) => {
   const errors: string[] = [];
-  for (const m of svg.matchAll(/\b(fill|stroke)\s*=\s*"([^"]*)"/g)) {
-    const v = m[2].trim();
+  for (const m of svg.matchAll(new RegExp(`(?<![\\w-])(${COLOUR_ATTRS})\\s*=\\s*(["'])(.*?)\\2`, "g"))) {
+    const v = m[3].trim();
     if (v !== "none" && v !== "currentColor" && !/^var\(--g-[\w-]+\)$/.test(v)) {
       errors.push(`${m[1]}="${v}" is not none, currentColor, or var(--g-…)`);
     }
   }
+  for (const m of svg.matchAll(/\bstyle\s*=\s*(["'])(.*?)\1/gs)) {
+    if (/fill|stroke|color/i.test(m[2])) errors.push(`style="${m[2]}" sets a colour; use a fill/stroke attribute`);
+  }
+  if (/<style\b/i.test(svg)) errors.push("contains a <style> block");
   return errors;
 };
 
