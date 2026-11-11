@@ -9,13 +9,22 @@ import { useParams } from "./kit/useParams";
 import { widen } from "./shared";
 
 // The upward panel of the source chart: zero rates 1.0% at 1 year and 6.4% at 10 years,
-// that is level 0.4% plus 0.6% per year. Annual coupons and annual compounding.
-const DEFAULTS = { level: 0.004, slope: 0.006, curvature: 0, T: 5 };
+// that is 3.4% at 5 years plus 0.6% per year. Annual coupons and annual compounding.
+const DEFAULTS = { r5: 0.034, slope: 0.006, curvature: 0, T: 5 };
+
+/**
+ * Zero curve r(T) = r5 + slope (T - 5) + curvature (T - 5)^2, which pivots at 5 years, as the
+ * coefficients level + slope' T + curvature T^2 that polyZeroCurve takes:
+ * level = r5 - 5 slope + 25 curvature, slope' = slope - 10 curvature.
+ */
+function pivotedZeroCurve(r5: number, slope: number, curvature: number) {
+  return polyZeroCurve(r5 - 5 * slope + 25 * curvature, slope - 10 * curvature, curvature);
+}
 const MATURITIES = Array.from({ length: 10 }, (_, i) => i + 1);
 
 /** Zero, par, and 1-year forward rates at the maturities 1 to 10, from one zero curve. */
-export function curvesFor(level: number, slope: number, curvature: number) {
-  const zero = polyZeroCurve(level, slope, curvature);
+export function curvesFor(r5: number, slope: number, curvature: number) {
+  const zero = pivotedZeroCurve(r5, slope, curvature);
   const at = (T: number) => ({
     zero: zero(T),
     par: parRate(zero, T, 1, 1),
@@ -27,7 +36,7 @@ export function curvesFor(level: number, slope: number, curvature: number) {
 /** Zero curve, par curve, and 1-year forward curve against the maturity, with a marked maturity. */
 export default function ZeroParForwardCurves() {
   const { p, set, reset } = useParams(DEFAULTS);
-  const { at, points } = curvesFor(p.level, p.slope, p.curvature);
+  const { at, points } = curvesFor(p.r5, p.slope, p.curvature);
   const now = at(p.T);
   const series = (k: "zero" | "par" | "forward") => points.map((q): [number, number] => [q.T, q[k]]);
   const all = points.flatMap((q) => [q.zero, q.par, q.forward]);
@@ -40,7 +49,7 @@ export default function ZeroParForwardCurves() {
       onReset={reset}
       controls={
         <>
-          <Slider symbol={null} label="Nivel de la curva cupón cero" value={p.level} min={0} max={0.1} step={0.001} format={(v) => pct(v, 1)} onChange={(v) => set("level", v)} />
+          <Slider symbol="r(5)" label="Tipo cero a 5 años" value={p.r5} min={0} max={0.1} step={0.001} format={(v) => pct(v, 1)} onChange={(v) => set("r5", v)} />
           <Slider symbol={null} label="Pendiente (por año)" value={p.slope} min={-0.01} max={0.01} step={0.001} format={(v) => pct(v, 1)} onChange={(v) => set("slope", v)} />
           <Slider symbol={null} label="Curvatura (por año²)" value={p.curvature} min={-0.001} max={0.001} step={0.0001} format={(v) => pct(v, 2)} onChange={(v) => set("curvature", v)} />
           <Slider symbol="T" label="Vencimiento marcado" value={p.T} min={1} max={10} step={1} format={(v) => `${num(v, 0)} años`} onChange={(v) => set("T", v)} />
