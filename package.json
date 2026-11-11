@@ -1,0 +1,46 @@
+{
+  "name": "derivados-financieros",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "test": "vitest run",
+    "check:site": "vitest run --config vitest.site.config.ts",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@astrojs/markdown-remark": "^7.3.8",
+    "@astrojs/mdx": "^8.1.5",
+    "@astrojs/react": "^7.1.8",
+    "@astrojs/starlight": "^0.42.10",
+    "@fontsource-variable/source-sans-3": "^5.3.1",
+    "astro": "^7.4.11",
+    "d3-scale": "^4.0.3",
+    "d3-shape": "^3.2.1",
+    "katex": "^0.19.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "rehype-katex": "^7.0.1",
+    "remark-math": "^6.0.0",
+    "sharp": "^0.35.5",
+    "starlight-links-validator": "^0.27.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.0",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.9",
+    "@types/d3-scale": "^4.0.9",
+    "@types/d3-shape": "^3.2.0",
+    "@types/katex": "^0.16.8",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "jsdom": "^31.0.0",
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.0"
+  }
+}
