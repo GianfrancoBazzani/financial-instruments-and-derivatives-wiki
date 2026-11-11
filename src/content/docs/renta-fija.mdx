@@ -10,6 +10,7 @@ banner:
 import PriceYield from "../../components/graficos/PriceYield.tsx";
 import CleanDirtyPrice from "../../components/graficos/CleanDirtyPrice.tsx";
 import MacaulayDuration from "../../components/graficos/MacaulayDuration.tsx";
+import DurationConvexityApprox from "../../components/graficos/DurationConvexityApprox.tsx";
 
 ## Instrumentos básicos de renta fija
 
@@ -584,7 +585,7 @@ El término lineal crece en proporción a $\Delta y$. El término de convexidad 
 
 El gráfico de abajo muestra las dos aproximaciones para el mismo bono ($D_{Mod}=3.59$, $C=16.82$): el bono a 4 años con cupón anual del 5% y una rentabilidad del 4%. Por defecto está seleccionado un cambio en la rentabilidad de +2%, y el gráfico muestra la aproximación lineal, la aproximación de segundo orden y el cambio exacto. Cerca de $\Delta y=0$, la recta y la curva son casi iguales. A medida que crece $\Delta y$, la curva se curva hacia arriba y se aleja de la recta. La diferencia entre ellas es el término de convexidad.
 
-{/* GRAFICO: DurationConvexityApprox */}
+<DurationConvexityApprox client:visible />
 
 **Derivación**
 
