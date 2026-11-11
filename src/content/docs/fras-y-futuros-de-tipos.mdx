@@ -100,7 +100,7 @@ El contrato de futuros sobre notas del Tesoro a 10 años se cotiza con una preci
 Cuando se entrega un bono concreto en un contrato de futuros sobre bonos del CME Group, un parámetro llamado factor de conversión define el precio que recibe la parte con la posición corta por el bono. El precio cotizado aplicable al bono entregado es el producto del factor de conversión por el precio de liquidación más reciente del contrato de futuros. Teniendo en cuenta el cupón corrido, el efectivo que se recibe por cada \$100 de valor nominal del bono entregado es
 
 $$
-(\text{Most recent settlement price} \times \text{Conversion factor}) + \text{Accrued interest}
+(\text{Precio de liquidación más reciente} \times \text{Factor de conversión}) + \text{Cupón corrido}
 $$
 
 Ilustremos esto con el siguiente ejemplo. Cada contrato es para la entrega de bonos por un valor nominal de \$100,000. Supongamos que el precio de liquidación más reciente es 120-00, que el factor de conversión del bono entregado es 1.38 y que el cupón corrido de este bono en el momento de la entrega es de \$3 por cada \$100 de valor nominal. El efectivo que recibe la parte con la posición corta (y que paga la parte con la posición larga) es entonces
@@ -140,19 +140,19 @@ El tipo de interés para un periodo de 3 meses es $\sqrt{1.03} - 1$, es decir, e
 Durante el mes de entrega, se pueden entregar muchos bonos con cupones y vencimientos distintos, y la parte con la posición corta elige cuál entrega. Por cada bono, recibe
 
 $$
-(\text{Most recent settlement price} \times \text{Conversion factor}) + \text{Accrued interest}
+(\text{Precio de liquidación más reciente} \times \text{Factor de conversión}) + \text{Cupón corrido}
 $$
 
 y paga el siguiente importe para comprar el bono.
 
 $$
-\text{Quoted bond price} + \text{Accrued interest}
+\text{Precio cotizado del bono} + \text{Cupón corrido}
 $$
 
 El cupón corrido se cancela, así que el bono más barato de entregar es el que tiene el menor valor de
 
 $$
-\text{Quoted bond price} - (\text{Most recent settlement price} \times \text{Conversion factor})
+\text{Precio cotizado del bono} - (\text{Precio de liquidación más reciente} \times \text{Factor de conversión})
 $$
 
 La parte con la posición corta lo encuentra calculando este valor para cada bono entregable.
@@ -162,7 +162,7 @@ La parte con la posición corta lo encuentra calculando este valor para cada bon
 Este valor es el **basis bruto** (gross basis) del bono, que es la versión del basis para los futuros sobre bonos (véase [Estrategias de cobertura con futuros](/cobertura-con-futuros/)). Antes de la entrega usa el precio de futuros actual, que se convierte en el precio de liquidación más reciente en el momento de la entrega. El factor de conversión pone el precio de futuros en la escala de cada bono.
 
 $$
-\text{Gross basis} = \text{Quoted bond price} - (\text{Futures price} \times \text{Conversion factor})
+\text{Basis bruto} = \text{Precio cotizado del bono} - (\text{Precio de futuros} \times \text{Factor de conversión})
 $$
 
 En la entrega, el arbitraje lleva el basis bruto del bono más barato de entregar a un valor cercano a cero, así que el precio de futuros converge a su precio cotizado dividido entre su factor de conversión. Los demás bonos entregables mantienen un basis bruto positivo.
@@ -170,7 +170,7 @@ En la entrega, el arbitraje lleva el basis bruto del bono más barato de entrega
 Antes de la entrega, el basis bruto también contiene el carry hasta la entrega, que es el ingreso por cupones menos el coste de repo para financiar el bono. El **basis neto** (net basis) lo elimina.
 
 $$
-\text{Net basis} = \text{Gross basis} - (\text{Coupon income} - \text{Repo financing cost})
+\text{Basis neto} = \text{Basis bruto} - (\text{Ingreso por cupones} - \text{Coste de financiación del repo})
 $$
 
 El bono más barato de entregar suele ser el que tiene el menor basis neto.
@@ -222,7 +222,7 @@ El precio de estos futuros es 100 menos el tipo, así que baja cuando sube el ti
 Aunque antes supusimos que la valoración de los forwards y la de los futuros son muy parecidas, cuando los contratos duran más (como regla general, 2 años) el efecto de la convexidad hace que la diferencia entre los futuros y los FRA sea apreciable. El ajuste por convexidad $c$ se hace de modo que
 
 $$
-\text{Forward rate} = \text{Futures rate} - c
+\text{Tipo forward} = \text{Tipo de futuros} - c
 $$
 
 Una razón del ajuste por convexidad es la liquidación diaria, que favorece a la parte corta de un futuro en comparación con el mismo contrato en un FRA. La parte corta gana cuando suben los tipos y la parte larga gana cuando bajan (véase [Futuros Eurodollar y SOFR](#futuros-eurodollar-y-sofr)).

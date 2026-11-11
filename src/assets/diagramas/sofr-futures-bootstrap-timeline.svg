@@ -28,14 +28,14 @@
   <line x1="216" y1="62" x2="216" y2="82"/><line x1="224" y1="62" x2="224" y2="82"/>
   <line x1="232" y1="62" x2="232" y2="82"/><line x1="240" y1="62" x2="240" y2="82"/>
 </g>
-<text x="165" y="55" text-anchor="middle" font-size="13" fill="var(--g-b)">observado, 2%</text>
-<text x="420" y="55" text-anchor="middle" font-size="13" fill="var(--g-b)">aún no observado, R = 2.75%</text>
+<text x="165" y="55" text-anchor="middle" font-size="13">observado, 2%</text>
+<text x="420" y="55" text-anchor="middle" font-size="13">aún no observado, R = 2.75%</text>
 <text x="335" y="102" text-anchor="middle" font-size="13">cotización del futuro, 2.5% para los 3 meses completos</text>
 
 <!-- payment in December -->
 <line x1="590" y1="82" x2="590" y2="44" stroke="var(--g-c)" stroke-width="2.5" marker-end="url(#pay)"/>
-<text x="600" y="56" font-size="13" fill="var(--g-c)">se liquida en diciembre a</text>
-<text x="600" y="72" font-size="13" fill="var(--g-c)">100 − SOFR capitalizado</text>
+<text x="600" y="56" font-size="13">se liquida en diciembre a</text>
+<text x="600" y="72" font-size="13">100 − SOFR capitalizado</text>
 
 <!-- ===== zero rate from today ===== -->
 <text x="20" y="150" font-weight="bold">Tipo cupón cero desde hoy</text>
@@ -43,7 +43,7 @@
   <line x1="250" y1="185" x2="590" y2="185"/>
   <line x1="250" y1="178" x2="250" y2="192"/><line x1="590" y1="178" x2="590" y2="192"/>
 </g>
-<text x="420" y="179" text-anchor="middle" font-size="13" fill="var(--g-b)">R(2 meses) = 2.75%</text>
+<text x="420" y="179" text-anchor="middle" font-size="13">R(2 meses) = 2.75%</text>
 
 <!-- ===== time axis ===== -->
 <line x1="80" y1="225" x2="590" y2="225" stroke="currentColor" stroke-width="2"/>
