@@ -54,6 +54,11 @@ describe("diagram lint rules", () => {
     expect(themedColours("<svg><path fill='var(--g-b)'/><stop stop-color=\"currentColor\"/></svg>")).toEqual([]);
   });
 
+  test("colour values with newlines or surrounding whitespace are trimmed and checked", () => {
+    expect(themedColours('<svg><path fill="\n#fff"/></svg>')).toHaveLength(1);
+    expect(themedColours('<svg><path fill="\n  var(--g-b) \n"/></svg>')).toEqual([]);
+  });
+
   test("font-family is rejected", () => {
     expect(noFontFamily('<svg><text font-family="Arial">a</text></svg>')).toHaveLength(1);
     expect(noFontFamily("<svg><text>a</text></svg>")).toEqual([]);

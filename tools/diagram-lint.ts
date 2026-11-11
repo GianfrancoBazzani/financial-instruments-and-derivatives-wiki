@@ -37,7 +37,7 @@ const COLOUR_ATTRS = "fill|stroke|stop-color|flood-color|lighting-color|color";
 
 export const themedColours: Rule = (svg) => {
   const errors: string[] = [];
-  for (const m of svg.matchAll(new RegExp(`(?<![\\w-])(${COLOUR_ATTRS})\\s*=\\s*(["'])(.*?)\\2`, "g"))) {
+  for (const m of svg.matchAll(new RegExp(`(?<![\\w-])(${COLOUR_ATTRS})\\s*=\\s*(["'])([\\s\\S]*?)\\2`, "g"))) {
     const v = m[3].trim();
     if (v !== "none" && v !== "currentColor" && !/^var\(--g-[\w-]+\)$/.test(v)) {
       errors.push(`${m[1]}="${v}" is not none, currentColor, or var(--g-…)`);
