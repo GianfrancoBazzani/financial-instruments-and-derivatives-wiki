@@ -7,6 +7,8 @@ banner:
 
 {/* Fuente: 00-fixed-income-securities.md @ 627bb65c932601a19f45d2d83c7b9f99169740dd */}
 
+import PriceYield from "../../components/graficos/PriceYield.tsx";
+
 ## Instrumentos básicos de renta fija
 
 ### Bonos
@@ -57,7 +59,7 @@ El término $1/(1+y)^t$ es el factor de descuento. Convierte una unidad de diner
 - La rentabilidad. Una rentabilidad alta da un factor de descuento pequeño, así que el precio es bajo. Una rentabilidad baja da un factor de descuento grande, así que el precio es alto. Por eso el precio de un valor de renta fija se mueve en sentido contrario a la rentabilidad.
 - El tiempo. El exponente $t$ crece con el tiempo que falta para el flujo de caja, así que un flujo de caja lejano recibe un descuento más fuerte que un flujo de caja cercano del mismo tamaño. Un flujo de caja en el año 10 contribuye mucho menos al precio que el mismo flujo de caja en el año 1.
 
-{/* GRAFICO: PriceYield */}
+<PriceYield client:visible />
 
 La rentabilidad $y$ es el único tipo que hace que la suma de los flujos de caja descontados sea igual al precio de mercado. Es, por tanto, la tasa interna de retorno (TIR) del valor. Si el inversor compra al precio $P$, mantiene el valor hasta el vencimiento y reinvierte cada cupón al tipo $y$, el inversor gana exactamente $y$ al año.
 
