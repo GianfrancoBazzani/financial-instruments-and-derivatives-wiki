@@ -279,3 +279,35 @@ En la primera mención de cada página se añade entre paréntesis el significad
 | zero curve | curva cupón cero |
 | thirty-second (de un dólar) | treintaidosavo |
 | invoice price | precio de factura |
+
+## Términos de la página 08 (swaps)
+
+| English | Español |
+| --- | --- |
+| vanilla (swap) | vanilla |
+| interest rate swap (IRS) | swap de tipos de interés (IRS) |
+| overnight indexed swap (OIS) / OIS rate | swap de tipo a un día (overnight indexed swap, OIS) / tipo OIS |
+| leg | pata |
+| payer / receiver | pagador (payer) / receptor (receiver); payer swap → swap pagador |
+| annuity | anualidad |
+| par swap rate / swap rate | tipo swap par / tipo swap |
+| telescoping sum / to telescope | suma telescópica / simplificarse en cadena |
+| floating-rate bond | bono a tipo variable |
+| floating-rate note | nota a tipo variable |
+| Greeks | griegas |
+| basis swap | basis swap |
+| par basis | basis par |
+| cross-currency swap (CCS) | cross-currency swap (CCS, swap de divisas) |
+| FX swap | swap de divisas (foreign exchange, FX) |
+| domestic / foreign currency | divisa nacional / divisa extranjera |
+| spot rate (FX) | tipo de cambio spot |
+| flat (SOFR flat) | sin spread (flat) |
+| constant notional (non-MTM) / resettable notional | nocional constante (sin MTM) / nocional mark-to-market (revisable) |
+| mark-to-market | mark-to-market |
+| asset swap (ASW) / ASW spread | asset swap (ASW) / spread ASW |
+| par / market value asset swap | asset swap a la par / a valor de mercado |
+| negative basis trade | negative basis trade |
+| relative value | valor relativo |
+| confirmation | confirmación |
+| business day convention | convención de día hábil |
+| central counterparty (CCP) | contrapartida central (CCP) |

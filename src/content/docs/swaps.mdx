@@ -1,0 +1,549 @@
+---
+title: Swaps
+description: Swaps de tipos de interés, basis swaps, cross-currency swaps y asset swaps, con su valoración, sus griegas, sus usos y las convenciones de mercado.
+banner:
+  content: "Traducción pendiente de revisión"
+---
+
+{/* Fuente: 08-swaps.md @ 627bb65c932601a19f45d2d83c7b9f99169740dd */}
+
+import Diagrama from "../../components/Diagrama.astro";
+
+Un swap (permuta financiera) es un acuerdo OTC entre dos empresas para intercambiar flujos de caja futuros. Define las fechas de pago y cómo se calcula cada flujo de caja, normalmente a partir del valor futuro de un tipo de interés, un tipo de cambio u otra variable de mercado. Un contrato forward puede verse como un swap simple.
+
+## Swaps de tipos de interés vanilla (IRS)
+
+Un swap de tipos de interés es un swap en el que se intercambian los intereses a un tipo fijo predeterminado, aplicado a un cierto principal, por los intereses a un tipo de referencia variable, aplicado al mismo principal, con intercambios regulares durante un periodo de tiempo acordado. Un IRS tiene dos patas, y cada pata es el flujo de pagos de una de las partes.
+
+Por ejemplo, un swap negociado en el pasado podría intercambiar un interés del 3% sobre un principal de \$100 millones por el LIBOR a tres meses sobre el mismo principal, cada tres meses durante cinco años.
+
+A medida que el LIBOR se abandona, los swaps sobre tipos a un día, llamados **swaps de tipo a un día (overnight indexed swaps, OIS)**, son cada vez más populares. Un OIS de más de un año se divide normalmente en subperiodos de tres meses. Al final de cada subperiodo, el tipo fijo, llamado **tipo OIS**, se intercambia por un tipo de referencia a tres meses capitalizado a partir de los tipos a un día de ese subperiodo. Hoy se negocian OIS de diez años o más. A diferencia del LIBOR prospectivo, que se fijaba al comienzo de cada periodo, este tipo capitalizado es retrospectivo y solo se conoce al final del periodo (véase [FRAs y futuros sobre tipos de interés](/fras-y-futuros-de-tipos/)).
+
+El principal de un IRS nunca se intercambia, y por eso se llama nocional. Un intercambio no cambiaría nada, porque al comienzo y al vencimiento cada parte pagaría y recibiría el mismo importe en la misma divisa, así que los flujos de caja netos se mantienen.
+
+Cada parte recibe su nombre según la pata fija. El **pagador (payer)** paga fijo y recibe variable, gana cuando suben los tipos y permite a un prestatario a tipo variable fijar su coste. El **receptor (receiver)** recibe fijo y paga variable, gana cuando bajan los tipos y permite a un prestatario a tipo fijo pasar su deuda a tipo variable.
+
+### Valoración de un IRS
+
+Un IRS equivale a una cartera de FRAs, uno por cada fecha de pago, en la que cada FRA intercambia el tipo fijo $R_K$ por el tipo variable de su periodo (véase [FRAs y futuros sobre tipos de interés](/fras-y-futuros-de-tipos/)). Cada FRA se valora suponiendo que se realiza su tipo forward $R_{F,i}$ y descontando el flujo de caja resultante, así que el valor del swap es la suma de los valores de los FRAs.
+
+$$
+V_{\text{pagador}} = \sum_{i=1}^{n} L \tau_i (R_{F,i} - R_K) DF(t_i)
+$$
+
+Al separar esta suma en sus términos variable y fijo se obtienen las dos patas. Por tanto, para hallar el valor actual de un swap, descontamos por separado los flujos de caja futuros de cada pata y luego los agregamos.
+
+#### Pata fija
+
+La **anualidad** $A$ es el valor actual de recibir un tipo de una unidad en cada fecha de pago, por unidad de nocional. Aquí $\tau_i$ es la fracción de año del periodo $i$ y $DF(t_i)$ es el factor de descuento de la fecha $t_i$.
+
+$$
+A = \sum_{i=1}^{n} \tau_i DF(t_i)
+$$
+
+$$
+PV_{\text{fijo}} = L R_K A
+$$
+
+La pata fija es solo una serie de cupones, así que la anualidad da el valor actual de todos ellos. $R_K$ es el tipo fijo, que es el mismo para todos los periodos, y $L$ es el nocional.
+
+#### Pata variable
+
+Podemos valorar la pata variable con los tipos forward $R_{F,i}$ que implica la curva de hoy.
+
+$$
+PV_{\text{variable}} = \sum_{i=1}^{n} L \tau_i R_{F,i} DF(t_i)
+$$
+
+El tipo forward del periodo $i$ se define de modo que una inversión hasta $t_{i-1}$, reinvertida al tipo $R_{F,i}$ hasta $t_i$, dé el mismo resultado que una inversión hasta $t_i$ (véase [Curvas de tipos de interés](/curvas-de-tipos/)).
+
+$$
+1 + \tau_i R_{F,i} = \frac{DF(t_{i-1})}{DF(t_i)} \implies \tau_i R_{F,i} DF(t_i) = DF(t_{i-1}) - DF(t_i)
+$$
+
+Si sustituimos esta igualdad en $PV_{\text{variable}}$, la suma se simplifica en cadena (suma telescópica).
+
+$$
+PV_{\text{variable}} = L \sum_{i=1}^{n} \left[ DF(t_{i-1}) - DF(t_i) \right]
+$$
+
+Cada término cancela una parte del siguiente, y solo quedan el primero y el último. Como $t_0$ es hoy, $DF(t_0) = 1$.
+
+$$
+PV_{\text{variable}} = L \left[ DF(t_0) - DF(t_n) \right] = L \left[ 1 - DF(t_n) \right]
+$$
+
+Por tanto, recibir el tipo variable sobre $L$ hasta $t_n$ tiene el mismo valor actual que recibir $L$ hoy y devolverlo en $t_n$. En el resultado no aparece ningún tipo forward, porque todos se cancelan. Este resultado se cumple cuando la misma curva da los tipos forward y los factores de descuento, y cuando el primer periodo empieza hoy.
+
+:::note
+**Dónde se aplica la suma telescópica**
+
+La suma se simplifica en cadena en cualquier swap cuyos tipos forward y factores de descuento provienen de la misma curva. El tipo de tipo variable, por sí solo, no lo decide.
+
+- **OIS (€STR, SOFR).** La suma es exacta cuando el swap se descuenta con la curva de su propio tipo a un día, que es el estándar de mercado para los swaps con colateral.
+- **Swaps LIBOR antes de 2008.** La suma era exacta, porque una sola curva LIBOR daba los tipos forward y los factores de descuento.
+- **Swaps EURIBOR hoy.** La suma no es telescópica. Los tipos forward provienen de la curva EURIBOR y los factores de descuento de la curva €STR, así que $1 + \tau_i R_{F,i} \neq DF(t_{i-1}) / DF(t_i)$ y cada término de $PV_{\text{variable}}$ debe calcularse por separado.
+- **Otras rupturas.** Un spread $s$ sobre la pata variable no es telescópico y añade $L s A$. Un desfase de pago, o una fecha de pago distinta del final del periodo de devengo, también hace que el resultado sea aproximado.
+:::
+
+#### Valor del swap
+
+El pagador recibe la pata variable y paga la pata fija, así que el valor del swap es la diferencia de las dos patas.
+
+$$
+V_{\text{pagador}} = PV_{\text{variable}} - PV_{\text{fijo}} = L \left[ 1 - DF(t_n) \right] - L R_K A
+$$
+
+Si sacamos $L A$ como factor común, el primer término se convierte en el tipo swap par $R_{\text{par}} = \left[ 1 - DF(t_n) \right] / A$ (véase Tipo swap par más abajo).
+
+$$
+V_{\text{pagador}} = L A \left[ \frac{1 - DF(t_n)}{A} - R_K \right] = L A (R_{\text{par}} - R_K) \qquad V_{\text{receptor}} = L A (R_K - R_{\text{par}})
+$$
+
+Así pues, el swap es una **diferencia de tipos** $R_{\text{par}} - R_K$ sobre $L$, recibida en cada fecha de pago y descontada.
+
+### Tipo swap par
+
+El **tipo swap par** $R_{\text{par}}$ es el valor de $R_K$ que hace que el swap valga cero. Es el **tipo swap** que el mercado cotiza para cada vencimiento. Un swap nuevo suele fijarse a este tipo, así que vale cero al comienzo.
+
+$$
+R_{\text{par}} = \frac{1 - DF(t_n)}{A} = \frac{1 - DF(t_n)}{\sum_{i=1}^{n} \tau_i DF(t_i)}
+$$
+
+{/* GRAFICO: ParSwapRate */}
+
+Es la misma fórmula que la de la rentabilidad par de un bono (véase [Curvas de tipos de interés](/curvas-de-tipos/)). Por tanto, el tipo swap par es el cupón de un bono a tipo fijo que vale su principal. Después del comienzo, $R_{\text{par}}$ cambia con la curva mientras que $R_K$ permanece fijo. El pagador gana cuando $R_{\text{par}}$ sube por encima de $R_K$, y el receptor gana cuando baja por debajo de $R_K$.
+
+### Curva cupón cero
+
+Los factores de descuento $DF(t_i)$ de las fórmulas anteriores provienen de la curva cupón cero (véase [Curvas de tipos de interés](/curvas-de-tipos/)). El mercado no cotiza directamente los tipos cupón cero. Cotiza instrumentos como los tipos OIS y los tipos swap, y la curva cupón cero se obtiene por **bootstrapping** a partir de estas cotizaciones.
+
+Un OIS al tipo cotizado vale cero. Cuando se descuenta con la curva de su propio tipo a un día, su pata variable más el principal en $t_n$ vale la par, así que su pata fija más el principal es también un bono que vale la par. Cada cotización da así la ecuación $R_{\text{par}} A = 1 - DF(t_n)$. Para un swap sobre un tipo a plazo como el EURIBOR, esto solo es cierto si la misma curva da los tipos forward y los factores de descuento. Si se conocen los factores de descuento hasta $t_n$, el tipo swap cotizado $R_{\text{par}}(t_{n+1})$ para el vencimiento siguiente tiene una sola incógnita, $DF(t_{n+1})$. Escribimos su condición de par con la anualidad dividida en los términos conocidos y el último término.
+
+$$
+R_{\text{par}}(t_{n+1}) \left[ \sum_{i=1}^{n} \tau_i DF(t_i) + \tau_{n+1} DF(t_{n+1}) \right] = 1 - DF(t_{n+1})
+$$
+
+$DF(t_{n+1})$ está en el último cupón y en el principal, así que pasamos ambos términos al lado izquierdo.
+
+$$
+DF(t_{n+1}) \left[ 1 + R_{\text{par}}(t_{n+1}) \tau_{n+1} \right] = 1 - R_{\text{par}}(t_{n+1}) \sum_{i=1}^{n} \tau_i DF(t_i)
+$$
+
+El factor $1 + R_{\text{par}}(t_{n+1}) \tau_{n+1}$ es el último flujo de caja del bono a la par. Si dividimos entre él, obtenemos la fórmula de bootstrapping. La fórmula necesita todos los factores de descuento anteriores y no solo $DF(t_n)$, porque un tipo par es una media de los tipos forward y no se capitaliza periodo a periodo como ellos.
+
+$$
+DF(t_{n+1}) = \frac{1 - R_{\text{par}}(t_{n+1}) \sum_{i=1}^{n} \tau_i DF(t_i)}{1 + R_{\text{par}}(t_{n+1}) \tau_{n+1}}
+$$
+
+El bootstrapping avanza desde el vencimiento más corto hasta el más largo.
+
+1. Un OIS de un año o menos suele tener un solo pago al vencimiento, así que $DF(t) = 1 / (1 + R \tau)$ directamente.
+2. Cada cotización más larga da un nuevo $DF$ a partir de los ya conocidos.
+3. Las cotizaciones no cubren todas las fechas de pago (por ejemplo, solo los swaps a 2 y a 5 años con pagos trimestrales). Entre los vencimientos cotizados, se supone una forma como la de tipos cupón cero lineales y se resuelve de forma iterativa el tipo cupón cero que valora cada bono a la par.
+4. Cada $DF$ da el tipo cupón cero $r(t) = -\ln DF(t) / t$ (capitalización continua).
+
+### Un IRS como dos bonos
+
+Si sumamos y restamos el nocional en $t_n$ a cada pata, los dos términos adicionales se cancelan y cada pata se convierte en un bono.
+
+$$
+V_{\text{pagador}} = \underbrace{\left[ PV_{\text{variable}} + L DF(t_n) \right]}_{\text{bono a tipo variable} = L} - \underbrace{\left[ PV_{\text{fijo}} + L DF(t_n) \right]}_{\text{bono con cupón } R_K}
+$$
+
+Así pues, el pagador está largo en un bono a tipo variable y corto en un bono a tipo fijo con cupón $R_K$, ambos con el principal $L$ y el vencimiento $t_n$. El receptor tiene la posición contraria.
+
+#### Bono a tipo variable
+
+En una fecha de revisión, la suma telescópica anterior da $L \left[ 1 - DF(t_n) \right] + L DF(t_n) = L$. Por tanto, el bono a tipo variable vale su principal en todos los niveles de tipos, porque su próximo cupón sube y baja con el tipo de mercado.
+
+Este resultado es exacto solo en una fecha de revisión. Si hoy está entre las fechas de revisión $t_{i-1}$ y $t_i$, el tipo $R_i$ del periodo $i$ ya se fijó en $t_{i-1}$. En $t_i$, el bono paga el cupón $L \tau_i R_i$, y el bono restante vale $L$ porque $t_i$ es una fecha de revisión. Hoy el bono vale ese total descontado desde $t_i$.
+
+$$
+PV_{\text{variable}} + L DF(t_n) = L (1 + \tau_i R_i) DF(t_i)
+$$
+
+Así pues, el bono se comporta como un bono cupón cero que vence en la próxima fecha de revisión $t_i$. Su duración es el tiempo hasta $t_i$, que son unos meses y no años. Su DV01 es pequeño pero no nulo, y vuelve a cero en cada fecha de revisión.
+
+La consecuencia directa es que $DV01_{\text{variable}} \approx 0$. Toda la sensibilidad del swap a los tipos proviene del bono a tipo fijo, y el pagador la tiene con el signo contrario porque el pagador está corto en ese bono. Por tanto, el pagador tiene una **posición de duración corta**, parecida a la venta en corto de un bono a tipo fijo con el mismo vencimiento.
+
+#### Evolución del valor en el tiempo
+
+1. **Al comienzo.** $R_K$ se fija en el tipo swap par, así que el bono a tipo fijo es un bono a la par que vale $L$, y el swap vale cero.
+2. **Después del comienzo.** El bono a tipo variable vuelve a $L$ en cada fecha de revisión, pero el precio del bono a tipo fijo se mueve con los tipos. Si los tipos suben, el bono a tipo fijo cae por debajo de $L$, y el pagador gana porque está corto en ese bono. Si los tipos bajan, el bono a tipo fijo sube por encima de $L$, y el pagador pierde.
+3. **Hacia el vencimiento.** Cada fecha de pago elimina un periodo de la anualidad $A$, así que quedan menos periodos para multiplicar la diferencia de tipos $R_{\text{par}} - R_K$. Por tanto, el mismo movimiento de los tipos tiene menos efecto en un swap más corto, y cada pago neto convierte parte del valor en efectivo.
+4. **Al vencimiento.** Los dos bonos devuelven $L$, y el valor del swap vuelve a ser cero.
+
+### Griegas
+
+Las griegas miden cómo cambia el valor de un swap cuando cambia un factor de mercado (como el nivel o la volatilidad de los tipos) y los demás permanecen constantes. Son la base de la gestión de riesgos, porque una mesa las suma sobre todas sus posiciones para conocer su exposición neta, dimensionar sus coberturas y fijar sus límites de riesgo. Para un IRS, las dos griegas principales son el DV01 y la convexidad.
+
+#### DV01
+
+$$
+DV01 = \Delta V \text{ para un movimiento de } +1 \text{ pb en la curva}
+$$
+
+El DV01 es la **variación de valor** de la posición en unidades monetarias, con su signo, igual que en un bono (véase [Instrumentos de renta fija](/renta-fija/#dv01)). Un **swap pagador** gana cuando suben los tipos, así que su DV01 es **positivo**. Un swap receptor tiene un DV01 negativo, como un bono a tipo fijo en posición larga.
+
+A partir de $V_{\text{pagador}} = L A (R_{\text{par}} - R_K)$, un movimiento de $R_{\text{par}}$ cambia el valor a través de la diferencia de tipos y de la anualidad.
+
+$$
+\frac{dV_{\text{pagador}}}{dR_{\text{par}}} = L A + L (R_{\text{par}} - R_K) \frac{dA}{dR_{\text{par}}}
+$$
+
+A la par ($R_{\text{par}} = R_K$) el segundo término es cero, así que $DV01 \approx L A \times 0.0001$. Para un swap a 30 años con pagos anuales, un nocional de EUR 100 millones y una curva plana al 4.30%, $A = 16.68$ y el DV01 es de unos EUR 166,800 por pb. Para cubrir una cartera de bonos a tipo fijo, un inversor entra en un swap pagador cuyo DV01 tiene el mismo tamaño que el de la cartera y el signo contrario.
+
+#### Convexidad
+
+El DV01 es una aproximación lineal, precisa solo para movimientos pequeños de los tipos. La **convexidad** es la curvatura del valor que la recta del DV01 no recoge. Con el término de segundo orden, la variación de valor para un movimiento de $\Delta y$ puntos básicos es
+
+$$
+\Delta V \approx DV01 \times \Delta y + \frac{1}{2} \Gamma (\Delta y)^2
+$$
+
+donde $\Gamma$ es la variación del DV01 para un movimiento de 1 pb.
+
+Un bono a tipo fijo tiene una convexidad positiva, así que su precio cae menos cuando suben los tipos de lo que sube cuando los tipos bajan en la misma cuantía (véase [Instrumentos de renta fija](/renta-fija/#convexidad)). El bono a tipo variable tiene una convexidad casi nula, por la misma razón que su DV01. El **receptor** está largo en el bono a tipo fijo y, por tanto, tiene una convexidad positiva, y el **pagador** está corto en él y tiene una convexidad negativa. La fórmula del swap muestra el mismo resultado. En $L A (R_{\text{par}} - R_K)$, la anualidad $A$ cae cuando suben los tipos, así que las ganancias del pagador se multiplican por una anualidad menor y sus pérdidas por una mayor.
+
+Para el pagador, la diferencia respecto de la recta del DV01 es, por tanto, **negativa en las dos direcciones**. **Pierde más** que la recta cuando bajan los tipos y **gana menos** cuando suben. Si los tipos pueden subir o bajar en la misma cuantía, el resultado medio es aproximadamente $\frac{1}{2} \Gamma (\Delta y)^2$, negativo para el pagador y mayor cuanto mayores son los movimientos. Por tanto, un aumento de la volatilidad perjudica al pagador y beneficia al receptor. La convexidad aumenta rápidamente con el vencimiento, así que es grande en los swaps largos y pequeña en los cortos.
+
+El gráfico muestra, por defecto, el mismo swap, a 30 años y con un tipo fijo del 4.30%. Representa el PnL de un swap pagador y de un swap receptor frente al tipo swap, junto con la recta de la aproximación por DV01. El swap parte de la par, así que su valor al 4.30% es cero.
+
+{/* GRAFICO: SwapValue */}
+
+| Movimiento de los tipos | Recta del DV01 | Valor del pagador | Efecto de la convexidad |
+|---|---|---|---|
+| +200 pb (6.30%) | +EUR 33.4 millones | +EUR 26.7 millones | −EUR 6.7 millones |
+| −200 pb (2.30%) | −EUR 33.4 millones | −EUR 43.0 millones | −EUR 9.6 millones |
+
+La anualidad cae a 13.33 al 6.30% y sube a 21.50 al 2.30%, lo que explica la diferencia. Aunque el movimiento medio de los tipos es cero, el resultado medio para el pagador es −EUR 8.2 millones. El receptor tiene los mismos valores con el signo contrario, así que la curvatura le favorece en las dos direcciones.
+
+### Casos de uso
+
+Los swaps son populares porque tienen muchos usos. Los usos que siguen se aplican a cualquier tipo de referencia variable, que los ejemplos llaman variable. En los ejemplos, la empresa A es la pagadora de un swap al 3% y la empresa B la receptora de un swap al 2.97%, ambos con el mismo dealer, que se queda con la diferencia del 0.03%. Cada préstamo y cada activo es de \$100 millones, el nocional de los swaps, y los préstamos y los bonos duran dos años.
+
+#### Transformar un pasivo
+
+- **De variable a fijo.** La empresa A paga variable + 0.1% (10 pb) por su préstamo y, en el swap, recibe variable y paga el 3%, así que su préstamo cuesta un 3.1% fijo.
+- **De fijo a variable.** La empresa B paga el 3.2% por su préstamo y, en el swap, paga variable y recibe el 2.97%, así que su préstamo cuesta variable + 0.23%.
+
+<Diagrama nombre="swap-transform-liability" alt="Tipos pagados entre los prestamistas, la empresa A, el dealer y la empresa B cuando los swaps transforman sus préstamos. La empresa A paga variable + 0.1% a sus prestamistas, paga el 3% al dealer y recibe variable, así que paga un 3.1% neto. La empresa B paga el 3.2% a sus prestamistas, paga variable al dealer y recibe el 2.97%, así que paga variable + 0.23% neto. El dealer se queda con el 0.03%." />
+
+#### Transformar un activo
+
+Los mismos swaps también cambian el tipo de tipo que rinde un activo.
+
+- **De fijo a variable.** La empresa A gana el 2.7% con sus bonos y, en el swap, recibe variable y paga el 3%, así que sus bonos rinden variable − 0.3%.
+- **De variable a fijo.** La empresa B gana variable − 0.2% con su inversión y, en el swap, paga variable y recibe el 2.97%, así que su inversión rinde un 2.77% fijo.
+
+<Diagrama nombre="swap-transform-asset" alt="Tipos pagados entre los bonos, la empresa A, el dealer, la empresa B y su inversión cuando los swaps transforman sus activos. La empresa A gana el 2.7% con sus bonos, paga el 3% al dealer y recibe variable, así que gana variable − 0.3% neto. La empresa B gana variable − 0.2% con su inversión, paga variable al dealer y recibe el 2.97%, así que gana un 2.77% neto. El dealer se queda con el 0.03%." />
+
+## Basis swaps
+
+Un basis swap es un swap de tipos de interés en el que las dos patas pagan un tipo variable, cada una referenciada a un índice o a un plazo distinto. El swap reduce el riesgo de base, que aparece cuando los flujos de caja dependen de factores que no están perfectamente correlacionados, por ejemplo, activos y pasivos a tipo variable referenciados a índices diferentes.
+
+**Ejemplo**
+
+Un banco tiene un activo a tipo variable indexado al EURIBOR a 12 meses y un pasivo a tipo variable indexado al EURIBOR a 3 meses. Ambas partes son variables, pero los dos índices no se mueven en la misma cuantía.
+
+| | Activo (EURIBOR 12M) | Pasivo (EURIBOR 3M) | Margen |
+|---|---|---|---|
+| Hoy | 2.20% | 2.00% | 0.20% |
+| Después | 2.30% | 2.25% | 0.05% |
+
+El tipo a 3 meses sube 25 pb y el tipo a 12 meses solo 10 pb, así que el margen de intereses del banco cae. Para reducir este riesgo, el banco entra en un basis swap en el que recibe el EURIBOR a 3 meses más el basis $b$ y paga el EURIBOR a 12 meses. El swap cancela los dos índices, y el banco mantiene un margen igual a $b$.
+
+:::note
+**Por qué los plazos del EURIBOR tienen riesgo de base y los del €STR no**
+
+El EURIBOR es el tipo al que los bancos se prestan entre sí sin garantía a un plazo fijo. Un prestamista que se compromete durante 12 meses asume el riesgo de crédito y de liquidez del prestatario durante más tiempo que un prestamista que renueva un préstamo a 3 meses cada trimestre y puede dejar de hacerlo. Por tanto, el EURIBOR a 12 meses incluye una prima mayor que el EURIBOR a 3 meses, y la diferencia entre ambos cambia con la tensión del mercado interbancario. El €STR es un tipo a un día con un riesgo de crédito casi nulo, y los tipos €STR a 3 y a 12 meses solo capitalizan las mismas fijaciones diarias. En el mismo año, cuatro periodos consecutivos de 3 meses dan el mismo interés que un periodo de 12 meses, así que los dos plazos casi no tienen basis.
+:::
+
+### Valoración de los basis swaps
+
+El basis $b$ aparece en la fórmula como un término fijo del contrato. El riesgo de base aparece a través de las dos curvas forward distintas, una para cada pata. Igual que en un IRS, el pagador paga la pata con el término fijo, aquí el EURIBOR 3M $+ b$, y recibe el EURIBOR 12M. El valor del swap para el pagador es
+
+$$
+V_{\text{pagador}} = L \sum_{j} \tau_j F^{12M}_j DF(t_j) - L \sum_{i} \tau_i (F^{3M}_i + b) DF(t_i)
+$$
+
+- $F^{3M}_i$ proviene de la curva forward del EURIBOR 3M. La suma tiene un término por cada trimestre.
+- $F^{12M}_j$ proviene de la curva forward del EURIBOR 12M. La suma tiene un término por cada año.
+- $DF$ proviene de la curva €STR para las dos patas.
+
+El basis par $b^*$ es el basis que da a un swap nuevo un valor de cero, y $A_{3M} = \sum_i \tau_i DF(t_i)$ es la anualidad de la pata a 3M.
+
+$$
+b^* = \frac{\sum_j \tau_j F^{12M}_j DF(t_j) - \sum_i \tau_i F^{3M}_i DF(t_i)}{A_{3M}}
+$$
+
+$$
+V_{\text{pagador}} = L A_{3M} (b^* - b) \qquad V_{\text{receptor}} = L A_{3M} (b - b^*)
+$$
+
+En la fecha de contratación, $b = b^*$ y el swap vale cero. Después de esa fecha, $b$ permanece fijo, pero las curvas forward se mueven y cambian $b^*$, así que cambia el valor del swap. Los valores tienen la misma forma que $V_{\text{pagador}} = L A (R_{\text{par}} - R_K)$ de un IRS, con $b$ en lugar de $R_K$.
+
+### DV01 del basis
+
+Las dos patas son variables, así que una subida de 1 pb de todos los tipos las cambia casi en la misma cuantía y el DV01 del swap es cercano a cero, muy por debajo del $L A \times 0.0001$ de un IRS con el mismo nocional. No es cero, porque cada pata se comporta como un bono cupón cero hasta su próxima fecha de revisión, a un máximo de 3 meses para la pata a 3M y hasta 12 meses para la pata a 12M. Por tanto, el riesgo principal es el DV01 del basis, la variación de valor para un movimiento de +1 pb en $b^*$, positiva para el pagador.
+
+A partir de $V_{\text{pagador}} = L A_{3M} (b^* - b)$, un movimiento de $b^*$ cambia el valor a través de la diferencia de basis y de la anualidad.
+
+$$
+\frac{dV_{\text{pagador}}}{db^*} = L A_{3M} + L (b^* - b) \frac{dA_{3M}}{db^*}
+$$
+
+A la par ($b^* = b$) el segundo término es cero. También es cero si solo se mueve $b^*$, porque la curva €STR, y por tanto $A_{3M}$, permanece fija.
+
+$$
+DV01_{\text{basis}} \approx L A_{3M} \times 0.0001
+$$
+
+Es una aproximación, porque en la práctica la curva €STR puede moverse con el basis. Si, en cambio, la curva forward a 12M se mueve 1 pb, la variación es $L A_{12M} \times 0.0001$, con $A_{12M} = \sum_j \tau_j DF(t_j)$, algo menor porque los pagos anuales llegan más tarde.
+
+## Cross-currency swaps (CCS)
+
+Un cross-currency swap (CCS, swap de divisas) intercambia los intereses en una divisa por los intereses en otra, normalmente cada trimestre y durante más de un año. A diferencia de un IRS, los dos principales están en divisas distintas y no se cancelan, así que se intercambian al comienzo al tipo de cambio spot y se intercambian de vuelta al vencimiento. Por tanto, un CCS convierte un préstamo o un activo de una divisa a otra. Un swap de divisas (foreign exchange, FX) también intercambia y devuelve dos principales, pero es a corto plazo, no tiene pagos periódicos de intereses y devuelve al tipo de cambio forward.
+
+Los tipos de CCS se distinguen por el tipo de cada pata.
+
+- **Variable contra variable (basis).** Es el cross-currency basis swap, el estándar interbancario. La pata en USD suele pagar el SOFR sin spread (flat), y la otra pata paga su propio tipo variable más el basis. Un basis negativo significa que los dólares obtenidos en préstamo a través del swap cuestan más que en el mercado al contado.
+- **Fijo contra variable y fijo contra fijo.** El primero es una variante habitual y el segundo una menos habitual. Un dealer los replica con un basis swap y un IRS por cada pata fija.
+
+<Diagrama nombre="ccs-cash-flows" alt="Flujos de caja de un cross-currency swap EUR/USD entre una empresa y un dealer. Al comienzo, la empresa paga EUR 85 millones y recibe USD 100 millones al tipo de cambio spot. Cada trimestre, la empresa paga el SOFR sobre USD 100 millones y recibe el €STR más el basis b sobre EUR 85 millones. Al vencimiento, la empresa devuelve USD 100 millones y recibe de vuelta EUR 85 millones al tipo de cambio spot inicial." />
+
+### Riesgos de un CCS de variable contra variable
+
+- **Delta de tipo de cambio.** El mayor riesgo. Los principales se intercambian de vuelta al vencimiento al tipo de cambio spot inicial, así que su valor se mueve con el tipo de cambio spot.
+- **DV01 del basis.** El riesgo de que el basis de mercado se aleje del basis $b$ del contrato, como en un basis swap.
+- **DV01 de tipos.** Pequeño pero no nulo, porque las dos patas son variables y cada una se comporta como un bono cupón cero hasta su próxima fecha de revisión.
+
+### Valoración de un CCS
+
+Cada pata se valora en su propia divisa, y una única conversión al tipo de cambio spot da el valor del swap. El pagador paga la pata en divisa nacional y recibe la pata en divisa extranjera, y el receptor tiene la posición contraria. En la divisa nacional, sus valores son
+
+$$
+V_{\text{pagador}} = S_0 V_{\text{Ext}} - V_{\text{Nac}} \qquad V_{\text{receptor}} = V_{\text{Nac}} - S_0 V_{\text{Ext}}
+$$
+
+donde $V_{\text{Nac}}$ es el valor actual de la pata en divisa nacional, expresado en divisa nacional, $V_{\text{Ext}}$ es el valor actual de la pata en divisa extranjera, expresado en divisa extranjera, y $S_0$ es el tipo de cambio spot en unidades de divisa nacional por unidad de divisa extranjera. Cada valor actual es la suma de los cupones y del principal final de la pata, descontados hasta hoy.
+
+El tipo de cambio spot **multiplica** la pata extranjera para convertirla a divisa nacional. Cada pata se descuenta con la curva de **su propia** divisa. En un swap con el EUR como divisa nacional y el USD como divisa extranjera, la pata en EUR usa la curva €STR, la pata en USD usa la curva SOFR, y $S_0$ es el número de euros por dólar, la inversa de la cotización EUR/USD.
+
+#### Convención estándar para el basis
+
+Por convención de mercado, la **pata en USD paga su tipo a un día sin spread (flat)**. Todo el spread va en la **pata que no es en USD**, que paga su propio tipo variable $+ b$. Aquí $b$ es el *basis de divisas (cross-currency basis)*. El spread nunca se reparte entre las dos patas.
+
+Por ejemplo, en un CCS EUR/USD, la pata en USD paga el SOFR sin spread y la pata en EUR paga el €STR $+ b$. El basis $b$ suele ser negativo para el euro, así que con $b = -25$ pb la pata en EUR paga el €STR $- 0.25\%$.
+
+#### Valoración de las dos patas
+
+Presentamos un ejemplo de un CCS en el que la pata en USD paga el SOFR sin spread y la pata en EUR paga el €STR $+ b$. En las fórmulas, $R_{\text{USD},i}$ es el tipo SOFR del periodo $i$, $R_{\text{EUR},i}$ es el tipo €STR del periodo $i$, y $\tau_i$ es la fracción de año del periodo.
+
+**Pata en USD**
+
+$$
+PV_{\text{USD}} = \sum_{i=1}^{n} L_{\text{USD}} \tau_i R_{\text{USD},i} DF_{\text{USD}}(t_i) + L_{\text{USD}} DF_{\text{USD}}(t_n)
+$$
+
+La suma se simplifica en cadena como en el IRS y vale $L_{\text{USD}} \left[ 1 - DF_{\text{USD}}(t_n) \right]$. Con el principal añadido, la pata vale su nocional.
+
+$$
+PV_{\text{USD}} = L_{\text{USD}}
+$$
+
+**Pata en EUR**
+
+$$
+PV_{\text{EUR}} = \sum_{i=1}^{n} L_{\text{EUR}} \tau_i (R_{\text{EUR},i} + b) DF_{\text{EUR}}(t_i) + L_{\text{EUR}} DF_{\text{EUR}}(t_n)
+$$
+
+La suma se separa en una parte €STR y una parte de spread.
+
+$$
+PV_{\text{EUR}} = \underbrace{\sum_{i=1}^{n} L_{\text{EUR}} \tau_i R_{\text{EUR},i} DF_{\text{EUR}}(t_i)}_{L_{\text{EUR}} \left[ 1 - DF_{\text{EUR}}(t_n) \right]} + \underbrace{L_{\text{EUR}} b \sum_{i=1}^{n} \tau_i DF_{\text{EUR}}(t_i)}_{L_{\text{EUR}} b A_{\text{EUR}}} + L_{\text{EUR}} DF_{\text{EUR}}(t_n)
+$$
+
+La parte €STR se simplifica en cadena como en la pata en USD. La parte de spread no, porque $b$ es una constante y no un tipo forward, así que permanece como $b$ por la anualidad $A_{\text{EUR}}$ de la pata en EUR. El principal cancela entonces el $- L_{\text{EUR}} DF_{\text{EUR}}(t_n)$ de la parte €STR.
+
+$$
+PV_{\text{EUR}} = L_{\text{EUR}} \left[ 1 - DF_{\text{EUR}}(t_n) \right] + L_{\text{EUR}} b A_{\text{EUR}} + L_{\text{EUR}} DF_{\text{EUR}}(t_n) = L_{\text{EUR}} (1 + b A_{\text{EUR}})
+$$
+
+**Valor final**
+
+En este ejemplo la pata en EUR es la pata en divisa nacional y la pata en USD es la pata en divisa extranjera, así que $V_{\text{Nac}} = PV_{\text{EUR}}$ y $V_{\text{Ext}} = PV_{\text{USD}}$. El pagador paga la pata en EUR y recibe la pata en USD. Con los valores de las dos patas en la fórmula de $V_{\text{pagador}}$, el valor del swap es
+
+$$
+V_{\text{pagador}} = S_0 PV_{\text{USD}} - PV_{\text{EUR}} = S_0 L_{\text{USD}} - L_{\text{EUR}} (1 + b A_{\text{EUR}})
+$$
+
+El valor se separa entonces en una parte de tipo de cambio y una parte de basis.
+
+$$
+V_{\text{pagador}} = \underbrace{S_0 L_{\text{USD}} - L_{\text{EUR}}}_{\text{tipo de cambio}} - \underbrace{L_{\text{EUR}} b A_{\text{EUR}}}_{\text{basis}} \qquad V_{\text{receptor}} = - V_{\text{pagador}}
+$$
+
+- **Tipo de cambio.** La diferencia entre los dos principales al tipo de cambio spot de hoy. Es cero en la fecha de contratación, porque los principales se intercambian al tipo de cambio spot, y después se mueve con $S_0$.
+- **Basis.** El valor actual del spread $b$ que el pagador paga en la pata en EUR. Con $b$ negativo, el pagador paga menos que el €STR, así que esta parte es positiva para el pagador.
+
+### PnL por tipo de cambio
+
+El pagador recibe la pata en USD, que vale $L_{\text{USD}}$, y paga la pata en EUR, que vale unos $L_{\text{EUR}}$, así que está **largo en $L_{\text{USD}}$ y corto en $L_{\text{EUR}}$**, como una compra a plazo de dólares contra euros. En euros, la pata en USD vale $S_0 L_{\text{USD}}$.
+
+- Si el euro se deprecia ($S_0$ sube), el valor sube.
+- Si el euro se aprecia ($S_0$ baja), el valor baja.
+
+Los principales se intercambian al tipo de cambio spot de la fecha de contratación $S_K$, así que $L_{\text{EUR}} = S_K L_{\text{USD}}$, y los mismos principales se intercambian de vuelta al vencimiento. La parte del valor debida al tipo de cambio es entonces:
+
+$$
+P\&L_{FX} = S_0 L_{\text{USD}} - L_{\text{EUR}} = L_{\text{USD}} (S_0 - S_K) = L_{\text{EUR}} \left( \frac{S_0}{S_K} - 1 \right)
+$$
+
+Es el nocional en EUR por la variación relativa del tipo de cambio spot desde la fecha de contratación, y es la mayor parte del valor del swap.
+
+En $V_{\text{pagador}} = S_0 L_{\text{USD}} - L_{\text{EUR}} (1 + b A_{\text{EUR}})$, solo el primer término depende de $S_0$. La derivada da la sensibilidad, $dV_{\text{pagador}} / dS_0 = L_{\text{USD}}$, y la variación de valor $\Delta V_{\text{pagador}} \approx L_{\text{USD}} \Delta S_0$. En general esto es una aproximación en torno al punto actual, porque la derivada es la pendiente para un movimiento infinitesimal. Aquí el valor es lineal en $S_0$, así que la variación es exacta.
+
+### Efecto de cada riesgo
+
+La tabla da la sensibilidad aproximada de $V_{\text{pagador}}$ a cada riesgo, con $b^*$ como el basis de mercado.
+
+| Cambio | Efecto en $V_{\text{pagador}}$ |
+|---|---|
+| $S_0$ cambia en $\Delta S_0$ | $L_{\text{USD}} \Delta S_0$ |
+| Las curvas de tipos se mueven y $A_{\text{EUR}}$ cambia en $\Delta A_{\text{EUR}}$ | $L_{\text{EUR}} (b^* - b) \Delta A_{\text{EUR}}$ |
+| El basis de mercado cambia en $\Delta b^*$ | $L_{\text{EUR}} A_{\text{EUR}} \Delta b^*$ |
+
+- **Tipo de cambio.** El riesgo principal, por los principales.
+- **Tipos.** Cercano a cero, porque las dos patas son variables. La pata en USD se mantiene en su nocional, y la pata en EUR solo se mueve a través de la anualidad multiplicada por el pequeño spread $b^* - b$.
+- **Basis.** El DV01 del basis, $L_{\text{EUR}} A_{\text{EUR}} \times 0.0001$ para $\Delta b^* = +1$ pb. Si el basis se vuelve más negativo, el pagador, que sigue pagando $b$, pierde y el receptor gana.
+
+### CCS con nocional constante o revisable
+
+Las dos formas se distinguen por lo que ocurre con los principales entre el comienzo y el vencimiento.
+
+- **Nocional constante (sin MTM).** Los principales se intercambian a $S_K$ al comienzo y se intercambian de vuelta en los mismos importes al vencimiento, como en el ejemplo anterior. Por tanto, la parte de tipo de cambio $L_{\text{USD}} (S_0 - S_K)$ crece con el movimiento del tipo de cambio spot desde la fecha de contratación y solo se liquida al vencimiento. Los usuarios finales que cubren un préstamo o un bono usan esta forma, porque los principales coinciden con los flujos de caja de la deuda, y la contabilidad de coberturas normalmente la exige.
+- **Nocional mark-to-market (revisable).** El nocional en EUR permanece constante y el nocional en USD se revisa al comienzo de cada periodo a $L_{\text{EUR}} / S_i$, con $S_i$ el tipo de cambio fijado dos días hábiles antes. La diferencia respecto del nocional anterior en USD se paga en USD en la fecha de revisión. Por tanto, la parte de tipo de cambio se liquida en cada revisión, así que la exposición al tipo de cambio abarca un solo periodo y el valor se mantiene cercano a cero. Esto mantiene pequeña la exposición al riesgo de crédito de contraparte, y por eso el mercado interbancario negocia y cotiza el basis de divisas en esta forma.
+
+## Asset swaps (ASW)
+
+Un asset swap es una estrategia que combina la compra de un valor de cupón fijo con la entrada en un swap de tipos de interés (IRS). El inversor paga los cupones fijos a la contraparte del swap y recibe a cambio pagos variables. El swap transforma los flujos de caja fijos del valor en flujos de caja variables.
+
+Cuando compramos un valor de renta fija, normalmente tiene un cupón fijo (por ejemplo, un 5% cada año). A veces, en lugar de un tipo de cupón fijo, queremos exposición al tipo de interés variable que se paga en ese momento.
+
+Los asset swaps se usan mucho en las estrategias de negociación de renta fija para cubrir el riesgo de tipo de interés. El swap elimina la mayor parte de la sensibilidad de la posición a los cambios en los tipos de interés, pero el inversor conserva el riesgo de crédito del emisor. Por este motivo, el spread del asset swap es una medida habitual del riesgo de crédito de un valor de renta fija.
+
+### Mecánica del asset swap
+
+Un dealer vende el valor y el swap juntos en un único paquete. En el swap, el inversor traspasa al dealer los cupones fijos del valor y recibe el tipo variable (EURIBOR/SOFR) más el spread ASW, como si fuera una nota a tipo variable del emisor.
+
+Las dos formas se distinguen por el precio que paga el inversor.
+
+- **Asset swap a la par (estándar).** El inversor paga 100, sea cual sea el precio de mercado $P$ del valor, y recupera 100 al vencimiento. La diferencia $P - 100$ es un préstamo entre las dos partes, que se devuelve durante la vida del swap a través del spread.
+- **Asset swap a valor de mercado.** El inversor paga $P$, así que no se mueve ningún valor al comienzo. La pata variable tiene un nocional $P$ en lugar de 100.
+
+### Spread del asset swap
+
+El spread ASW $s$ es el spread que da al swap un valor de $P - 100$ para el dealer, lo que compensa la diferencia de precio que el inversor recibe al comienzo. El inversor es el pagador del swap, porque paga el tipo fijo, que es el cupón $C$ del valor. Por tanto, el valor del swap para el inversor es el valor del pagador de un IRS con $R_K = C$ y $L = 100$, más el valor del spread que recibe el inversor.
+
+$$
+V_{\text{pagador}} = \underbrace{100 \left[ 1 - DF(t_n) \right] - 100 C A}_{\text{swap pagador a } C} + \underbrace{100 s A}_{\text{spread}}
+$$
+
+El inversor paga 100 por un valor que vale $P$, así que recibe $P - 100$ gratis al comienzo. La parte del spread equilibra el valor del swap en $100 - P$, que recupera ese importe. Esta condición da el spread.
+
+$$
+100 \left[ 1 - DF(t_n) \right] - 100 C A + 100 s A = 100 - P
+$$
+
+El 100 de cada lado se cancela, y los cupones más el principal descontados con la curva swap dan $P_{\text{swap}}$.
+
+$$
+100 s A = \underbrace{100 C A + 100 DF(t_n)}_{P_{\text{swap}}} - P \implies s = \frac{P_{\text{swap}} - P}{100 A}
+$$
+
+Para descomponer el spread, comparamos el valor con un bono que paga el tipo swap par $R_{\text{par}}$, que es el tipo swap de mercado de hoy. En la curva swap, este bono vale exactamente su principal de 100, porque $R_{\text{par}} = \left[ 1 - DF(t_n) \right] / A$.
+
+$$
+100 R_{\text{par}} A + 100 DF(t_n) = 100
+$$
+
+El valor paga el mismo principal pero el cupón $C$ en lugar de $R_{\text{par}}$. Por tanto, vale 100 más el cupón adicional $C - R_{\text{par}}$, descontado en cada fecha.
+
+$$
+P_{\text{swap}} = 100 + 100 (C - R_{\text{par}}) A
+$$
+
+Con este $P_{\text{swap}}$ en la fórmula de $s$, el spread se descompone en dos partes.
+
+$$
+s = (C - R_{\text{par}}) - \frac{P - 100}{100 A}
+$$
+
+La primera parte es la ventaja del cupón sobre el tipo swap. La segunda parte reparte la prima (o el descuento) del precio a lo largo de la vida del swap, porque el inversor solo recupera 100 al vencimiento. En un asset swap a valor de mercado, la pata variable tiene un nocional $P$, así que su spread es $s \times 100 / P$.
+
+### Aplicaciones del asset swap
+
+**Por qué es interesante**
+
+Un valor a tipo fijo conlleva riesgo de tipo de interés y riesgo de crédito. El asset swap traspasa el riesgo de tipos a la contraparte del swap y deja al inversor con el riesgo de crédito del emisor, así que la posición se comporta como una nota a tipo variable del mismo emisor.
+
+- **Visión puramente crediticia.** El inversor toma una posición solo sobre el crédito del emisor. Los movimientos de los tipos tienen poco efecto mientras el emisor paga. En caso de impago, los cupones se detienen pero el swap continúa, así que el inversor también asume su mark-to-market.
+- **Cifras comparables.** El spread ASW pone todos los bonos a tipo fijo en una misma escala, el spread sobre la curva swap. La fórmula ajusta por precio y cupón, así que un bono a 3 años a 98 se compara con un bono a 7 años a 105. Para un bono lejos de la par, las formas a la par y a valor de mercado dan spreads diferentes, así que la comparación debe usar una sola forma.
+- **Acceso a la oferta de tipo fijo.** La mayoría de los bonos corporativos son a tipo fijo, pero muchos inversores necesitan flujos de caja variables. El asset swap convierte unos en otros.
+- **Financiación a tipo variable.** Un banco con financiación a tipo variable fija el margen entre "variable + spread ASW" y su coste de financiación.
+
+**Cuándo no es interesante**
+
+- **El inversor quiere duración.** El swap elimina la ganancia de precio de una bajada de los tipos.
+- **Costes elevados.** El spread bid–offer del swap, el colateral y el riesgo de contraparte pueden consumir un spread ASW pequeño.
+- **Opciones implícitas.** Un bono rescatable o con opción de venta (puttable) tiene flujos de caja inciertos, que un asset swap estándar no cubre. El swap debe poder cancelarse entonces en las mismas fechas, y la opción adicional cambia el spread.
+
+**Aplicaciones prácticas**
+
+- **Valor relativo.** Entre emisores con una calidad crediticia similar y el mismo vencimiento, un spread ASW más amplio señala el bono más barato.
+- **Negative basis trade.** El basis es el spread del CDS menos el spread ASW. Si es negativo, se compra el valor, se le aplica el swap y se compra protección con un CDS para ganar la diferencia con poco riesgo de crédito neto. La operación no está libre de riesgo. El bono necesita financiación, el basis puede volverse más negativo y causar pérdidas por mark-to-market, y el bono y el CDS no son sustitutos perfectos.
+- **Rotación sectorial.** Se compara el spread ASW medio de cada sector con su historia para encontrar sectores baratos o caros.
+- **Construcción de carteras.** Los valores con asset swap dan una cartera neutral en duración cuya exposición principal es el crédito.
+
+## Convenciones de mercado
+
+### Cuestiones de cómputo de días
+
+Cada pata tiene su propia convención de cómputo de días (véase [Convenciones de cómputo de días](/renta-fija/#convenciones-de-cómputo-de-días)), que fija sus pagos. Los ejemplos anteriores la ignoran, así que sus cifras son solo aproximadas.
+
+Los tipos variables como el SOFR, el €STR y el EURIBOR usan ACT/360, así que un pago es $L R n / 360$, donde $L$ es el principal, $R$ el tipo y $n$ los días reales del periodo de devengo. Al 2.2% sobre USD 100 millones durante los 92 días del 8 de marzo al 8 de junio de 2022, el pago variable es
+
+$$
+100{,}000{,}000 \times 0.022 \times \frac{92}{360} = \$562{,}222
+$$
+
+Las patas fijas suelen usar 30/360, ACT/365 o ACT/360. Los swaps SOFR en USD pagan las dos patas anualmente con ACT/360. Los swaps LIBOR en USD heredados pagaban la pata fija semestralmente con 30/360 contra el LIBOR a 3M trimestral con ACT/360.
+
+- **Los tipos no son directamente comparables.** Si una pata usa un año de 360 días y la otra uno de 365, el tipo ACT/360 paga 365/360 veces su tipo cotizado a lo largo de un año completo.
+- **Los pagos fijos pueden cambiar.** Con 30/360, cada periodo regular paga el mismo importe fijo. Con ACT/365 o ACT/360, el importe cambia con los días del periodo.
+
+Las valoraciones de esta nota ignoran el cómputo de días por simplicidad.
+
+### Confirmaciones
+
+En un swap bilateral, las dos partes firman una **confirmación**, que recoge las condiciones de la operación, como las fechas, el nocional, los tipos, los cómputos de días y la convención de día hábil. Los documentos estándar de la International Swaps and Derivatives Association (ISDA) la mantienen breve.
+
+- **ISDA Master Agreement.** Un formulario preimpreso (versión de 1992 o de 2002) para todos los derivados OTC entre dos partes. Define los eventos de impago, los eventos de terminación y la compensación por cierre (close-out netting), que da por terminadas todas las operaciones después de un impago y compensa sus valores en un único importe.
+- **Schedule.** Las elecciones y modificaciones de las partes. Prevalece sobre el formulario preimpreso.
+- **Confirmación.** Una por cada operación. Indica que se aplica el Master Agreement y prevalece sobre el Master Agreement para esa operación.
+- **Credit Support Annex (CSA).** Condiciones opcionales de colateral, como los activos admisibles, los umbrales y los haircuts.
+
+El Master Agreement y todas las confirmaciones forman un único acuerdo, lo que respalda la compensación por cierre. Desde 2013 en EE. UU. y desde junio de 2016 en la UE, la mayoría de los IRS estándar entre empresas financieras (fijo contra variable, basis y OIS en las divisas principales, y FRAs) deben compensarse a través de una contrapartida central (CCP), como LCH SwapClear, que se convierte en la contraparte de cada parte.
+
+La confirmación también nombra un calendario de festivos, por ejemplo, el de EE. UU. para el USD o TARGET para el EUR. Si una fecha de pago no es un día hábil, la convención de día hábil la desplaza.
+
+| Convención | Fecha de pago |
+| --- | --- |
+| Following | El siguiente día hábil. |
+| Modified following | El siguiente día hábil, salvo que caiga en el mes siguiente, en cuyo caso el día hábil anterior. |
+| Preceding | El día hábil anterior. |
+| Modified preceding | El día hábil anterior, salvo que caiga en el mes anterior, en cuyo caso el siguiente día hábil. |
+
+Modified following es el valor por defecto habitual en los productos de tipos de interés, porque mantiene cada pago en el mes previsto para la contabilidad de fin de mes.
