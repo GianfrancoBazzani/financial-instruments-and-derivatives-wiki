@@ -8,6 +8,7 @@ banner:
 {/* Fuente: 05-futures-and-forwards-pricing.md @ 627bb65c932601a19f45d2d83c7b9f99169740dd */}
 
 import Diagrama from "../../components/Diagrama.astro";
+import ForwardValue from "../../components/graficos/ForwardValue.tsx";
 
 Los argumentos de arbitraje dan los precios forward y de futuros de un activo de inversión a partir de su precio spot y de otras variables observables del mercado. Esto no es posible para los activos de consumo, por las razones que se explican más adelante.
 
@@ -143,7 +144,7 @@ $$
 f_{\text{short}} = (K - F_0) e^{-rT}
 $$
 
-{/* GRAFICO: ForwardValue */}
+<ForwardValue client:visible />
 
 Al inicio $K = F_0$, así que ambos valores son cero. Estas fórmulas valen para los tres tipos de activo de inversión. La tabla siguiente sustituye $F_0$ en cada caso y da los valores para activos sin ingresos, con ingresos conocidos y con rentabilidad conocida.
 
