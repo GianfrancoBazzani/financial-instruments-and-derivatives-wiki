@@ -1,0 +1,71 @@
+---
+title: Mercados, activos y tipos de operadores
+description: Mercados organizados y OTC, cotizaciones bid y offer, tipos de órdenes, activos de inversión y de consumo, y coberturistas, especuladores y arbitrajistas.
+banner:
+  content: "Traducción pendiente de revisión"
+---
+
+{/* Fuente: 03-markets-assets-and-type-of-traders.md @ 627bb65c932601a19f45d2d83c7b9f99169740dd */}
+
+## Mercados organizados y mercados OTC
+
+Un **mercado organizado** es un lugar de negociación centralizado y regulado (como el CME Group o Eurex) donde se negocian contratos estandarizados. El mercado define las condiciones del contrato, como el activo subyacente, el tamaño del contrato y las fechas de entrega o vencimiento. Las operaciones pasan por una cámara de compensación, que se interpone entre comprador y vendedor y exige un margen a ambos, de modo que el riesgo de crédito de contraparte se reduce mucho. Los precios y los volúmenes de negociación son públicos. Los contratos de futuros se negocian en mercados organizados, mientras que los contratos forward se negocian OTC (véase [Futuros y forwards](/futuros-y-forwards/) para la comparación de ambos contratos).
+
+El **mercado OTC** (over-the-counter, o mercado no organizado) es una red descentralizada en la que los participantes, normalmente bancos, otras instituciones financieras, gestores de fondos y empresas, negocian directamente entre sí, tradicionalmente por teléfono y cada vez más a través de plataformas electrónicas. Como cada operación se negocia en privado, los contratos pueden adaptarse a las necesidades exactas de las partes, como un vencimiento, un importe nocional o un activo subyacente poco habituales. La contrapartida es que las operaciones OTC han tenido históricamente más riesgo de crédito de contraparte y menos transparencia. Desde la crisis financiera de 2008, los reguladores han reducido esta diferencia al exigir que muchos derivados OTC estandarizados se compensen a través de contrapartidas centrales y se comuniquen a registros de operaciones.
+
+**Cotizaciones bid y offer de un creador de mercado**
+
+En el mercado OTC, las grandes instituciones financieras suelen actuar como creadores de mercado (market makers). Un creador de mercado está dispuesto a operar con los clientes y cotiza dos precios al mismo tiempo, un bid y un offer.
+
+El **bid** (precio comprador) es el precio al que el creador de mercado está dispuesto a *comprar*. El **offer** (precio vendedor, también llamado **ask**) es el precio al que el creador de mercado está dispuesto a *vender*.
+
+El offer es siempre más alto que el bid. La diferencia entre ambos, el **spread bid–offer**, es la forma en que el creador de mercado obtiene un beneficio y se compensa por el riesgo de mantener posiciones. Por ejemplo, un dealer que cotiza una divisa a 1.0850 / 1.0852 comprará a 1.0850 y venderá a 1.0852. Un cliente que quiere vender recibe el precio más bajo, y un cliente que quiere comprar paga el más alto.
+
+## Tipos de órdenes
+
+Una orden indica al bróker cómo ejecutar una operación. Los tipos principales son los siguientes.
+
+| Orden                                        | Significado                                                                                                                                              |
+| -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Orden de mercado                             | Operar de inmediato al mejor precio disponible.                                                                                                          |
+| Orden limitada                               | Operar solo a un precio especificado o a un precio más favorable para el operador.                                                                       |
+| Orden stop (orden de stop-loss)              | Cuando un bid u offer alcanza el precio especificado o uno peor, la orden se convierte en una orden de mercado.                                          |
+| Orden stop-limit                             | Cuando se alcanza el precio stop, la orden se convierte en una orden limitada. Por tanto, la orden necesita dos precios, el precio stop y el precio límite. |
+| Orden market-if-touched (MIT) (orden de tablero) | Cuando se produce una operación al precio especificado o a uno más favorable, la orden se convierte en una orden de mercado. Los operadores la usan para realizar beneficios tras movimientos favorables. |
+| Orden discrecional (orden market-not-held)   | Una orden de mercado que el bróker puede retrasar para intentar obtener un mejor precio.                                                                 |
+
+## Tipos de activos
+
+En los mercados es importante distinguir entre activos de inversión y activos de consumo.
+
+Un **activo de inversión** es un activo que mantienen únicamente con fines de inversión al menos algunos operadores en número significativo. Las acciones y los bonos son claramente activos de inversión. El oro y la plata también son ejemplos de activos de inversión, porque un número significativo de inversores los mantienen solo como reserva de valor, aunque también los use la industria. El titular de un activo de inversión espera un rendimiento del precio o de la renta del activo, no de su uso.
+
+Un **activo financiero** es un activo de inversión cuyo valor procede de un derecho contractual y no de un bien físico. Una acción es un derecho sobre el capital de una empresa, un bono es un derecho sobre los cupones y el principal que promete el emisor, y una divisa o un depósito bancario es un derecho frente a un banco central o a un banco comercial. Los activos financieros no tienen costes de almacenamiento, y muchos de ellos pagan una renta al titular, como dividendos, cupones o el tipo de interés de una divisa extranjera. Todo activo financiero es un activo de inversión, pero no todo activo de inversión es un activo financiero, ya que el oro y la plata son bienes físicos que hay que almacenar y asegurar.
+
+Un **activo de consumo** es un activo que se mantiene principalmente para su consumo. Normalmente no se mantiene como inversión. Ejemplos de activos de consumo son las materias primas como el cobre, el petróleo crudo, el maíz y la panceta de cerdo. Una refinería guarda petróleo crudo para procesarlo y un productor de alimentos guarda maíz para utilizarlo, así que estos titulares no venden sus existencias solo para aprovechar una pequeña diferencia de precio.
+
+| Tipo                      | Motivo principal para mantenerlo | Ejemplos                              | Costes de almacenamiento | Renta habitual               |
+| ------------------------- | -------------------------------- | ------------------------------------- | ------------- | ---------------------------- |
+| Activo financiero         | Inversión                        | Acciones, bonos, divisas              | Ninguno       | Dividendos, cupones, intereses |
+| Activo de inversión físico | Inversión                       | Oro, plata                            | Sí            | Ninguna                      |
+| Activo de consumo         | Uso en la producción o el consumo | Cobre, petróleo crudo, maíz, panceta de cerdo | Sí     | Ninguna                      |
+
+## Tipos de operadores
+
+En el mercado podemos identificar tres tipos de operadores: los coberturistas, los especuladores y los arbitrajistas.
+
+Los **coberturistas** usan derivados para **reducir un riesgo** que ya tienen. Los forwards y los futuros fijan un precio futuro, lo que elimina la incertidumbre, pero también renuncia a los movimientos favorables. Las opciones actúan como un seguro, porque protegen frente a los movimientos adversos y conservan el potencial de ganancia, a cambio de una prima inicial. La cobertura hace que los resultados sean más seguros, no necesariamente mejores.
+
+Los **especuladores** **asumen riesgo** apostando por la dirección de los precios, sin tener ninguna exposición que proteger. Los derivados les dan **apalancamiento**. Los futuros solo exigen un pequeño margen, y las opciones permiten comprar más exposición por cada dólar. Por ejemplo, 2,000 USD en opciones call pueden ganar mucho más que 2,000 USD en acciones, o perderse por completo. El apalancamiento amplifica tanto las ganancias como las pérdidas. La nota sobre futuros y forwards trata [si la especulación en los mercados de futuros es un juego de azar](/futuros-y-forwards/#es-la-especulación-en-los-mercados-de-futuros-un-juego-de-azar).
+
+Los **arbitrajistas** consiguen un **beneficio sin riesgo** mediante operaciones simultáneas en dos o más mercados, aprovechando diferencias de precio. Un ejemplo es comprar una acción barata en Nueva York y venderla más cara en Londres. Estas oportunidades desaparecen rápidamente porque la negociación de arbitraje cierra la diferencia. La valoración de los derivados se basa en el supuesto de **ausencia de arbitraje**.
+
+| Operador    | Objetivo                          | Riesgo | ¿Exposición previa? |
+| ----------- | --------------------------------- | ------ | ------------------- |
+| Coberturista | Reducir el riesgo                | Lo evita | Sí                |
+| Especulador | Beneficiarse de los movimientos de precios | Lo busca | No        |
+| Arbitrajista | Beneficio sin riesgo            | Ninguno | No                 |
+
+**Deriva hacia la especulación**
+
+Los coberturistas o los arbitrajistas pueden derivar hacia la especulación, como en las pérdidas de Barings y de Société Générale, así que las empresas necesitan límites de riesgo estrictos.

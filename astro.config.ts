@@ -27,6 +27,7 @@ export default defineConfig({
           // Enlaces hacia páginas que aún no existen; cada tarea de página elimina su entrada.
           exclude: [
             "/curvas-de-tipos/", // la tarea de la página 02 (curvas-de-tipos) elimina esta entrada
+            "/futuros-y-forwards/**", // la tarea de la página 04 (futuros-y-forwards) elimina esta entrada
           ],
         }),
       ],

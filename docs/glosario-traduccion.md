@@ -137,3 +137,25 @@ En la primera mención de cada página se añade entre paréntesis el significad
 | asset-liability management | gestión de activos y pasivos |
 | quantitative easing | expansión cuantitativa |
 | expectations theory / market segmentation theory | teoría de las expectativas / teoría de la segmentación del mercado |
+
+## Términos de la página 03 (mercados, activos y operadores)
+
+| English | Español |
+| --- | --- |
+| exchange-traded market | mercado organizado |
+| over-the-counter (OTC) market | mercado OTC (no organizado) |
+| clearing house | cámara de compensación |
+| counterparty credit risk | riesgo de crédito de contraparte |
+| central counterparty / trade repository | contrapartida central / registro de operaciones |
+| market maker | creador de mercado (market maker) |
+| bid / offer (ask) | bid (precio comprador) / offer o ask (precio vendedor) |
+| bid–offer spread | spread bid–offer |
+| market / limit / stop / stop-limit order | orden de mercado / limitada / stop / stop-limit |
+| market-if-touched (MIT) order (board order) | orden market-if-touched (MIT) (orden de tablero) |
+| discretionary order (market-not-held) | orden discrecional (orden market-not-held) |
+| investment asset / consumption asset / financial asset | activo de inversión / de consumo / financiero |
+| store of value | reserva de valor |
+| pork bellies | panceta de cerdo |
+| hedger / speculator / arbitrageur | coberturista / especulador / arbitrajista |
+| leverage | apalancamiento |
+| no-arbitrage | ausencia de arbitraje |
