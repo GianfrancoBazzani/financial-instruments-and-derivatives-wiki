@@ -344,3 +344,22 @@ En la primera mención de cada página se añade entre paréntesis el significad
 | consumer price index (CPI) | índice de precios de consumo (IPC) |
 | inflation-linked bond | bono indexado a la inflación |
 | dealer | dealer |
+
+## Términos de las páginas 10 y 11 (repos y STRIPS)
+
+| English | Español |
+| --- | --- |
+| repo rate | tipo del repo |
+| cash lender | prestamista de efectivo |
+| cash lent | efectivo prestado |
+| General Collateral (GC) / special repo | colateral general (GC) / repo especial |
+| repo curve | curva de repo |
+| term repo | repo a plazo |
+| funding cost / funding | coste de financiación / financiación |
+| roll (funding) | renovar |
+| stripping (to split) / reconstitution | separar / reconstitución |
+| coupon STRIP / principal STRIP | STRIP de cupón / STRIP de principal |
+| reinvestment risk | riesgo de reinversión |
+| cash flow matching | casación de flujos de caja |
+| spot rate (STRIPS) | tipo spot |
+| High yield bond | bono de alto rendimiento (high yield) |

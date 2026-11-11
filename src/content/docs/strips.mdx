@@ -1,0 +1,91 @@
+---
+title: STRIPS
+description: Qué son los STRIPS, cómo se valoran, para qué se usan y qué desventajas tienen, con ejemplos numéricos.
+banner:
+  content: "Traducción pendiente de revisión"
+---
+
+{/* Fuente: 11-strips.md @ 627bb65c932601a19f45d2d83c7b9f99169740dd */}
+
+## STRIPS
+
+Los STRIPS (**Separate Trading of Registered Interest and Principal of Securities**) son los flujos de caja separados de un bono con cupones, cada uno negociado como un valor independiente. El tenedor del bono puede pedir la separación a un banco, un bróker o un dealer en cualquier momento hasta el vencimiento. Los inversores compran y mantienen STRIPS solo a través de estas entidades, no del Tesoro. Cada STRIP sigue siendo una obligación directa del Gobierno de EE. UU., con el riesgo de crédito del bono original.
+
+El nombre procede del programa del Tesoro de EE. UU., que empezó en 1985 y hoy abarca las notas, los bonos y los TIPS. Las letras (que ya son cupón cero) y las notas a tipo variable no pueden separarse. En junio de 2025, USD 560 mil millones de valores del Tesoro se mantenían como STRIPS, el 2.5% de los USD 22.2 billones de notas, bonos y TIPS. Antes de 1985, los dealers vendían sus propios recibos cupón cero sobre bonos del Tesoro, como los TIGR y los CATS. Otros gobiernos también permiten la separación, por ejemplo Francia desde 1991 (el primero en Europa) y Alemania y el Reino Unido desde 1997.
+
+**Ejemplo**
+
+Un bono a 3 años con un cupón anual del 4% y un valor nominal de €100 se separa en cuatro valores.
+
+| STRIP | Pago | Fecha |
+| --- | --- | --- |
+| Cupón 1 | €4 | Año 1 |
+| Cupón 2 | €4 | Año 2 |
+| Cupón 3 | €4 | Año 3 |
+| Principal | €100 | Año 3 |
+
+Cada STRIP paga un importe en una fecha, así que cada STRIP es un bono cupón cero. Las notas y los bonos del Tesoro de EE. UU. pagan un cupón cada seis meses, de modo que una nota con 10 años hasta el vencimiento se separa en 21 STRIPS (20 cupones y el principal).
+
+En EE. UU., los STRIPS de cupón que pagan en la misma fecha comparten un código de identificación (CUSIP) y son intercambiables, aunque procedan de notas y bonos distintos. Cada STRIP de principal tiene su propio código y pertenece a un solo bono, así que el STRIP del Cupón 3 y el STRIP del Principal pagan en la misma fecha pero son valores distintos.
+
+## Valoración de los STRIPS
+
+El precio de un STRIP es su único flujo de caja descontado desde su fecha de vencimiento al tipo cupón cero $r$ de esa fecha.
+
+$$
+\text{Precio} = \frac{\text{Flujo de caja final}}{(1+r)^t}
+$$
+
+Los STRIPS de EE. UU. cotizan en porcentaje del valor nominal, y sus tipos usan capitalización semestral, como los cupones de los bonos del Tesoro, de modo que el denominador es $(1 + r/2)^{2t}$.
+
+**Ejemplo**
+
+Con el mismo tipo del 3% para todas las fechas, los cuatro STRIPS del bono a 3 años con cupón del 4% tienen estos precios.
+
+| STRIP | Cálculo | Precio |
+| --- | --- | --- |
+| Cupón 1 | $4/(1.03)^1$ | €3.88 |
+| Cupón 2 | $4/(1.03)^2$ | €3.77 |
+| Cupón 3 | $4/(1.03)^3$ | €3.66 |
+| Principal | $100/(1.03)^3$ | €91.51 |
+| **Total** | | **€102.83** |
+
+Los precios sin redondear suman €102.83 (los precios redondeados, €102.82), que es el precio del bono con una rentabilidad del 3%. Es superior al valor nominal de €100 porque el cupón del 4% es mayor que el tipo de descuento del 3%.
+
+{/* GRAFICO: StripPrice */}
+
+El total de los STRIPS debe ser igual al precio completo (sucio) del bono (véase [Instrumentos de renta fija](/renta-fija/#precios-limpio-y-sucio)), salvo por los costes de transacción. Si los STRIPS cuestan menos que el bono, un dealer compra los STRIPS, los vuelve a unir en el bono (**reconstitución**) y vende el bono con beneficio. La reconstitución necesita el STRIP de principal del bono y un STRIP de cupón por cada fecha de pago restante. Si los STRIPS cuestan más, el dealer compra el bono, lo separa y vende los STRIPS, por ejemplo con un beneficio de €0.33 por cada €100 de valor nominal si el bono cotiza a €102.50. Estas operaciones mantienen el precio del bono muy cerca del total de sus STRIPS.
+
+## Usos
+
+Un bono normal paga un flujo de caja cada año, y un STRIP paga un único flujo de caja al vencimiento, como muestra la tabla para un valor nominal de €50,000.
+
+| Año | 1 | 2 | 3 | 4 | 5 |
+| --- | --- | --- | --- | --- | --- |
+| Bono a 5 años con cupón del 4% | €2,000 | €2,000 | €2,000 | €2,000 | €52,000 |
+| STRIP a 5 años | | | | | €50,000 |
+
+Este único flujo de caja da a los STRIPS cinco ventajas.
+
+- **Sin riesgo de reinversión.** Un STRIP no paga nada antes del vencimiento, así que no hay cupones que reinvertir a tipos desconocidos, y un inversor que lo mantiene hasta el vencimiento obtiene exactamente la rentabilidad de la compra.
+- **Vencimiento y duración exactos.** El inversor elige la fecha exacta del flujo de caja, y la duración de Macaulay de un STRIP es igual a su vencimiento (véase [Instrumentos de renta fija](/renta-fija/#duración-de-macaulay)). Un bono cupón cero tiene la duración más alta para su vencimiento, lo que da una gran exposición al tipo cupón cero de una sola fecha.
+- **Flexibilidad.** El inversor combina STRIPS de distintos vencimientos para construir cualquier calendario de flujos de caja en las fechas de pago disponibles.
+- **Transparencia.** El precio es un solo flujo de caja descontado, así que es fácil de calcular.
+- **Tipos spot.** El precio de cada STRIP da directamente el tipo cupón cero de su fecha, por ejemplo $(100/91.51)^{1/3} - 1 \approx 3\%$ para el STRIP de Principal anterior, lo que ayuda a construir la curva cupón cero sin bootstrapping (véase [Curvas de tipos de interés](/curvas-de-tipos/#bootstrapping)). Los STRIPS de principal suelen cotizar a precios más altos que los STRIPS de cupón de la misma fecha, de modo que los dos tipos de STRIPS dan tipos ligeramente distintos.
+
+**Ejemplo (casación de flujos de caja)**
+
+Un inversor necesita exactamente €50,000 dentro de 5 años y compra un STRIP a 5 años con un valor nominal de €50,000. El STRIP paga el importe completo en la fecha del pasivo, sin cupones que reinvertir y sin bono que vender antes del vencimiento. Con un tipo de descuento del 3%, el STRIP cuesta €43,130.44.
+
+$$
+\frac{50{,}000}{(1.03)^5} = €43{,}130.44
+$$
+
+Los fondos de pensiones y las aseguradoras compran STRIPS de este modo para casar sus pasivos, y los especuladores compran STRIPS largos por su alta duración.
+
+## Desventajas
+
+El único flujo de caja también da a los STRIPS dos desventajas.
+
+- **Riesgo de precio.** La alta duración hace que el precio de un STRIP largo sea muy sensible a los tipos de interés. Si el tipo sube del 3% al 4%, el precio de un STRIP a 30 años (duración de Macaulay de 30 años) cae un 25%, de €41.20 a €30.83, y el precio de un bono a 30 años con cupón del 4% (19.1 años) solo un 16%, de €119.60 a €100.00. Un inversor que mantiene el STRIP hasta el vencimiento sigue recibiendo el valor nominal completo.
+- **Sin efectivo antes del vencimiento.** Un STRIP no paga ingresos antes del vencimiento, pero en EE. UU. el tenedor sigue pagando cada año el impuesto federal sobre la renta por los intereses devengados.
