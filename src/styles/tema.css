@@ -31,6 +31,10 @@
   --g-c: #ff8a7a;
   --g-muted: #8b93aa;
   --g-grid: #232b42;
+
+  /* Asides: navy-derived surface, yellow rule. */
+  --aside-bg: #0d1428;
+  --aside-title: #ffcd00;
 }
 
 /* Light theme: white background, black text; yellow only as underline or background. */
@@ -62,6 +66,16 @@
   --g-c: #b3392b;
   --g-muted: #6b7388;
   --g-grid: #d3d7e2;
+
+  --aside-bg: #eef0f5;
+  --aside-title: #0b0b0b;
+}
+
+/* Asides (all kinds) use palette colours only. */
+.starlight-aside {
+  --sl-color-asides-text-accent: var(--aside-title);
+  --sl-color-asides-border: #ffcd00;
+  background-color: var(--aside-bg);
 }
 
 /* Thin yellow rule on the header. */

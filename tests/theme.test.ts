@@ -32,6 +32,10 @@ describe.each(Object.entries(themes))("%s theme", (_name, vars) => {
     expect(contrastRatio(v("--sl-color-gray-2"), bg())).toBeGreaterThanOrEqual(4.5));
   test("link text", () =>
     expect(contrastRatio(v("--sl-color-accent-high"), bg())).toBeGreaterThanOrEqual(4.5));
+  test("aside text and title on the aside surface", () => {
+    expect(contrastRatio(v("--sl-color-white"), v("--aside-bg"))).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio(v("--aside-title"), v("--aside-bg"))).toBeGreaterThanOrEqual(4.5);
+  });
   test.each(["--g-main", "--g-b", "--g-c"])("series %s", (s) =>
     expect(contrastRatio(v(s), bg())).toBeGreaterThanOrEqual(3),
   );
