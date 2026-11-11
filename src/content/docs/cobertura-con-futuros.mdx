@@ -7,6 +7,8 @@ banner:
 
 {/* Fuente: 06-hedging-strategies-using-futures.md @ 627bb65c932601a19f45d2d83c7b9f99169740dd */}
 
+import BasisRisk from "../../components/graficos/BasisRisk.tsx";
+
 Cubrirse con futuros significa tomar una posición en contratos de futuros para compensar una exposición al precio de un activo. El objetivo de la cobertura es reducir el riesgo.
 
 ## Coberturas cortas y largas
@@ -78,7 +80,7 @@ $F_1$ se conoce cuando empieza la cobertura, así que la única incertidumbre es
 
 El gráfico muestra, por defecto, este ejemplo. El basis se conoce en $t_1$ y converge a cero en $T$, pero una cobertura cerrada en $t_2$, antes del último día de negociación, obtiene un valor de entre los posibles de $b_2$. Mueva $b_2$ para ver cómo cambia el precio efectivo.
 
-{/* GRAFICO: BasisRisk */}
+<BasisRisk client:visible />
 
 El backwardation no favorece por sí solo a un coberturista en largo. El coberturista fija un precio cercano a $F_1$, que está por debajo del precio spot de hoy $S_1$, pero la alternativa a la cobertura es comprar a $S_2$, no a $S_1$. El resultado depende de cómo cambia el basis, no de su signo al principio.
 
