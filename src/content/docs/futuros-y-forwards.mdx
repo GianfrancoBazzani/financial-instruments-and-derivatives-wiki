@@ -7,6 +7,9 @@ banner:
 
 {/* Fuente: 04-futures-and-forwards.md @ 627bb65c932601a19f45d2d83c7b9f99169740dd */}
 
+import ForwardPayoff from "../../components/graficos/ForwardPayoff.tsx";
+import DailySettlement from "../../components/graficos/DailySettlement.tsx";
+
 ## Forwards largos y cortos
 
 Un **forward** es un acuerdo que se cierra hoy para comprar o vender un activo en una fecha futura a un precio de entrega fijo $K$. La parte larga se compromete a comprar el activo y la parte corta se compromete a venderlo. Al inicio no cambia nada de manos. El contrato se establece de modo que valga cero para ambas partes, y la operación se realiza al vencimiento.
@@ -23,7 +26,7 @@ $$
 \text{Payoff corto} = K - S_T
 $$
 
-{/* GRAFICO: ForwardPayoff */}
+<ForwardPayoff client:visible />
 
 Como no hay coste inicial, el payoff es igual al beneficio. Ambas partes están obligadas, así que los payoffs son líneas rectas. La parte larga tiene ganancias ilimitadas y una pérdida máxima de $K$ si el precio cae a cero, y la parte corta tiene lo contrario.
 
@@ -80,7 +83,7 @@ Un operador toma una posición larga en un contrato de futuros a 100, con un mar
 | 2 | 99 | -2 | -1 | 2 | +1 |
 | 3 (vencimiento) | 102 | +3 | +2 | 6 | - |
 
-{/* GRAFICO: DailySettlement */}
+<DailySettlement client:visible />
 
 El día 2 el saldo cae a 2, por debajo de 2.5, así que el operador recibe una llamada de margen y aporta 1. Al vencimiento el saldo es 6 para unos depósitos totales de $3 + 1 = 4$, una ganancia de 2, que es el precio final menos el precio inicial. Un forward largo con $K = 100$ da el mismo payoff, $S_T - K = 2$, si ignoramos el interés del margen, pero lo paga una sola vez al vencimiento y no día a día.
 
