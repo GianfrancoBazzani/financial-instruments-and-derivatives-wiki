@@ -11,7 +11,7 @@ type FraArgs = {
 /** FRA payoff at the end of the period = L (R_realised - R_fixed) tau for the fixed payer; the receiver gets the opposite sign. */
 export function fraPayoff(a: FraArgs): number {
   const p = a.notional * (a.realizedRate - a.fixedRate) * a.tau;
-  return a.side === "payFixed" ? p : -p;
+  return a.side === "payFixed" ? p : 0 - p; // 0 - p never returns -0
 }
 
 /** FRA payoff settled at the start of the period = fraPayoff / (1 + R_realised tau). */

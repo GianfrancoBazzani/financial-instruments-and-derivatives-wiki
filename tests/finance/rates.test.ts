@@ -15,6 +15,14 @@ describe("fraPayoff", () => {
   });
 });
 
+describe("no negative zero", () => {
+  it("receiveFixed at the fixed rate gives +0", () => {
+    const a = { ...fra, realizedRate: 0.03, side: "receiveFixed" as const };
+    expect(fraPayoff(a)).toBe(0);
+    expect(fraPayoffAtStart(a)).toBe(0);
+  });
+});
+
 describe("fraPayoffAtStart", () => {
   it("discounts the payoff at the realised rate", () => expect(fraPayoffAtStart(fra)).toBeCloseTo(123916, 0));
 });
