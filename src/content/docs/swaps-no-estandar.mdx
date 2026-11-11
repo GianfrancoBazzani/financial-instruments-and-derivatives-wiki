@@ -1,0 +1,399 @@
+---
+title: Swaps no estándar
+description: Swaptions, caps y floors, el modelo SABR, y swaps CMS, quanto, de materias primas, de volatilidad, de varianza y de inflación.
+banner:
+  content: "Traducción pendiente de revisión"
+---
+
+{/* Fuente: 09-non-standard-swaps.md @ 627bb65c932601a19f45d2d83c7b9f99169740dd */}
+
+## Swaptions europeas
+
+Las opciones sobre swaps (permutas financieras), o swaptions, son opciones populares sobre tipos de interés que dan al tenedor el derecho a entrar en un swap de tipos de interés especificado en una fecha futura especificada. Las swaptions de este apartado son europeas, así que el tenedor solo puede ejercerlas en la fecha de vencimiento.
+
+Un swap equivale al intercambio de un bono a tipo fijo por un bono a tipo variable, que vale su principal al comienzo del swap. Por tanto, una swaption es una opción sobre el bono a tipo fijo, con un cupón igual al tipo swap de ejercicio y un precio de ejercicio igual al principal.
+
+| Swaption | Derecho del tenedor | Opción sobre el tipo swap | Opción sobre el bono a tipo fijo | Gana cuando los tipos |
+|---|---|---|---|---|
+| Pagadora (payer) | Pagar el tipo fijo, recibir el variable | Call | Put | Suben |
+| Receptora (receiver) | Recibir el tipo fijo, pagar el variable | Put | Call | Bajan |
+
+El mercado nombra una swaption por el vencimiento de la opción seguido del plazo del swap. Por ejemplo, una 2Y5Y pagadora es una opción a 2 años para entrar en un swap pagador a 5 años que comienza dentro de 2 años.
+
+Una empresa que va a tomar un préstamo a tipo variable y a convertirlo en un préstamo a tipo fijo mediante un swap puede comprar una swaption pagadora para fijar un máximo a ese tipo fijo. Un swap forward fija el tipo fijo sin coste inicial, pero obliga a la empresa a entrar en el swap. La swaption cuesta una prima, pero si los tipos bajan, la empresa deja que venza y entra en un swap al tipo de mercado más bajo.
+
+En comparación con un swap nuevo al tipo de mercado, que tiene la misma pata variable, el payoff de una swaption en cada fecha de pago del swap es
+
+$$
+\text{Payoff del pagador} = \frac{L}{m} \max(s_T - s_K, 0) \qquad \text{Payoff del receptor} = \frac{L}{m} \max(s_K - s_T, 0)
+$$
+
+donde
+
+- $L$ es el principal (nocional) del swap.
+- $m$ es el número de pagos al año, así que $L/m$ es el principal multiplicado por la fracción de devengo de un periodo cuando se ignoran los cómputos de días.
+- $s_T$ es el tipo swap en el vencimiento $T$, que es el tipo fijo de un swap nuevo con el mismo plazo en esa fecha.
+- $s_K$ es el tipo swap de ejercicio, que es el tipo fijo que el tenedor paga (pagadora) o recibe (receptora) después del ejercicio.
+
+Para un swap a $n$ años, el tenedor recibe este payoff en las $mn$ fechas de pago $T_1, \dots, T_{mn}$, en años a partir de hoy, con $T_i \approx T + i/m$. Una swaption es una única opción sobre el tipo swap con payoffs repetidos.
+
+En el vencimiento, los $mn$ payoffs valen $L A_T \max(s_T - s_K, 0)$ (pagadora) o $L A_T \max(s_K - s_T, 0)$ (receptora). Aquí $A_t = \frac{1}{m} \sum_{i=1}^{mn} P(t, T_i)$ es la anualidad del swap por unidad de principal en el momento $t$, y $P(t, T_i)$ es el factor de descuento de $t$ a $T_i$.
+
+El modelo de Black, el modelo de mercado estándar, supone que $s_T$ es lognormal y da los valores de hoy como
+
+$$
+V_{\text{pagador}} = L A_0 [s_F N(d_1) - s_K N(d_2)] \qquad V_{\text{receptor}} = L A_0 [s_K N(-d_2) - s_F N(-d_1)]
+$$
+
+$$
+d_1 = \frac{\ln(s_F/s_K) + \sigma^2 T/2}{\sigma \sqrt{T}} \qquad d_2 = d_1 - \sigma \sqrt{T}
+$$
+
+donde
+
+- $s_F$ es el tipo swap forward, que es el tipo fijo que da un valor cero hoy al swap que comienza en $T$.
+- $\sigma$ es la volatilidad del tipo swap forward, así que $\sigma \sqrt{T}$ es la desviación típica de $\ln s_T$.
+- $N(\cdot)$ es la función de distribución acumulada de la normal estándar.
+
+El modelo de Black necesita tipos positivos. Para tipos cercanos a cero o negativos, el mercado usa el modelo normal (de Bachelier), con volatilidades en puntos básicos, o un modelo lognormal desplazado.
+
+## Caps y floors de tipos de interés
+
+### Caps
+
+Un cap de tipos de interés es una serie de opciones call sobre tipos de interés, llamadas caplets. Se entiende bien si pensamos en una nota a tipo variable cuyo tipo de interés se revisa cada tres meses. El tipo de interés de cada periodo de tres meses se basa en un tipo de interés de referencia a tres meses, aplicable al periodo, que se observa en el mercado.
+
+Los caps de tipos de interés protegen frente a las subidas del tipo de interés por encima de un tipo de ejercicio, llamado tipo del cap $R_K$. Un prestatario que paga intereses por la nota y tiene un cap paga como máximo $R_K$ en cada periodo.
+
+Por ejemplo, una empresa pide prestados USD 10 millones a cinco años con la nota a tipo variable y contrata un cap con un principal nocional de USD 10 millones y un tipo del cap del 3% anual. Entonces el tipo de interés de referencia efectivo que determina los pagos de intereses del préstamo nunca supera el 3% anual. Si el tipo de interés de referencia de un trimestre es inferior al 3%, el cap no da ningún payoff en ese trimestre. Si el tipo es superior al 3%, el payoff reduce el tipo de interés de referencia efectivo hasta el 3% anual. Por ejemplo, si el tipo de interés de referencia de un trimestre es el 3.5% anual, el cap da un payoff al final del trimestre de
+
+$$
+10{,}000{,}000 \times 0.25 \times (0.035 - 0.03) = 12{,}500
+$$
+
+para reducir el tipo de interés de referencia efectivo del trimestre hasta el 3% anual.
+
+### Floors
+
+Un floor de tipos de interés es una serie de opciones put sobre tipos de interés, llamadas floorlets. Se entiende bien si pensamos en la misma nota a tipo variable, pero desde el lado del inversor que tiene la nota y recibe sus intereses.
+
+Los floors de tipos de interés protegen frente a las caídas del tipo de interés por debajo de un tipo de ejercicio, llamado tipo del floor $R_K$. Un inversor que recibe intereses por la nota y tiene un floor recibe como mínimo $R_K$ en cada periodo.
+
+Por ejemplo, un inversor compra una nota a tipo variable a cinco años con un principal de USD 10 millones y contrata un floor con un principal nocional de USD 10 millones y un tipo del floor del 2% anual. Entonces el tipo de interés de referencia efectivo que determina los intereses que recibe el inversor nunca es inferior al 2% anual. Si el tipo de interés de referencia de un trimestre es superior al 2%, el floor no da ningún payoff en ese trimestre. Si el tipo es inferior al 2%, el payoff eleva el tipo de interés de referencia efectivo hasta el 2% anual. Por ejemplo, si el tipo de interés de referencia de un trimestre es el 1.5% anual, el floor da un payoff al final del trimestre de
+
+$$
+10{,}000{,}000 \times 0.25 \times (0.02 - 0.015) = 12{,}500
+$$
+
+para elevar el tipo de interés de referencia efectivo del trimestre hasta el 2% anual.
+
+### Collar
+
+Un collar garantiza que el tipo de interés de una nota a tipo variable subyacente se mantiene siempre entre dos niveles. Combina un cap comprado y un floor vendido, normalmente con el precio del cap inicialmente igual al precio del floor, de modo que entrar en el collar no cuesta nada.
+
+Este collar conviene a un prestatario que paga el tipo variable y quiere cubrir el préstamo sin coste inicial, pero que, a diferencia de lo que ocurre con un swap pagador, sigue pagando el tipo de mercado entre los dos niveles. El cap comprado protege frente a las subidas de los tipos y la prima del floor vendido lo paga, pero el prestatario renuncia a la ganancia de los tipos por debajo del tipo del floor. Con un tipo de referencia $R$, un tipo del cap $R_C$ y un tipo del floor $R_F < R_C$, el tipo efectivo de cada periodo se mantiene siempre entre $R_F$ y $R_C$
+
+$$
+R_{\text{ef}} = R - \max(R - R_C, 0) + \max(R_F - R, 0)
+$$
+
+{/* GRAFICO: CapFloorCollarPayoff */}
+
+Por ejemplo, un préstamo de USD 10 millones con revisiones trimestrales tiene un tipo del cap del 3% y un tipo del floor del 2%.
+
+| Tipo de referencia | Payoff del cap para el prestatario | Payoff del floor que paga el prestatario al tenedor del floor | Tipo efectivo |
+|---|---|---|---|
+| 3.5% | 12,500 | 0 | 3% (tipo del cap) |
+| 2.5% | 0 | 0 | 2.5% (tipo de mercado) |
+| 1.5% | 0 | 12,500 | 2% (tipo del floor) |
+
+Un inversor que recibe el tipo variable usa el collar opuesto, que es un floor comprado y un cap vendido.
+
+### Paridad put-call de caps y floors
+
+La relación de paridad put-call entre los precios de los caps y los floors es
+
+$$
+V_{\text{cap}} = V_{\text{floor}} + V_{\text{swap}}
+$$
+
+En esta relación, el cap y el floor tienen el mismo tipo de ejercicio $R_K$. El swap es un acuerdo para recibir un tipo variable $R$ y pagar un tipo fijo $R_K$, sin intercambio de pagos en la primera fecha de revisión. Los tres instrumentos tienen la misma vida y la misma frecuencia de pagos.
+
+Para ver que el resultado es cierto, consideremos una posición larga en el cap combinada con una posición corta en el floor. El cap da un flujo de caja de $R - R_K$ en los periodos en que $R$ es mayor que $R_K$. El floor vendido da un flujo de caja de $-(R_K - R) = R - R_K$ en los periodos en que $R$ es menor que $R_K$. Por tanto, hay un flujo de caja de $R - R_K$ en todas las circunstancias. Este es el flujo de caja del swap. Se deduce que el valor del cap menos el valor del floor debe ser igual al valor del swap.
+
+### Valoración de caps y floors
+
+Cada caplet y cada floorlet cubre un periodo de $t_k$ a $t_{k+1}$. El tipo de interés de referencia del periodo se observa en $t_k$, y el payoff se paga en $t_{k+1}$
+
+$$
+\text{Payoff del caplet} = L \delta_k \max(R_k - R_K, 0) \qquad \text{Payoff del floorlet} = L \delta_k \max(R_K - R_k, 0)
+$$
+
+donde
+
+- $L$ es el principal nocional.
+- $\delta_k = t_{k+1} - t_k$ es la fracción de devengo del periodo, en años.
+- $R_k$ es el tipo de interés de referencia del periodo, observado en $t_k$.
+- $R_K$ es el tipo del cap o el tipo del floor.
+
+El tipo del primer periodo se conoce cuando comienza el cap o el floor, así que normalmente no hay caplet ni floorlet para ese periodo.
+
+El modelo de Black supone que cada $R_k$ es lognormal y da los valores de hoy como
+
+$$
+V_{\text{caplet}} = L \delta_k P(0, t_{k+1}) [F_k N(d_1) - R_K N(d_2)] \qquad V_{\text{floorlet}} = L \delta_k P(0, t_{k+1}) [R_K N(-d_2) - F_k N(-d_1)]
+$$
+
+$$
+d_1 = \frac{\ln(F_k/R_K) + \sigma_k^2 t_k/2}{\sigma_k \sqrt{t_k}} \qquad d_2 = d_1 - \sigma_k \sqrt{t_k}
+$$
+
+donde
+
+- $F_k$ es el tipo forward de hoy para el periodo de $t_k$ a $t_{k+1}$.
+- $\sigma_k$ es la volatilidad de $F_k$, así que $\sigma_k \sqrt{t_k}$ es la desviación típica de $\ln R_k$.
+- $P(0, t_{k+1})$ es el factor de descuento hasta la fecha de pago $t_{k+1}$, no hasta el vencimiento $t_k$.
+
+El valor de un cap o de un floor es la suma de los valores de sus caplets o floorlets. El mercado cotiza un cap o un floor con una única volatilidad plana, que es el único $\sigma$ que da su precio cuando se usa para todos sus caplets o floorlets. Igual que en las swaptions, el mercado usa el modelo normal o el lognormal desplazado cuando los tipos están cerca de cero o son negativos.
+
+Como $\max(R_k - R_K, 0) - \max(R_K - R_k, 0) = R_k - R_K$, un cap comprado y un floor vendido con el mismo tipo de ejercicio $R_K$ equivalen a un swap pagador con el tipo fijo $R_K$. Así, un collar con $R_C = R_F$ es un swap pagador, y el cap y el floor tienen el mismo precio solo cuando $R_K$ es igual al tipo swap forward.
+
+## Modelo SABR
+
+El modelo de Black usa una sola volatilidad $\sigma$ para todos los precios de ejercicio, pero los precios de mercado de las swaptions y los caps dan volatilidades implícitas que cambian con el precio de ejercicio, que es la sonrisa de volatilidad. El modelo SABR (stochastic alpha, beta, rho) da al tipo forward una volatilidad estocástica, así que puede ajustarse a la sonrisa
+
+$$
+dF = \alpha F^\beta dW_1 \qquad d\alpha = \nu \alpha dW_2 \qquad dW_1 dW_2 = \rho dt
+$$
+
+donde
+
+- $F$ es el tipo forward del instrumento subyacente, que es el tipo swap forward para una swaption o el tipo forward del periodo para un caplet.
+- $\alpha$ es la volatilidad del tipo forward, y su valor inicial $\alpha_0$ fija el nivel de la volatilidad.
+- $\beta$, de 0 a 1, fija la distribución del tipo forward, que es normal para $\beta = 0$ y lognormal para $\beta = 1$.
+- $\nu$ es la volatilidad de la volatilidad.
+- $\rho$ es la correlación entre el tipo de interés y su volatilidad.
+- $W_1$ y $W_2$ son movimientos brownianos.
+
+$\beta$ y $\rho$ fijan la pendiente (sesgo, o skew) de la sonrisa, y $\nu$ fija su curvatura. En la práctica, $\beta$ se fija cerca de 0.5, y $\alpha_0$, $\rho$ y $\nu$ se calibran con la sonrisa de cada vencimiento y plazo. El modelo da una fórmula aproximada para la volatilidad implícita de Black (o normal) en cada precio de ejercicio, y después el modelo de Black da el precio. SABR es el estándar de mercado para construir la superficie de volatilidad de las swaptions.
+
+{/* GRAFICO: SabrSmile */}
+
+## Swaps de vencimiento constante
+
+Un swap de vencimiento constante (constant maturity swap, CMS) intercambia en cada fecha de pago un tipo swap con un plazo fijo (por ejemplo 10 años) por un tipo fijo o por un tipo variable como el SOFR. En cada fecha de revisión $t_k$, la pata CMS toma el tipo swap $s_{t_k}$ de un swap estándar nuevo con el mismo plazo, de ahí el nombre de vencimiento constante, y paga $L \delta_k s_{t_k}$ en $t_{k+1}$, donde $L$ es el principal y $\delta_k = t_{k+1} - t_k$. Para un CMS que recibe el tipo swap y paga un tipo fijo $K$, el pago neto de cada periodo es
+
+$$
+\text{Payoff del CMS} = L \delta_k (s_{t_k} - K)
+$$
+
+En una fecha de revisión $T$, el tipo swap $s_T$ es el tipo par $K_{par}$ del swap nuevo (véase [Swaps](/swaps/)). Antes de $T$, solo se conoce el tipo swap forward, que es el tipo par de hoy del swap que comienza en $T$. Con la anualidad $A_0$ y las fechas de pago $T_1, \dots, T_{mn}$ definidas para las swaptions (véase [Swaptions europeas](#swaptions-europeas)), es
+
+$$
+s_F = \frac{P(0,T) - P(0,T_{mn})}{A_0}
+$$
+
+Para $T = 0$, $P(0,0) = 1$ y $s_F = K_{par}$. Para un swap sobre EURIBOR, el numerador es el valor de la pata variable, con los tipos forward de la curva EURIBOR y los factores de descuento de la curva €STR. Para un swap OIS sobre SOFR o €STR, la misma curva da ambos, así que la fórmula se aplica.
+
+El valor de un pago CMS que se fija en $T = t_k$ y se paga en $T_p = t_{k+1}$ depende del tipo swap esperado bajo la medida forward de $T_p$, que no es $s_F$. Un swap vanilla paga cada tipo variable al final de su periodo, que es su fecha de pago natural, así que bajo la medida forward de esa fecha el tipo esperado es el tipo forward. El pago natural de un tipo swap es una anualidad en todas las fechas de pago de la pata fija, así que $s_F$ es el valor esperado bajo la medida de la anualidad, con $A_t$ como numerario. Un CMS paga el tipo swap una sola vez, y el cambio de medida da
+
+$$
+E^{T_p}[s_T] = \frac{A_0}{P(0,T_p)} E^{A}\left[s_T \frac{P(T,T_p)}{A_T}\right]
+$$
+
+Cuando el tipo swap sube, $A_T$ cae y el cociente $P(T,T_p)/A_T$ sube, así que el tipo swap esperado es mayor que $s_F$, y la diferencia es el ajuste por convexidad. La convexidad de un bono da el mismo resultado. Si el tipo swap es la rentabilidad de un bono, el precio esperado del bono bajo la medida forward es el precio forward del bono, y como el precio es una función convexa de la rentabilidad, la rentabilidad esperada es mayor que la rentabilidad forward (desigualdad de Jensen).
+
+Con la duración modificada $D_{mod}$ y la convexidad $C$ de este bono a la rentabilidad $s_F$, y la volatilidad $\sigma$ del tipo swap forward, el tipo swap esperado para un pago en la fecha de fijación es aproximadamente
+
+$$
+E^{T}[s_T] \approx s_F + \frac{1}{2} s_F^2 \sigma^2 T \frac{C}{D_{mod}}
+$$
+
+El cociente $C/D_{mod}$ es cercano a $D_{mod}$ (10.2 frente a 8.5 para un bono a la par a 10 años al 3%), así que, con la volatilidad normal $\sigma_N = s_F \sigma$, una aproximación más simple es $E^{T}[s_T] \approx s_F + \frac{1}{2} \sigma_N^2 T D_{mod}$. El ajuste aumenta con la volatilidad, con el tiempo hasta la fecha de revisión y con el plazo del tipo swap. Un pago en $T_p$ posterior a $T$ necesita un ajuste adicional por el momento del pago (timing adjustment), que normalmente es pequeño y negativo.
+
+Los payoffs en la fecha de fijación muestran el mismo resultado. Un swap pagador que comienza en la fecha de fijación tiene un payoff que es una función cóncava del tipo swap, porque su anualidad cae cuando sube el tipo, y un CMS que recibe el tipo swap y paga un tipo fijo tiene un payoff lineal. Cuando cada contrato tiene el tipo fijo que le da un valor cero hoy, ambos tienen un payoff esperado de cero bajo la medida forward de la fecha de fijación. El payoff del swap es cero en el tipo swap forward, y el payoff del CMS es cero en el tipo swap esperado, que es mayor porque el payoff del swap es cóncavo. El payoff del CMS es mayor que el del swap cuando el tipo se aleja mucho del forward en cualquiera de los dos sentidos, y el tipo fijo más alto del CMS compensa estos payoffs mayores.
+
+El gráfico muestra, por defecto, el caso de un swap a 30 años con pagos anuales sobre una curva plana, en el que el CMS tiene la misma pendiente que el swap en el tipo forward y paga en la fecha de fijación. Representa, frente al tipo swap en la fecha de fijación, el payoff de un swap pagador vanilla (una curva cóncava) y el payoff de un CMS (una recta con la misma pendiente en el tipo swap forward), y marca el tipo swap forward, el tipo swap esperado y el ajuste por convexidad entre ellos.
+
+{/* GRAFICO: CmsVsSwap */}
+
+## Swaps quanto (diferenciales)
+
+Un swap quanto aplica un tipo o un índice de una divisa a un principal en otra divisa. Un swap diferencial (diff swap) es el caso de tipo variable contra tipo variable. Por ejemplo, una parte paga un tipo variable en USD y la otra un tipo variable en GBP, ambos sobre GBP 10 millones y ambos en GBP, así que cada periodo liquida el importe neto
+
+$$
+\text{Payoff del swap diferencial} = L \delta_k (R^{f}_{t_k} - R^{d}_{t_k} - s)
+$$
+
+donde $L$ es el principal nacional, $R^{f}$ el tipo extranjero, $R^{d}$ el tipo nacional y $s$ un spread fijo. A diferencia de un cross-currency swap (véase [Swaps](/swaps/)), todos los pagos son en una sola divisa, así que no hay intercambio de principales ni riesgo de tipo de cambio en los flujos de caja. Un swap de renta variable quanto sustituye el tipo extranjero por el rendimiento de un índice extranjero, por ejemplo el Nikkei pagado en USD.
+
+Los usuarios finales toman una posición sobre el spread entre los tipos de dos países, o consiguen exposición a tipos o a renta variable extranjeros, sin riesgo de tipo de cambio, también cuando un mandato solo permite activos en divisa nacional. Para el dealer, la pata extranjera es un principal en divisa extranjera que cambia con el tipo de cambio, así que los riesgos del tipo y del tipo de cambio no pueden cubrirse por separado y la cobertura depende de su correlación.
+
+Para valorar el swap, descontamos con la curva nacional, pero sustituimos cada tipo forward extranjero $F_k$ por su valor ajustado por quanto. Con un tipo y un tipo de cambio lognormales, la deriva del tipo extranjero bajo la medida nacional cambia en $-\rho \sigma_F \sigma_X$, lo que da
+
+$$
+\hat F_k = F_k e^{-\rho \sigma_F \sigma_X t_k} \approx F_k (1 - \rho \sigma_F \sigma_X t_k)
+$$
+
+donde
+
+- $X$ es el tipo de cambio en unidades de divisa nacional por una unidad de divisa extranjera.
+- $\sigma_F$ y $\sigma_X$ son las volatilidades del tipo forward y de $X$.
+- $\rho$ es la correlación entre el tipo forward y $X$.
+- $t_k$ es el momento de la fijación.
+
+Si $\rho > 0$, un tipo extranjero alto viene acompañado de una divisa extranjera fuerte. Un pago sobre un principal extranjero gana con ambos, pero el pago quanto no, así que su tipo forward es menor. Con $F_k = 4\%$, $\sigma_F = 20\%$, $\sigma_X = 10\%$, $\rho = 0.3$ y $t_k = 5$, el ajuste es $4\% \times 0.3 \times 0.2 \times 0.1 \times 5 = 0.12\%$, es decir, 12 pb.
+
+## Swaps de materias primas
+
+Un swap de materias primas intercambia un precio fijo por el precio de mercado (variable) de una materia prima sobre una cantidad nocional $Q_k$ en cada periodo, por ejemplo 100,000 barriles de petróleo crudo al mes. Es OTC y se liquida en efectivo, así que no hay entrega física, y cada periodo liquida el importe neto. Para el pagador del precio fijo $K$, que es el comprador de la materia prima, el pago en $t_k$ es
+
+$$
+\text{Payoff} = Q_k (\bar S_k - K)
+$$
+
+donde $\bar S_k$ suele ser la media aritmética de los precios diarios del periodo, por ejemplo las liquidaciones de los futuros WTI del primer vencimiento (front-month) de cada día hábil del mes natural. La media se corresponde con un consumidor que compra todos los días.
+
+- Los **consumidores** (aerolíneas, navieras, empresas de servicios públicos) pagan el precio fijo para fijar un precio de compra.
+- Los **productores** (petroleras y mineras, agricultores) reciben el precio fijo para fijar un precio de venta.
+- Los **inversores** toman exposición a una materia prima en un swap de materia prima contra interés, que paga el rendimiento de una materia prima o de un índice contra el SOFR o un tipo fijo sobre un nocional en efectivo.
+
+La cobertura tiene dos costes. El consumidor pierde la ganancia de una caída de los precios, porque el pago del swap compensa la compra más barata. Si el índice del swap difiere del precio que paga el coberturista, por ejemplo un swap de fueloil de calefacción para el queroseno de aviación, la diferencia es riesgo de base, que un basis swap sobre la diferencia puede eliminar.
+
+Un swap de materias primas es una tira de contratos forward con un único precio de entrega $K$. Cada pata se valora con el precio forward $F_k$ de la media a partir de la curva de futuros y con el factor de descuento $P(0,t_k)$, así que el precio del swap que da un valor cero al comienzo es
+
+$$
+K = \frac{\sum_k Q_k P(0,t_k) F_k}{\sum_k Q_k P(0,t_k)}
+$$
+
+Es la media de los precios forward ponderada por la cantidad y por el factor de descuento, así que la forma de la curva lo determina. Con cantidades iguales, forwards de USD 80, 78 y 76 por barril, y factores de descuento de 0.996, 0.992 y 0.988, el precio del swap a 3 meses es USD 78.01. En esta curva en backwardation, el consumidor paga menos que el forward en el primer mes y más en el último. En una fecha posterior $t$, con los nuevos precios forward, el pagador del precio fijo tiene el valor $\sum_k Q_k P(t,t_k) (F_k - K)$.
+
+## Swaps de volatilidad y de varianza
+
+Un swap de volatilidad es un contrato forward sobre la volatilidad realizada $\sigma_R$ de un activo, y un swap de varianza es un contrato forward sobre la varianza realizada $\sigma_R^2$. No se paga nada al comienzo y no se intercambia ningún nocional. En el vencimiento, el comprador, que está largo en volatilidad, recibe
+
+$$
+\text{Swap de volatilidad} = N_{vol} (\sigma_R - K_{vol}) \qquad \text{Swap de varianza} = N_{var} (\sigma_R^2 - K_{var})
+$$
+
+donde, a partir de $n$ rendimientos logarítmicos diarios $R_i = \ln(S_i / S_{i-1})$ anualizados con $A = 252$, y sin restar la media,
+
+$$
+\sigma_R^2 = \frac{A}{n} \sum_{i=1}^{n} R_i^2
+$$
+
+El mercado cotiza las volatilidades en puntos (20 para el 20%). El nocional vega $N_{vol}$ es el pago por un punto de volatilidad, y un swap de varianza con $N_{var} = N_{vol} / (2 K_{vol})$ paga aproximadamente lo mismo por un punto cerca del precio de ejercicio, porque $\text{d}(\sigma^2)/\text{d}\sigma = 2\sigma$. Con $N_{vol} =$ USD 100,000 y un precio de ejercicio de 20, $N_{var} = 2{,}500$.
+
+| Volatilidad realizada | Swap de volatilidad | Swap de varianza |
+|---|---|---|
+| 25 | $100{,}000 \times 5 = 500{,}000$ | $2{,}500 \times (625 - 400) = 562{,}500$ |
+| 15 | $100{,}000 \times (-5) = -500{,}000$ | $2{,}500 \times (225 - 400) = -437{,}500$ |
+
+El swap de varianza es convexo en la volatilidad, así que su comprador gana más y pierde menos que el comprador del swap de volatilidad.
+
+Ambos swaps dan una exposición pura a la volatilidad, sin la cobertura delta que necesita una opción. Los operadores los usan para apostar por la volatilidad, para operar la volatilidad realizada frente a la implícita y para cubrir la exposición a la volatilidad. La varianza implícita ha sido históricamente mayor que la varianza realizada, así que un swap de varianza vendido gana esta prima de riesgo de varianza la mayor parte del tiempo y pierde mucho en una caída brusca del mercado.
+
+Una tira estática de puts y calls fuera de dinero, con ponderaciones $1/K^2$, y una cobertura dinámica con futuros replican el swap de varianza. Las ponderaciones hacen que la exposición a la varianza de la tira sea independiente del precio spot, y el precio de ejercicio justo, que da al swap un valor cero, es
+
+$$
+K_{var} = \frac{2 e^{rT}}{T} \left[ \int_0^{F_0} \frac{P(K)}{K^2} \text{d}K + \int_{F_0}^{\infty} \frac{C(K)}{K^2} \text{d}K \right]
+$$
+
+donde $P(K)$ y $C(K)$ son los precios del put y del call con precio de ejercicio $K$, $F_0$ es el precio forward, $r$ el tipo y $T$ el vencimiento. El VIX aplica una forma discreta de esta fórmula a las opciones sobre el S&P 500 con un vencimiento de 23 a 37 días, interpoladas a 30 días, así que el VIX es aproximadamente la raíz cuadrada del precio de ejercicio del swap de varianza a 30 días.
+
+Un swap de volatilidad no tiene replicación estática, porque la volatilidad es la raíz cuadrada de la varianza. Por la desigualdad de Jensen, su precio de ejercicio justo está por debajo de $\sqrt{K_{var}}$, y la diferencia es un ajuste por convexidad que aumenta con la volatilidad de la volatilidad.
+
+$$
+K_{vol} \approx \sqrt{K_{var}} - \frac{\text{Var}(\sigma_R^2)}{8 K_{var}^{3/2}}
+$$
+
+La replicación falla en los movimientos extremos, porque las opciones con precios de ejercicio extremos son ilíquidas y los precios pueden dar saltos. Antes de 2008, los clientes compraban varianza de acciones individuales y vendían varianza de índices, así que los dealers estaban cortos netos en varianza de acciones individuales. Tuvieron grandes pérdidas en la crisis de 2008, y el mercado de swaps de varianza de acciones individuales desapareció en 2009. Desde entonces, muchos swaps de varianza tienen un límite en el payoff, y los swaps de varianza de índices siguen siendo el mercado principal.
+
+## Swaps de inflación
+
+Un swap de inflación es un derivado OTC que intercambia un tipo fijo por la inflación realizada de un índice de precios, que es $I(T)/I(t) - 1$ de $t$ a $T$, con $I(t)$ el índice en $t$. El receptor de inflación, también llamado comprador de protección frente a la inflación, paga el tipo fijo y gana cuando la inflación es mayor que él, y la otra parte es el pagador de inflación. El tipo fijo da al swap un valor cero al comienzo, así que no hay ningún pago en la contratación, y las partes nunca intercambian el nocional.
+
+Cada mercado usa un índice de precios de consumo (IPC) sin desestacionalizar. El índice de un mes se publica algunas semanas después, así que $I(t)$ es el índice de un mes anterior.
+
+| Divisa | Índice | Desfase habitual |
+|---|---|---|
+| EUR | Índice armonizado de precios de consumo de la zona del euro sin tabaco (HICPxT) | 3 meses |
+| USD | Índice de precios de consumo para todos los consumidores urbanos de EE. UU. (CPI-U), que también indexa los bonos del Tesoro protegidos contra la inflación (TIPS) | 3 meses |
+| GBP | Índice de precios al por menor del Reino Unido (RPI), para cerca del 99% de los swaps | 2 meses |
+
+### Swap de inflación cupón cero
+
+El swap de inflación más común, el swap cupón cero, tiene un único pago en el vencimiento $T$, en años
+
+$$
+\text{Pata de inflación} = L \left[ \frac{I(T)}{I(0)} - 1 \right] \qquad \text{Pata fija} = L [(1 + K)^T - 1]
+$$
+
+donde $L$ es el nocional y $K$ es el tipo fijo, capitalizado anualmente. El receptor de inflación recibe el pago neto $L [I(T)/I(0) - (1 + K)^T]$, que es cero cuando el índice crece un $K$ al año y negativo por debajo de ese valor, así que el $K$ cotizado, el tipo del swap de inflación, también se llama tipo de inflación breakeven.
+
+Por ejemplo, un fondo de pensiones recibe inflación en un swap a 5 años con un nocional de USD 10 millones, un tipo fijo del 2.5% y un índice de 300 al comienzo, así que la pata fija en el vencimiento es $10{,}000{,}000 \times (1.025^5 - 1) = 1{,}314{,}082$.
+
+| Índice en el vencimiento | Inflación por año | Pata de inflación | Pago neto al receptor de inflación |
+|---|---|---|---|
+| 345.00 | 2.83% | 1,500,000 | 185,918 |
+| 339.42 | 2.50% (breakeven) | 1,314,082 | 0 |
+| 330.00 | 1.92% | 1,000,000 | −314,082 |
+| 297.00 | −0.20% | −100,000 | −1,414,082 |
+
+Con el IPC forward $I(t,T)$, el valor esperado en $t$ de $I(T)$ bajo la medida forward de $T$, el valor del swap para el receptor de inflación en cualquier fecha $t$ no necesita ningún modelo de tipos ni de inflación
+
+$$
+V = L P(t,T) \left[ \frac{I(t,T)}{I(0)} - (1 + K)^T \right]
+$$
+
+Un swap nuevo tiene un valor cero, así que cada cotización $K_T$ da el IPC forward y el factor de descuento real, que es el precio de hoy de un bono cupón cero que paga $I(T)/I(0)$ en $T$, y las cotizaciones de todos los vencimientos construyen la curva de inflación
+
+$$
+I(0,T) = I(0)(1 + K_T)^T \qquad P_R(0,T) = P(0,T)(1 + K_T)^T
+$$
+
+Con los tipos cupón cero nominal y real capitalizados anualmente $y_T$ y $r_T$, esta es la ecuación de Fisher $1 + y_T = (1 + r_T)(1 + K_T)$.
+
+### Swap de inflación interanual
+
+Un swap de inflación interanual paga la inflación de cada periodo, normalmente de un año, así que en cada fecha de pago $t_k$ las patas son
+
+$$
+\text{Pata de inflación} = L \delta_k \left[ \frac{I(t_k)}{I(t_{k-1})} - 1 \right] \qquad \text{Pata fija} = L \delta_k K
+$$
+
+donde $\delta_k$ es la fracción de devengo de $t_{k-1}$ a $t_k$, y $t_0 = 0$. Igual que en un swap vanilla, el tipo fijo que da un valor cero es una media ponderada de los tipos forward, aquí los tipos de inflación interanual forward $Y_k$ bajo la medida forward $E^{t_k}$ de cada fecha de pago
+
+$$
+K = \frac{\sum_k \delta_k P(0,t_k) Y_k}{\sum_k \delta_k P(0,t_k)} \qquad 1 + Y_k = E^{t_k}\left[ \frac{I(t_k)}{I(t_{k-1})} \right]
+$$
+
+$1 + Y_k$ no es el cociente de los IPC forward $I(0,t_k)/I(0,t_{k-1})$, porque el IPC forward de $t_{k-1}$ es un valor esperado bajo la medida forward de $t_{k-1}$, no de $t_k$, y el valor esperado de un cociente no es el cociente de los valores esperados. Cuando cada IPC forward es lognormal bajo la medida forward de su fecha, un modelo de mercado da aproximadamente
+
+$$
+1 + Y_k \approx \frac{I(0,t_k)}{I(0,t_{k-1})} e^{D_k}
+$$
+
+donde el ajuste por convexidad $D_k$ depende de las volatilidades de los dos IPC forward y del tipo forward nominal del periodo, y de las correlaciones del IPC forward de $t_{k-1}$ con el IPC forward de $t_k$ y con ese tipo nominal. $D_k$ es cero para el primer periodo, en el que $I(t_0) = I(0)$ es conocido, y su tamaño crece con $t_{k-1}$, así que, a diferencia de un swap cupón cero, un swap interanual necesita un modelo, como el modelo de Jarrow-Yildirim o un modelo de mercado, igual que un CMS (véase [Swaps de vencimiento constante](#swaps-de-vencimiento-constante)).
+
+Un cap o un floor interanual es una serie de opciones sobre la inflación de cada periodo, con un payoff del caplet de $L \delta_k \max(I(t_k)/I(t_{k-1}) - 1 - \kappa, 0)$ para un precio de ejercicio $\kappa$ (véase [Caps y floors de tipos de interés](#caps-y-floors-de-tipos-de-interés)). Las notas indexadas a la inflación suelen fijar un suelo de cero a la inflación de cada periodo para mantener positivos sus cupones, lo que es un floor interanual con un precio de ejercicio cero.
+
+### Inflación breakeven
+
+Igual que un tipo forward procede de los tipos cupón cero, la inflación forward entre dos vencimientos procede de los tipos de los swaps cupón cero. El tipo 5y5y, la inflación media de los cinco años que comienzan dentro de cinco años, es
+
+$$
+F_{5y5y} = \left[ \frac{(1 + K_{10})^{10}}{(1 + K_5)^5} \right]^{1/5} - 1
+$$
+
+Por ejemplo, $K_5 = 2.3\%$ y $K_{10} = 2.4\%$ dan $F_{5y5y} = 2.50\%$. Como excluye la inflación de los próximos cinco años, el tipo 5y5y es una medida muy usada de las expectativas de inflación a más largo plazo.
+
+La inflación breakeven no es un pronóstico puro de la inflación, porque también contiene una prima de liquidez y una prima de riesgo de inflación, que compensa la incertidumbre de la inflación futura y puede ser negativa. La mayor parte de la caída del tipo 5y5y de la zona del euro de 2014 a 2016 procedió de la prima de riesgo, no de unas expectativas más bajas.
+
+La inflación breakeven de los bonos es la rentabilidad de un bono del Estado nominal menos la rentabilidad de un bono indexado a la inflación con el mismo vencimiento, y sin fricciones es igual al tipo del swap. En la práctica, el tipo del swap de EE. UU. es casi siempre mayor que el breakeven de los TIPS, en más de 100 pb durante la crisis financiera de 2008. En la zona del euro, los breakevens de los bonos también contienen efectos de liquidez que cambian con el tiempo y las primas de riesgo de cada país, así que el tipo del swap es la medida más limpia.
+
+### Usos de los swaps de inflación
+
+- **Cobertura de la inflación.** Los fondos de pensiones y las aseguradoras, con pasivos que suben con la inflación, reciben inflación, y las empresas de servicios públicos y de infraestructuras, con ingresos que suben con la inflación, la pagan. A diferencia de un bono indexado a la inflación, un swap puede ajustarse al vencimiento y al nocional de la exposición.
+- **Operaciones sobre las expectativas de inflación.** Un inversor que espera una inflación mayor que el tipo breakeven recibe inflación, y uno que espera una inflación menor la paga. Otras operaciones toman una posición sobre la pendiente de la curva, como los swaps a 5 años frente a los swaps a 10 años. En el Reino Unido, los hedge funds operan sobre todo vencimientos de tres años o menos.
+- **Gestión de activos y pasivos.** Un fondo de pensiones que tiene bonos nominales pero paga pensiones indexadas a la inflación recibe inflación y paga el tipo fijo, así que la sensibilidad a la inflación de sus activos coincide con la de sus pasivos sin vender los bonos. En el Reino Unido, los fondos de pensiones y los fondos de inversión orientada a pasivos (liability-driven investment, LDI) son los principales compradores de protección frente a la inflación, sobre todo para vencimientos de más de 10 años, y los bancos dealers son grandes vendedores netos.

@@ -311,3 +311,36 @@ En la primera mención de cada página se añade entre paréntesis el significad
 | confirmation | confirmación |
 | business day convention | convención de día hábil |
 | central counterparty (CCP) | contrapartida central (CCP) |
+
+## Términos de la página 09 (swaps no estándar)
+
+| English | Español |
+| --- | --- |
+| swaption (payer / receiver) | swaption pagadora (payer) / receptora (receiver) |
+| strike swap rate / cap rate / floor rate | tipo swap de ejercicio / tipo del cap / tipo del floor |
+| strike price | precio de ejercicio |
+| expiry | vencimiento (de la opción) |
+| holder | tenedor |
+| Black's model / normal (Bachelier) model / shifted lognormal | modelo de Black / modelo normal (de Bachelier) / lognormal desplazado |
+| forward swap rate | tipo swap forward |
+| put-call parity | paridad put-call |
+| flat volatility | volatilidad plana |
+| volatility smile / skew | sonrisa de volatilidad / sesgo (skew) |
+| implied / realized volatility | volatilidad implícita / realizada |
+| volatility surface | superficie de volatilidad |
+| constant maturity swap (CMS) | swap de vencimiento constante (constant maturity swap, CMS) |
+| forward measure / annuity measure / numeraire | medida forward / medida de la anualidad / numerario |
+| fixing date | fecha de fijación |
+| timing adjustment | ajuste por el momento del pago (timing adjustment) |
+| quanto swap / differential (diff) swap | swap quanto / swap diferencial (diff swap) |
+| commodity swap | swap de materias primas |
+| front-month | del primer vencimiento (front-month) |
+| volatility swap / variance swap | swap de volatilidad / swap de varianza |
+| vega notional | nocional vega |
+| variance risk premium | prima de riesgo de varianza |
+| inflation swap (zero-coupon / year-on-year) | swap de inflación (cupón cero / interanual) |
+| inflation receiver / payer | receptor / pagador de inflación |
+| breakeven inflation | inflación breakeven |
+| consumer price index (CPI) | índice de precios de consumo (IPC) |
+| inflation-linked bond | bono indexado a la inflación |
+| dealer | dealer |
