@@ -62,11 +62,14 @@ export default function BasisRisk() {
             <Line points={[[p.t2, F2], [1, F2]]} x={x} y={y} series="muted" dashed />
             <Line points={[[0, S1], [p.t2, s2]]} x={x} y={y} series="main" />
             <Line points={[[0, F1], [p.t2, F2]]} x={x} y={y} series="b" />
-            <Line points={[[p.t2, F2], [p.t2, s2]]} x={x} y={y} series="c" label={`b_2 = ${num(p.b2, 2)}`} />
+            <Line points={[[p.t2, F2], [p.t2, s2]]} x={x} y={y} series="c" />
             <Marker at={[0, S1]} x={x} y={y} series="main" label="S_1" />
             <Marker at={[0, F1]} x={x} y={y} series="b" label="F_1" />
-            <Marker at={[p.t2, s2]} x={x} y={y} series="main" label="S_2" />
-            <Marker at={[p.t2, F2]} x={x} y={y} series="b" label="F_2" />
+            <Marker at={[p.t2, s2]} x={x} y={y} series="main" />
+            <Marker at={[p.t2, F2]} x={x} y={y} series="b" />
+            <text className="grafico-etiqueta" x={x(p.t2) - 8} y={y(F2) + 18} textAnchor="end">
+              {`b_2 = S_2 − F_2 = ${num(p.b2, 2)}`}
+            </text>
           </>
         )}
       </Plot>

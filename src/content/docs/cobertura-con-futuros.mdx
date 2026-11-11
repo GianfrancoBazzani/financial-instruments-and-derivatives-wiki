@@ -8,6 +8,7 @@ banner:
 {/* Fuente: 06-hedging-strategies-using-futures.md @ 627bb65c932601a19f45d2d83c7b9f99169740dd */}
 
 import BasisRisk from "../../components/graficos/BasisRisk.tsx";
+import MinVarianceHedge from "../../components/graficos/MinVarianceHedge.tsx";
 
 Cubrirse con futuros significa tomar una posición en contratos de futuros para compensar una exposición al precio de un activo. El objetivo de la cobertura es reducir el riesgo.
 
@@ -124,7 +125,7 @@ $$
 \sigma_V^2 = \sigma_S^2 (1 - \rho^2)
 $$
 
-{/* GRAFICO: MinVarianceHedge */}
+<MinVarianceHedge client:visible />
 
 La **eficacia de la cobertura** es la parte de la varianza que elimina la cobertura, $1 - \sigma_V^2 / \sigma_S^2 = \rho^2$, que es el $R^2$ de la regresión. Una correlación de 0.9 elimina el 81% de la varianza, mientras que una correlación de 0.5 elimina solo el 25%.
 
