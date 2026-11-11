@@ -32,7 +32,6 @@ describe("translated pages match their source", () => {
   }
 });
 
-// Task 16 un-skips this test.
-test.skip("all 12 translated pages exist", () => {
+test("all 12 translated pages exist", () => {
   for (const def of pages) expect(existsSync(pagePath(def.slug)), def.slug).toBe(true);
 });
