@@ -13,6 +13,8 @@ const DEFAULTS = { b2: 0.1, t2: 0.7 };
 const S1 = 2.5;
 const F1 = 2.2;
 const F2 = 1.9;
+const X_MIN = -0.15; // room to the left of t_1 for the labels of S_1 and F_1
+const B2_LABEL_WIDTH = 66; // room for "b_2 = -0.30"
 
 /** Spot and futures prices from the start of the hedge (t_1, time 0) to its close-out t_2, with the basis b_2 and the convergence at T (time 1). */
 export default function BasisRisk() {
@@ -48,30 +50,38 @@ export default function BasisRisk() {
         ]}
       />
       <Plot
-        xDomain={[0, 1]}
-        yDomain={[1.5, 2.6]}
+        xDomain={[X_MIN, 1]}
+        yDomain={[1.3, 2.6]}
         xLabel="Tiempo (t_1 = 0, T = 1)"
         yLabel="Precio"
         xFormat={tickNum}
         yFormat={(v) => num(v, 1)}
         ariaLabel="Precio spot y precio de futuros desde el inicio de la cobertura hasta su cierre, con el basis b_2 en el momento de cierre"
       >
-        {({ x, y }) => (
+        {({ x, y, width }) => {
+        // The label of b_2 sits below the lower of the two prices at t_2, where no path runs: to the right of the
+        // segment if it fits, otherwise to its left.
+        const lowest = Math.min(s2, F2);
+        const fits = x(p.t2) + 8 + B2_LABEL_WIDTH <= width;
+        return (
           <>
             <Line points={[[p.t2, s2], [1, F2]]} x={x} y={y} series="muted" dashed />
             <Line points={[[p.t2, F2], [1, F2]]} x={x} y={y} series="muted" dashed />
             <Line points={[[0, S1], [p.t2, s2]]} x={x} y={y} series="main" />
             <Line points={[[0, F1], [p.t2, F2]]} x={x} y={y} series="b" />
             <Line points={[[p.t2, F2], [p.t2, s2]]} x={x} y={y} series="c" />
-            <Marker at={[0, S1]} x={x} y={y} series="main" label="S_1" />
-            <Marker at={[0, F1]} x={x} y={y} series="b" label="F_1" />
+            <Marker at={[0, S1]} x={x} y={y} series="main" />
+            <Marker at={[0, F1]} x={x} y={y} series="b" />
+            <text className="grafico-etiqueta" x={x(0) - 8} y={y(S1)} dy="0.32em" textAnchor="end">S_1</text>
+            <text className="grafico-etiqueta" x={x(0) - 8} y={y(F1)} dy="0.32em" textAnchor="end">F_1</text>
             <Marker at={[p.t2, s2]} x={x} y={y} series="main" />
             <Marker at={[p.t2, F2]} x={x} y={y} series="b" />
-            <text className="grafico-etiqueta" x={x(p.t2) - 8} y={y(F2) + 18} textAnchor="end">
-              {`b_2 = S_2 − F_2 = ${num(p.b2, 2)}`}
+            <text className="grafico-etiqueta" x={x(p.t2) + (fits ? 8 : -8)} y={y(lowest) + 18} textAnchor={fits ? "start" : "end"}>
+              {`b_2 = ${num(p.b2, 2)}`}
             </text>
           </>
-        )}
+        );
+      }}
       </Plot>
     </ChartFrame>
   );
