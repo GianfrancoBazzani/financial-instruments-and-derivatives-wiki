@@ -9,6 +9,7 @@ banner:
 
 import Diagrama from "../../components/Diagrama.astro";
 import FraPayoff from "../../components/graficos/FraPayoff.tsx";
+import ConversionFactor from "../../components/graficos/ConversionFactor.tsx";
 
 ## Forward rate agreements
 
@@ -134,7 +135,7 @@ El tipo de interés para un periodo de 3 meses es $\sqrt{1.03} - 1$, es decir, e
 
 <Diagrama nombre="conversion-factor-3-month-offset" alt="Línea temporal del factor de conversión de un bono que lleva 3 meses de un periodo de cupón" />
 
-{/* GRAFICO: ConversionFactor */}
+<ConversionFactor client:visible />
 
 **Bono más barato de entregar**
 
