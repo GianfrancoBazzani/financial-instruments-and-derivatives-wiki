@@ -1,0 +1,273 @@
+---
+title: FRAs y futuros sobre tipos de interés
+description: Forward rate agreements, futuros sobre bonos del Tesoro, Eurodollar y SOFR, ajuste por convexidad, construcción de curvas cupón cero con futuros y teoría de la preferencia por la liquidez.
+banner:
+  content: "Traducción pendiente de revisión"
+---
+
+{/* Fuente: 07-fras-and-interest-rate-futures.md @ 627bb65c932601a19f45d2d83c7b9f99169740dd */}
+
+import Diagrama from "../../components/Diagrama.astro";
+
+## Forward rate agreements
+
+Un forward rate agreement (FRA) es un acuerdo OTC para intercambiar un tipo fijo $R_K$ por un tipo de referencia que el mercado observará en el futuro. Ambos tipos se aplican a un principal $L$ durante el periodo de $t_1$ a $t_2$, de $\tau = t_2 - t_1$ años, pero el principal no se intercambia. El tipo de referencia solía ser el LIBOR. Tras su retirada, los FRA usan tipos como el SOFR o el SONIA capitalizados a lo largo del periodo (véase [Tipos de interés](/tipos-de-interes/)).
+
+Un FRA fija un tipo futuro. Un operador que va a recibir el SOFR sobre un principal en un periodo futuro recibe un tipo fijo y paga el SOFR en un FRA. Un operador que va a pagar el SOFR hace lo contrario.
+
+Como son contratos OTC, los FRA pueden tener cualquier nocional, cualquier fecha y cualquier tipo de referencia. La mayoría usa periodos estándar como $3 \times 6$ y $6 \times 12$ y documentación estándar (las condiciones FRABBA, las definiciones de la ISDA), porque los contratos estándar son más fáciles de valorar, cubrir y cerrar.
+
+### Payoff
+
+Si $R_M$ es el tipo de referencia que el mercado observa para el periodo, la parte que recibe el tipo fijo obtiene el siguiente importe en $t_2$. Un importe negativo va a parar a la otra parte.
+
+$$
+\text{Payoff}_{\text{recibe fijo}} = L \tau (R_K - R_M)
+$$
+
+**Ejemplo.** Un FRA intercambia el 3% por el LIBOR a tres meses desde el año 2 hasta el año 2.25 sobre un principal de \$100 millones, con capitalización trimestral. El LIBOR resulta ser el 3.5%, así que la parte que paga el 3% y recibe el LIBOR obtiene
+
+$$
+100{,}000{,}000 \times (0.035 - 0.030) \times 0.25 = \$125{,}000
+$$
+
+a los 2.25 años. En la práctica, el LIBOR se conoce en el año 2, así que el pago se hace a los 2 años y es $125{,}000 / (1 + 0.035 \times 0.25) = \text{\textdollar}123{,}916$.
+
+{/* GRAFICO: FraPayoff */}
+
+### Valoración
+
+Cuando se contrata un FRA, $R_K$ suele ser el tipo forward $R_F$ del tipo de referencia para el periodo (véase [Curvas de tipos de interés](/curvas-de-tipos/)), así que el FRA vale cero. Más tarde $R_F$ cambia. Un nuevo FRA a $R_F$ vale cero, y para la parte que recibe el tipo fijo solo se diferencia del antiguo FRA en $L \tau (R_K - R_F)$ en $t_2$. El antiguo FRA vale, por tanto, el valor actual de este importe.
+
+$$
+V_{\text{recibe fijo}} = L \tau (R_K - R_F) DF(t_2) \qquad V_{\text{paga fijo}} = L \tau (R_F - R_K) DF(t_2)
+$$
+
+Así, un FRA puede valorarse si suponemos que el tipo de referencia será igual al tipo forward actual $R_F$. $R_K$ y $R_F$ usan la capitalización del periodo.
+
+### Tipos retrospectivos y prospectivos
+
+Un tipo prospectivo (forward looking) se fija al comienzo de su periodo. El LIBOR, ahora retirado (véase [Tipos de interés](/tipos-de-interes/)), era un tipo de esta clase, y el EURIBOR todavía lo es. En un FRA sobre el LIBOR, $R_M$ se conocía en $t_1$, así que el FRA se liquidaba en $t_1$ con el payoff descontado de $t_2$ a $t_1$ al tipo $R_M$.
+
+Un tipo retrospectivo (backward looking) solo se conoce al final de su periodo. El SOFR es un tipo a un día, así que el FRA usa el SOFR capitalizado día a día a lo largo del periodo, a partir de operaciones reales de repo a un día. Por tanto, $R_M$ solo se conoce en $t_2$, y el FRA paga el payoff en $t_2$ sin descuento.
+
+<Diagrama nombre="fra-libor-vs-sofr-timeline" alt="Línea temporal del pago de un FRA sobre el LIBOR y sobre el SOFR" />
+
+## Futuros sobre tipos de interés
+
+Los futuros sobre tipos de interés son contratos estandarizados que permiten fijar hoy los tipos de interés de un periodo futuro concreto. Se negocian en mercados organizados, y los inversores los compran y los venden a través de brókeres.
+
+Como todos los futuros, se liquidan a diario al precio de liquidación, mediante una cuenta de margen con un margen inicial y un margen de mantenimiento (véase [Futuros y forwards](/futuros-y-forwards/)), mientras que un forward solo paga al vencimiento. Con tipos de interés constantes, este calendario de pagos no tiene efecto, y los precios de los futuros y de los forwards son iguales. En los futuros sobre tipos de interés, los flujos diarios dependen de los mismos tipos a los que se invierten o se financian. El precio de un futuro sobre tipos de interés baja cuando suben los tipos, así que la parte larga financia las pérdidas a tipos altos e invierte las ganancias a tipos bajos, lo que hace que el precio del futuro sea algo inferior al precio del forward. La diferencia es insignificante para vencimientos cortos, pero no para vencimientos largos, que necesitan un ajuste por convexidad (véase [Ajuste por convexidad](#ajuste-por-convexidad)). Hasta entonces, valoramos los futuros sobre tipos de interés como si fueran forwards.
+
+<Diagrama nombre="futures-daily-settlement-timeline" alt="Precios de futuros y spot hasta el último día de negociación, y liquidación diaria de una posición larga" />
+
+En esta sección describimos contratos que se negocian en Estados Unidos. Aun así, muchos de los demás contratos de futuros sobre tipos de interés del mundo han seguido el modelo de estos contratos.
+
+### Futuros sobre bonos del Tesoro
+
+Los futuros sobre bonos del Tesoro y sobre notas del Tesoro se liquidan mediante la entrega de un valor del Tesoro. La parte con la posición corta elige qué valor entrega de entre una cesta de bonos o notas admisibles. El vencimiento restante de un valor se mide desde el primer día del mes de entrega.
+
+*Futuros Ultra T-Bond*
+
+Según las condiciones de este contrato, que empezó en 2010, la parte con la posición corta puede entregar cualquier bono del Estado con un vencimiento restante de al menos 25 años. El valor nominal de un contrato es de \$100,000.
+
+*Futuros T-Bond*
+
+En el contrato de futuros T-bond, puede entregarse cualquier bono del Estado con un vencimiento restante de al menos 15 años y de menos de 25 años. El valor nominal de un contrato es de \$100,000.
+
+*Futuros sobre notas del Tesoro a 10, 5 y 2 años*
+
+| Contrato | Valor nominal | Vencimiento restante de la nota | Vencimiento original de la nota |
+| -------- | ------------- | ------------------------------- | ------------------------------- |
+| 10 años  | \$100,000     | De 6.5 a 10 años                | Cualquiera                      |
+| 5 años   | \$100,000     | Al menos 4 años y 2 meses       | Como máximo 5 años y 3 meses    |
+| 2 años   | \$200,000     | De 1 año y 9 meses a 2 años     | Como máximo 5 años y 3 meses    |
+
+En el contrato a 2 años, el límite superior de 2 años se mide desde el último día del mes de entrega. El mercado también cotiza futuros sobre notas del Tesoro a 3 años y Ultra a 10 años.
+
+**Futuros Fed Funds**
+
+El contrato de futuros Fed Funds a 30 días tiene un precio de liquidación igual a 100 menos la media aritmética del tipo efectivo diario de los fondos federales durante el mes del contrato. El contrato se liquida en efectivo el primer día hábil posterior al final del mes. Su nocional es de \$5 millones durante un mes, así que un punto básico vale $5{,}000{,}000 \times 0.0001 / 12 = \text{\textdollar}41.67$. El mercado usa estos futuros para inferir la trayectoria esperada del tipo de política monetaria de la Reserva Federal.
+
+**Cotizaciones**
+
+Los contratos de futuros Ultra T-bond y sobre bonos del Tesoro se cotizan en dólares y treintaidosavos de dólar por cada \$100 de valor nominal, igual que los bonos en el mercado spot. Por ejemplo, 179-20 significa 179 20/32, o 179.625.
+
+El contrato de futuros sobre notas del Tesoro a 10 años se cotiza con una precisión de medio treintaidosavo, así que el último dígito da la fracción de un treintaidosavo. Así, un precio de liquidación de 139-025 significa 139 2.5/32, o 139.078125. Los contratos sobre notas del Tesoro a 5 años y a 2 años se cotizan con aún más precisión, de un cuarto (5 años) y de un octavo (2 años) de treintaidosavo. Así, un precio de apertura de 125-132 significa 125 13.25/32, o 125.4140625.
+
+**Factores de conversión**
+
+Cuando se entrega un bono concreto en un contrato de futuros sobre bonos del CME Group, un parámetro llamado factor de conversión define el precio que recibe la parte con la posición corta por el bono. El precio cotizado aplicable al bono entregado es el producto del factor de conversión por el precio de liquidación más reciente del contrato de futuros. Teniendo en cuenta el cupón corrido, el efectivo que se recibe por cada \$100 de valor nominal del bono entregado es
+
+$$
+(\text{Most recent settlement price} \times \text{Conversion factor}) + \text{Accrued interest}
+$$
+
+Ilustremos esto con el siguiente ejemplo. Cada contrato es para la entrega de bonos por un valor nominal de \$100,000. Supongamos que el precio de liquidación más reciente es 120-00, que el factor de conversión del bono entregado es 1.38 y que el cupón corrido de este bono en el momento de la entrega es de \$3 por cada \$100 de valor nominal. El efectivo que recibe la parte con la posición corta (y que paga la parte con la posición larga) es entonces
+
+$$
+(1.3800 \times 120.00) + 3.00 = \$168.60
+$$
+
+por cada \$100 de valor nominal. Una parte con la posición corta en un contrato entregaría bonos con un valor nominal de \$100,000 y recibiría \$168,600.
+
+El factor de conversión de un bono es igual al precio cotizado que tendría el bono por dólar de principal el primer día del mes de entrega, suponiendo que el tipo de interés de todos los vencimientos es del 6% anual (con capitalización semestral). Si hace falta, el vencimiento del bono y los plazos hasta las fechas de pago de cupón se redondean hacia abajo al múltiplo de 3 meses más próximo a efectos del cálculo. Esta práctica permite al mercado elaborar tablas exhaustivas. Si, tras el redondeo, el bono dura un número exacto de periodos de 6 meses, se supone que el primer cupón se paga a los 6 meses. Si, tras el redondeo, el bono no dura un número exacto de periodos de 6 meses, se supone que el primer cupón se paga a los 3 meses y se resta el cupón corrido. En los contratos de futuros sobre notas a 2 años y a 5 años se usa un cálculo similar para determinar el factor de conversión, salvo que el plazo hasta el vencimiento se redondea hacia abajo al mes más próximo.
+
+**Ejemplo 1, un número entero de periodos de 6 meses.** Consideremos un bono con un cupón del 10% y un vencimiento a 20 años y 2 meses que puede entregarse en el contrato de futuros T-bond. Para calcular el factor de conversión, se supone que el bono tiene exactamente 20 años hasta el vencimiento, que es un número entero de periodos de 6 meses. Por tanto, se supone que el primer pago de cupón se hace a los 6 meses y los siguientes a intervalos de 6 meses hasta el final de los 20 años, cuando se paga el principal. Con un valor nominal de \$100 y un tipo de descuento del 6% anual con capitalización semestral (3% por cada 6 meses), el valor del bono es
+
+$$
+\sum_{i=1}^{40} \frac{5}{1.03^i} + \frac{100}{1.03^{40}} = \$146.23
+$$
+
+Al dividir entre el valor nominal se obtiene un factor de conversión de 1.4623.
+
+<Diagrama nombre="conversion-factor-whole-periods" alt="Línea temporal del factor de conversión de un bono con un número entero de periodos de 6 meses" />
+
+**Ejemplo 2, un número no entero de periodos de 6 meses.** Consideremos un bono con un cupón del 8% y un vencimiento a 18 años y 4 meses. Para calcular el factor de conversión, se supone que el bono tiene exactamente 18 años y 3 meses hasta el vencimiento, que no es un número entero de periodos de 6 meses, así que se supone que el primer cupón se paga a los 3 meses. Al descontar todos los pagos hasta un punto situado 3 meses después del primer día del mes de entrega, al 6% anual con capitalización semestral, se obtiene
+
+$$
+4 + \sum_{i=1}^{36} \frac{4}{1.03^i} + \frac{100}{1.03^{36}} = \$125.8323
+$$
+
+El tipo de interés para un periodo de 3 meses es $\sqrt{1.03} - 1$, es decir, el 1.4889%, así que al descontar hasta el primer día del mes de entrega se obtiene $125.8323 / 1.014889 = \text{\textdollar}123.99$. El bono lleva 3 meses de un periodo de cupón de 6 meses, así que el cupón corrido es la mitad del cupón de 4, es decir, 2.0. Al restarlo se obtiene \$121.99, y el factor de conversión es, por tanto, 1.2199.
+
+<Diagrama nombre="conversion-factor-3-month-offset" alt="Línea temporal del factor de conversión de un bono que lleva 3 meses de un periodo de cupón" />
+
+{/* GRAFICO: ConversionFactor */}
+
+**Bono más barato de entregar**
+
+Durante el mes de entrega, se pueden entregar muchos bonos con cupones y vencimientos distintos, y la parte con la posición corta elige cuál entrega. Por cada bono, recibe
+
+$$
+(\text{Most recent settlement price} \times \text{Conversion factor}) + \text{Accrued interest}
+$$
+
+y paga el siguiente importe para comprar el bono.
+
+$$
+\text{Quoted bond price} + \text{Accrued interest}
+$$
+
+El cupón corrido se cancela, así que el bono más barato de entregar es el que tiene el menor valor de
+
+$$
+\text{Quoted bond price} - (\text{Most recent settlement price} \times \text{Conversion factor})
+$$
+
+La parte con la posición corta lo encuentra calculando este valor para cada bono entregable.
+
+**Basis**
+
+Este valor es el **basis bruto** (gross basis) del bono, que es la versión del basis para los futuros sobre bonos (véase [Estrategias de cobertura con futuros](/cobertura-con-futuros/)). Antes de la entrega usa el precio de futuros actual, que se convierte en el precio de liquidación más reciente en el momento de la entrega. El factor de conversión pone el precio de futuros en la escala de cada bono.
+
+$$
+\text{Gross basis} = \text{Quoted bond price} - (\text{Futures price} \times \text{Conversion factor})
+$$
+
+En la entrega, el arbitraje lleva el basis bruto del bono más barato de entregar a un valor cercano a cero, así que el precio de futuros converge a su precio cotizado dividido entre su factor de conversión. Los demás bonos entregables mantienen un basis bruto positivo.
+
+Antes de la entrega, el basis bruto también contiene el carry hasta la entrega, que es el ingreso por cupones menos el coste de repo para financiar el bono. El **basis neto** (net basis) lo elimina.
+
+$$
+\text{Net basis} = \text{Gross basis} - (\text{Coupon income} - \text{Repo financing cost})
+$$
+
+El bono más barato de entregar suele ser el que tiene el menor basis neto.
+
+Cuando las rentabilidades superan el 6%, los factores de conversión favorecen la entrega de bonos de cupón bajo y vencimiento largo. Cuando las rentabilidades están por debajo del 6%, favorecen los bonos de cupón alto y vencimiento corto. Una curva de rentabilidades con pendiente ascendente favorece los bonos con un plazo largo hasta el vencimiento, y una con pendiente descendente favorece los bonos con un plazo corto hasta el vencimiento.
+
+<Diagrama nombre="cheapest-to-deliver-yields" alt="Basis bruto en la entrega frente a la rentabilidad para un bono de duración larga y otro de duración corta, y efecto de la pendiente de la curva de rentabilidades" />
+
+**Wild card play**
+
+Además de la opción del bono más barato de entregar, la parte con la posición corta tiene una opción conocida como wild card play (jugada comodín). Los futuros del Tesoro se liquidan a las 14:00, hora de Chicago, pero los bonos del Tesoro siguen negociándose en el mercado spot después de esa hora. La parte con la posición corta puede dar su aviso de intención de entrega hasta las 18:00 (las 20:00 en las normas antiguas), y la factura sigue usando el precio de liquidación de las 14:00 de ese día.
+
+Si los precios de los bonos bajan después de las 14:00, la parte con la posición corta da el aviso, compra el bono más barato de entregar al precio más bajo y lo entrega al precio de factura más alto. Si no bajan, espera y puede volver a jugar otro día del mes de entrega. Por ejemplo, con un precio de liquidación de 120 y un factor de conversión de 1, una caída del precio del bono a 119 a las 17:00 da un beneficio de 1 por cada \$100 de valor nominal.
+
+Esta opción solo tiene valor para la parte con la posición corta, así que el precio de futuros es inferior al que sería sin ella.
+
+**Determinación del precio de futuros**
+
+Es difícil determinar un precio de futuros teórico exacto para el contrato sobre bonos del Tesoro, porque las opciones de la parte con la posición corta sobre el momento de la entrega y sobre la elección del bono que entrega no pueden valorarse con facilidad. Sin embargo, si suponemos que se conocen tanto el bono más barato de entregar como la fecha de entrega, el futuro sobre bonos del Tesoro es un contrato de futuros sobre un valor negociado que proporciona ingresos conocidos, así que se aplica el precio de ausencia de arbitraje de un activo con ingresos conocidos (véase [Valoración de futuros y forwards](/valoracion-de-futuros-y-forwards/)).
+
+$$
+F_0 = (S_0 - I) e^{rT}
+$$
+
+### Futuros Eurodollar y SOFR
+
+**Eurodollar**
+
+Un eurodólar es un depósito en dólares estadounidenses en un banco situado fuera de Estados Unidos. Los futuros Eurodollar eran sobre el LIBOR del USD a tres meses (90 días), el tipo interbancario de estos depósitos, con un principal de \$1 millón y una cotización de 100 menos el tipo, así que un punto básico valía \$25 ($1000000 \times 0.0001 \times 0.25$). Se liquidaban en efectivo a 100 menos la fijación del LIBOR del último día de negociación, el segundo día hábil de Londres anterior al tercer miércoles del mes del contrato.
+
+Ya no se negocian. Antes de que terminara el LIBOR del USD el 30 de junio de 2023, el CME convirtió los futuros y las opciones Eurodollar abiertos con vencimiento a partir de septiembre de 2023, unos 7.5 millones de contratos al cierre del 14 de abril de 2023, en futuros y opciones SOFR a 3 meses. Los contratos de mayo y junio de 2023 se negociaron hasta el vencimiento, y el contrato de junio, liquidado con la fijación del LIBOR del 19 de junio de 2023, fue el último.
+
+**Futuros SOFR**
+
+El contrato de futuros SOFR a 1 mes está diseñado para ser lo más parecido posible al contrato de futuros sobre el tipo de los fondos federales. Se liquida al final del mes del contrato a 100 menos la media aritmética de los tipos SOFR a 1 día durante el mes, y se negocia durante los 14 meses siguientes al mes en curso. Igual que el contrato sobre el tipo de los fondos federales, cubre una posición de \$5000000, así que una variación de 1 punto básico en el tipo implícito da una ganancia o una pérdida por contrato de
+
+$$
+5000000 \times 0.0001 \times \frac{1}{12} = \$41.67
+$$
+
+El contrato de futuros SOFR a 3 meses está diseñado para ser lo más parecido posible al contrato de futuros Eurodollar, con una posición de \$1 millón, \$25 por punto básico y los meses de contrato de marzo, junio, septiembre y diciembre. El periodo de referencia empieza el tercer miércoles del mes del contrato y termina el tercer miércoles 3 meses después, cuando el contrato se liquida a $100 - R$, donde $R$ es el tipo que se obtiene al capitalizar los tipos SOFR a 1 día a lo largo del periodo. La principal diferencia es que los futuros Eurodollar se liquidaban con una fijación del LIBOR conocida al comienzo del periodo (prospectivo), mientras que los futuros SOFR a 3 meses se liquidan con un tipo que solo se conoce al final (retrospectivo) (véase [Tipos retrospectivos y prospectivos](#tipos-retrospectivos-y-prospectivos)).
+
+**Posiciones largas y cortas**
+
+El precio de estos futuros es 100 menos el tipo, así que baja cuando sube el tipo. La parte corta gana cuando sube el tipo y la parte larga gana cuando baja, como en un FRA en el que la parte corta paga el tipo fijo y la parte larga lo recibe. Un prestatario que pagará el tipo en un periodo futuro se cubre con una posición corta, y un inversor que lo recibirá se cubre con una posición larga. Por ejemplo, una subida de 10 puntos básicos en el tipo de un futuro SOFR a 3 meses da a la parte corta \$250 ($10 \times 25$) por contrato y a la parte larga una pérdida del mismo importe.
+
+### Ajuste por convexidad
+
+Aunque antes supusimos que la valoración de los forwards y la de los futuros son muy parecidas, cuando los contratos duran más (como regla general, 2 años) el efecto de la convexidad hace que la diferencia entre los futuros y los FRA sea apreciable. El ajuste por convexidad $c$ se hace de modo que
+
+$$
+\text{Forward rate} = \text{Futures rate} - c
+$$
+
+Una razón del ajuste por convexidad es la liquidación diaria, que favorece a la parte corta de un futuro en comparación con el mismo contrato en un FRA. La parte corta gana cuando suben los tipos y la parte larga gana cuando bajan (véase [Futuros Eurodollar y SOFR](#futuros-eurodollar-y-sofr)).
+
+- Cuando suben los tipos, la parte corta gana e invierte los beneficios a un interés más alto, lo que es un efecto positivo, y la parte larga pierde y financia la deuda a un interés más alto, lo que es un efecto negativo.
+- Cuando bajan los tipos, la parte larga gana pero invierte los beneficios a un interés más bajo, lo que es un efecto negativo, y la parte corta pierde pero financia la deuda a un interés más bajo, lo que es un efecto positivo.
+
+En ambos casos el efecto es positivo para la parte corta y negativo para la parte larga. Los operadores de FRA no se ven afectados, porque un FRA paga una sola vez y no tiene flujos día a día. La parte larga de un futuro acepta su desventaja solo a cambio de un precio de futuros más bajo, así que el tipo de futuros es más alto que el tipo forward y $c$ es positivo.
+
+Los futuros Eurodollar tenían una segunda razón. Se liquidaban al comienzo del periodo al que se aplicaba el tipo, mientras que un FRA paga el mismo importe al final del periodo, o su valor actual al comienzo (véase [Payoff](#payoff)). El pago anticipado vale más cuando los tipos son altos, que es cuando gana la parte corta, y menos cuando los tipos son bajos, que es cuando gana la parte larga. Esto también favorece a la parte corta y aumenta $c$. Los futuros SOFR a 3 meses se liquidan al final de su periodo, como un FRA sobre el SOFR, así que esta razón no se aplica a ellos.
+
+### Curvas cupón cero
+
+Los contratos de futuros dan estimaciones de los tipos forward, tras el ajuste por convexidad y la conversión a capitalización continua. Con la ecuación del tipo forward para la capitalización continua (véase [Curvas de tipos de interés](/curvas-de-tipos/#tipos-forward)), cada tipo forward $F$ de $T_1$ a $T_2$ extiende un tipo cupón cero conocido $R_1$ en $T_1$ al tipo cupón cero $R_2$ en $T_2$.
+
+$$
+R_2 = \frac{F (T_2 - T_1) + R_1 T_1}{T_2}
+$$
+
+La misma ecuación permite hacer el bootstrapping de las curvas cupón cero del LIBOR o del SOFR, un contrato de futuros tras otro.
+
+**Ejemplo, LIBOR.** El tipo cupón cero del LIBOR a 300 días, interpolado entre los tipos a 6 meses y a 12 meses, es del 3.10% con capitalización continua. Las cotizaciones de los futuros Eurodollar dan un tipo forward del 3.60% con capitalización continua para el periodo de 90 días que empieza dentro de 300 días, lo que extiende la curva cupón cero hasta el siguiente vencimiento de contrato, dentro de 391 días.
+
+$$
+R_{391} = \frac{0.036 \times 91 + 0.031 \times 300}{391} = 0.03216 = 3.216\%
+$$
+
+Cada nuevo tipo forward extiende la curva otros tres meses. El tipo de los futuros Eurodollar es un tipo a 90 días, pero el bootstrapping lo aplica a los 91 días que hay entre los vencimientos de los contratos, de modo que los periodos se unan sin huecos.
+
+**Ejemplo, SOFR.** En octubre, el futuro SOFR a 3 meses en curso tiene 2 meses hasta su fecha de entrega de diciembre, así que ha transcurrido 1 mes de su periodo de referencia. Los tipos a un día de ese mes, ya observados, se capitalizan al 2% anual, y la cotización del futuro da el 2.5% anual para todo el periodo de 3 meses, ambos con capitalización continua. El tipo cupón cero $R$ de los 2 meses siguientes debe combinarse con el mes observado para dar el tipo de todo el periodo.
+
+$$
+0.02 \times \frac{1}{12} + R \times \frac{2}{12} = 0.025 \times \frac{3}{12}
+$$
+
+$$
+R = \frac{0.025 \times 3 - 0.02 \times 1}{2} = 0.0275 = 2.75\%
+$$
+
+<Diagrama nombre="sofr-futures-bootstrap-timeline" alt="Línea temporal del ejemplo del SOFR, con los tipos observado e implícito del contrato en curso, su liquidación y el tipo cupón cero a 2 meses desde hoy" />
+
+## Teoría de la preferencia por la liquidez
+
+**Teoría de las expectativas:** a los inversores solo les importan los rendimientos esperados, así que el tipo forward es igual al tipo spot futuro esperado. Los tipos forward son predictores insesgados, y la pendiente de la curva de tipos refleja solo las variaciones esperadas de los tipos. Una pendiente ascendente significa que se espera que los tipos suban.
+
+**Teoría de la preferencia por la liquidez:** los inversores exigen una prima por mantener bonos largos más arriesgados, así que el tipo forward es igual al tipo spot futuro esperado más una prima de liquidez. Por tanto, los tipos forward sobrestiman los tipos spot futuros esperados. Por eso la curva suele tener pendiente ascendente incluso cuando se espera que los tipos se mantengan constantes.
+
+**Ejemplo:** Con un tipo spot a 1 año del 4% y un tipo spot a 2 años del 5%, el tipo forward es de aproximadamente el 6%. La teoría de las expectativas dice que el mercado espera que el tipo del año próximo sea del 6%. La teoría de la preferencia por la liquidez, con una prima del 1%, dice que espera aproximadamente el 5%.

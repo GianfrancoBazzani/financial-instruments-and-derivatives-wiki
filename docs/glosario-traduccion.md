@@ -258,3 +258,24 @@ En la primera mención de cada página se añade entre paréntesis el significad
 | cheapest to deliver | el más barato de entregar |
 | duration matching / portfolio immunization | igualación de duraciones / inmunización de la cartera |
 | nonparallel shift | desplazamiento no paralelo |
+
+## Términos de la página 07 (FRAs y futuros sobre tipos de interés)
+
+| English | Español |
+| --- | --- |
+| forward rate agreement (FRA) | forward rate agreement (FRA) |
+| notional | nocional |
+| backward looking / forward looking (rate) | tipo retrospectivo / prospectivo |
+| fixing | fijación |
+| settlement price | precio de liquidación |
+| Treasury bond / note futures | futuros sobre bonos / notas del Tesoro |
+| face value (contrato) | valor nominal |
+| conversion factor | factor de conversión |
+| cheapest-to-deliver bond | bono más barato de entregar |
+| gross basis / net basis | basis bruto / basis neto |
+| wild card play | wild card play (jugada comodín) |
+| Eurodollar futures / SOFR futures | futuros Eurodollar / futuros SOFR |
+| convexity adjustment | ajuste por convexidad |
+| zero curve | curva cupón cero |
+| thirty-second (de un dólar) | treintaidosavo |
+| invoice price | precio de factura |

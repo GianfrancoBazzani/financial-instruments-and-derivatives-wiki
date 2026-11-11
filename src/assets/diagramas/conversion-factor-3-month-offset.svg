@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 410" font-size="16">
+<defs>
+  <marker id="cpn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+    <path d="M0,0 L10,5 L0,10 z" fill="var(--g-b)"/>
+  </marker>
+  <marker id="disc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+    <path d="M0,0 L10,5 L0,10 z" fill="var(--g-c)"/>
+  </marker>
+</defs>
+
+<text x="20" y="28" font-weight="bold">Bono con cupón del 8% y vencimiento a 18 años y 4 meses</text>
+<text x="20" y="48" font-size="14">Redondeado a 18 años y 3 meses, que no es un número entero de periodos de 6 meses,</text>
+<text x="20" y="66" font-size="14">así que se supone que el primer cupón se paga a los 3 meses y se resta el cupón corrido</text>
+
+<!-- cupón corrido desde el último cupón supuesto -->
+<rect x="110" y="189" width="50" height="10" fill="var(--g-c)" fill-opacity="0.45"/>
+<text x="135" y="178" text-anchor="middle" font-size="13">corrido 2.0</text>
+
+<!-- eje con una interrupción -->
+<line x1="110" y1="200" x2="160" y2="200" stroke="var(--g-muted)" stroke-width="2" stroke-dasharray="4 3"/>
+<line x1="160" y1="200" x2="350" y2="200" stroke="currentColor" stroke-width="2"/>
+<line x1="400" y1="200" x2="640" y2="200" stroke="currentColor" stroke-width="2"/>
+<line x1="346" y1="208" x2="354" y2="192" stroke="currentColor" stroke-width="2"/>
+<line x1="396" y1="208" x2="404" y2="192" stroke="currentColor" stroke-width="2"/>
+<text x="375" y="205" text-anchor="middle">…</text>
+
+<!-- marcas -->
+<line x1="110" y1="192" x2="110" y2="208" stroke="var(--g-muted)" stroke-width="2"/>
+<g stroke="currentColor" stroke-width="2">
+  <line x1="160" y1="192" x2="160" y2="208"/>
+  <line x1="210" y1="192" x2="210" y2="208"/>
+  <line x1="310" y1="192" x2="310" y2="208"/>
+  <line x1="500" y1="192" x2="500" y2="208"/>
+  <line x1="600" y1="192" x2="600" y2="208"/>
+</g>
+
+<!-- vencimiento real -->
+<line x1="617" y1="160" x2="617" y2="215" stroke="var(--g-muted)" stroke-width="2" stroke-dasharray="4 3"/>
+<text x="626" y="172" font-size="13">vencimiento real</text>
+<text x="626" y="188" font-size="13">18 años y 4 meses</text>
+
+<!-- cupones -->
+<g stroke="var(--g-b)" stroke-width="2.5">
+  <line x1="210" y1="197" x2="210" y2="158" marker-end="url(#cpn)"/>
+  <line x1="310" y1="197" x2="310" y2="158" marker-end="url(#cpn)"/>
+  <line x1="500" y1="197" x2="500" y2="158" marker-end="url(#cpn)"/>
+  <line x1="600" y1="197" x2="600" y2="108" marker-end="url(#cpn)"/>
+</g>
+<g text-anchor="middle">
+  <text x="210" y="148">4</text>
+  <text x="310" y="148">4</text>
+  <text x="500" y="148">4</text>
+  <text x="600" y="98">4 + 100</text>
+</g>
+
+<circle cx="160" cy="200" r="6" fill="var(--g-c)"/>
+
+<!-- etiquetas de tiempo -->
+<g text-anchor="middle" font-size="14">
+  <text x="110" y="226">−3 meses</text>
+  <text x="160" y="226">0</text>
+  <text x="210" y="226">3 meses</text>
+  <text x="310" y="226">9 meses</text>
+  <text x="500" y="226">17.75 años</text>
+  <text x="600" y="226">18.25 años</text>
+</g>
+<text x="160" y="245" text-anchor="middle" font-size="13">primer día del mes de entrega</text>
+<text x="600" y="245" text-anchor="middle" font-size="13">vencimiento redondeado</text>
+
+<!-- paso 1: descuento hasta los 3 meses -->
+<path d="M595,262 Q405,312 216,262" fill="none" stroke="var(--g-c)" stroke-width="2.5" marker-end="url(#disc)"/>
+<text x="405" y="318" text-anchor="middle" font-size="14">1. descuento al 3% por cada 6 meses</text>
+<!-- paso 2: descuento de 3 meses a hoy -->
+<path d="M205,262 Q185,290 166,262" fill="none" stroke="var(--g-c)" stroke-width="2.5" marker-end="url(#disc)"/>
+<text x="185" y="300" text-anchor="middle" font-size="14">2.</text>
+
+<g font-size="14">
+  <text x="20" y="352">1. El valor de todos los pagos dentro de 3 meses, incluido el cupón de los 3 meses, es 125.8323.</text>
+  <text x="20" y="373">2. El tipo a 3 meses es √1.03 − 1 = 1.4889%, así que el valor hoy es 125.8323 / 1.014889 = 123.99.</text>
+  <text x="20" y="394">3. Restamos el cupón corrido de 2.0 y obtenemos 121.99, así que el factor de conversión es 1.2199.</text>
+</g>
+</svg>

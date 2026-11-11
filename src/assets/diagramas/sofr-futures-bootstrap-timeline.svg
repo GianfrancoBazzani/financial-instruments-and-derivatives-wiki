@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 790 320" font-size="16">
+<defs>
+  <marker id="pay" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+    <path d="M0,0 L10,5 L0,10 z" fill="var(--g-c)"/>
+  </marker>
+</defs>
+
+<!-- guías verticales: sep 80, oct 250, dic 590 (1 mes = 170 px) -->
+<g stroke="var(--g-muted)" stroke-dasharray="3 3">
+  <line x1="80" y1="40" x2="80" y2="215"/>
+  <line x1="250" y1="40" x2="250" y2="215"/>
+  <line x1="590" y1="40" x2="590" y2="215"/>
+</g>
+
+<!-- ===== current contract: Sep to Dec ===== -->
+<text x="20" y="28" font-weight="bold">Contrato en curso, entrega en diciembre</text>
+<rect x="80" y="62" width="170" height="20" fill="var(--g-b)" fill-opacity="0.55"/>
+<rect x="250" y="62" width="340" height="20" fill="var(--g-b)" fill-opacity="0.15" stroke="var(--g-b)" stroke-dasharray="4 3"/>
+<g stroke="var(--g-grid)" stroke-width="1.2">
+  <line x1="88" y1="62" x2="88" y2="82"/><line x1="96" y1="62" x2="96" y2="82"/>
+  <line x1="104" y1="62" x2="104" y2="82"/><line x1="112" y1="62" x2="112" y2="82"/>
+  <line x1="120" y1="62" x2="120" y2="82"/><line x1="128" y1="62" x2="128" y2="82"/>
+  <line x1="136" y1="62" x2="136" y2="82"/><line x1="144" y1="62" x2="144" y2="82"/>
+  <line x1="152" y1="62" x2="152" y2="82"/><line x1="160" y1="62" x2="160" y2="82"/>
+  <line x1="168" y1="62" x2="168" y2="82"/><line x1="176" y1="62" x2="176" y2="82"/>
+  <line x1="184" y1="62" x2="184" y2="82"/><line x1="192" y1="62" x2="192" y2="82"/>
+  <line x1="200" y1="62" x2="200" y2="82"/><line x1="208" y1="62" x2="208" y2="82"/>
+  <line x1="216" y1="62" x2="216" y2="82"/><line x1="224" y1="62" x2="224" y2="82"/>
+  <line x1="232" y1="62" x2="232" y2="82"/><line x1="240" y1="62" x2="240" y2="82"/>
+</g>
+<text x="165" y="55" text-anchor="middle" font-size="13" fill="var(--g-b)">observado, 2%</text>
+<text x="420" y="55" text-anchor="middle" font-size="13" fill="var(--g-b)">aún no observado, R = 2.75%</text>
+<text x="335" y="102" text-anchor="middle" font-size="13">cotización del futuro, 2.5% para los 3 meses completos</text>
+
+<!-- payment in December -->
+<line x1="590" y1="82" x2="590" y2="44" stroke="var(--g-c)" stroke-width="2.5" marker-end="url(#pay)"/>
+<text x="600" y="56" font-size="13" fill="var(--g-c)">se liquida en diciembre a</text>
+<text x="600" y="72" font-size="13" fill="var(--g-c)">100 − SOFR capitalizado</text>
+
+<!-- ===== zero rate from today ===== -->
+<text x="20" y="150" font-weight="bold">Tipo cupón cero desde hoy</text>
+<g stroke="var(--g-b)" stroke-width="2">
+  <line x1="250" y1="185" x2="590" y2="185"/>
+  <line x1="250" y1="178" x2="250" y2="192"/><line x1="590" y1="178" x2="590" y2="192"/>
+</g>
+<text x="420" y="179" text-anchor="middle" font-size="13" fill="var(--g-b)">R(2 meses) = 2.75%</text>
+
+<!-- ===== time axis ===== -->
+<line x1="80" y1="225" x2="590" y2="225" stroke="currentColor" stroke-width="2"/>
+<g stroke="currentColor" stroke-width="2">
+  <line x1="80" y1="215" x2="80" y2="235"/>
+  <line x1="250" y1="215" x2="250" y2="235"/>
+  <line x1="590" y1="215" x2="590" y2="235"/>
+</g>
+<circle cx="250" cy="225" r="6" fill="var(--g-b)"/>
+<text x="80" y="255" text-anchor="middle">septiembre</text>
+<text x="250" y="255" text-anchor="middle">octubre</text>
+<text x="590" y="255" text-anchor="middle">diciembre</text>
+<text x="80" y="272" text-anchor="middle" font-size="13">inicio del periodo</text>
+<text x="250" y="272" text-anchor="middle" font-size="13">hoy</text>
+<text x="590" y="272" text-anchor="middle" font-size="13">liquidación</text>
+
+<!-- equation -->
+<text x="335" y="305" text-anchor="middle" font-size="14">0.02 × 1/12 + R × 2/12 = 0.025 × 3/12, de modo que R = 2.75%</text>
+</svg>

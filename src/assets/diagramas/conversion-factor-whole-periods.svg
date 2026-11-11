@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 362" font-size="16">
+<defs>
+  <marker id="cpn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+    <path d="M0,0 L10,5 L0,10 z" fill="var(--g-b)"/>
+  </marker>
+  <marker id="disc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+    <path d="M0,0 L10,5 L0,10 z" fill="var(--g-c)"/>
+  </marker>
+</defs>
+
+<text x="20" y="28" font-weight="bold">Bono con cupón del 10% y vencimiento a 20 años y 2 meses</text>
+<text x="20" y="48" font-size="14">Redondeado a 20 años, que es un número entero de periodos de 6 meses,</text>
+<text x="20" y="66" font-size="14">así que se supone que el primer cupón se paga a los 6 meses</text>
+
+<!-- eje con una interrupción -->
+<line x1="160" y1="200" x2="345" y2="200" stroke="currentColor" stroke-width="2"/>
+<line x1="395" y1="200" x2="620" y2="200" stroke="currentColor" stroke-width="2"/>
+<line x1="341" y1="208" x2="349" y2="192" stroke="currentColor" stroke-width="2"/>
+<line x1="391" y1="208" x2="399" y2="192" stroke="currentColor" stroke-width="2"/>
+<text x="370" y="205" text-anchor="middle">…</text>
+
+<!-- marcas -->
+<g stroke="currentColor" stroke-width="2">
+  <line x1="160" y1="192" x2="160" y2="208"/>
+  <line x1="230" y1="192" x2="230" y2="208"/>
+  <line x1="300" y1="192" x2="300" y2="208"/>
+  <line x1="440" y1="192" x2="440" y2="208"/>
+  <line x1="510" y1="192" x2="510" y2="208"/>
+  <line x1="580" y1="192" x2="580" y2="208"/>
+</g>
+
+<!-- vencimiento real -->
+<line x1="603" y1="160" x2="603" y2="215" stroke="var(--g-muted)" stroke-width="2" stroke-dasharray="4 3"/>
+<text x="612" y="172" font-size="13">vencimiento real</text>
+<text x="612" y="188" font-size="13">20 años y 2 meses</text>
+
+<!-- cupones -->
+<g stroke="var(--g-b)" stroke-width="2.5">
+  <line x1="230" y1="197" x2="230" y2="158" marker-end="url(#cpn)"/>
+  <line x1="300" y1="197" x2="300" y2="158" marker-end="url(#cpn)"/>
+  <line x1="440" y1="197" x2="440" y2="158" marker-end="url(#cpn)"/>
+  <line x1="510" y1="197" x2="510" y2="158" marker-end="url(#cpn)"/>
+  <line x1="580" y1="197" x2="580" y2="108" marker-end="url(#cpn)"/>
+</g>
+<g text-anchor="middle">
+  <text x="230" y="148">5</text>
+  <text x="300" y="148">5</text>
+  <text x="440" y="148">5</text>
+  <text x="510" y="148">5</text>
+  <text x="580" y="98">5 + 100</text>
+</g>
+
+<circle cx="160" cy="200" r="6" fill="var(--g-c)"/>
+
+<!-- etiquetas de tiempo -->
+<g text-anchor="middle" font-size="14">
+  <text x="160" y="226">0</text>
+  <text x="230" y="226">6 meses</text>
+  <text x="300" y="226">1 año</text>
+  <text x="440" y="226">19 años</text>
+  <text x="510" y="226">19.5 años</text>
+  <text x="580" y="226">20 años</text>
+</g>
+<text x="160" y="245" text-anchor="middle" font-size="13">primer día del mes de entrega</text>
+<text x="580" y="245" text-anchor="middle" font-size="13">vencimiento redondeado</text>
+
+<!-- descuento -->
+<path d="M575,257 Q370,302 166,257" fill="none" stroke="var(--g-c)" stroke-width="2.5" marker-end="url(#disc)"/>
+<text x="370" y="301" text-anchor="middle" font-size="14">descuento al 3% por cada 6 meses</text>
+
+<g font-size="14">
+  <text x="20" y="330">Descontamos los 40 cupones de 5 y el principal de 100 al primer día del mes de entrega.</text>
+  <text x="20" y="350">El valor es 146.23 por cada 100 de valor nominal, así que el factor de conversión es 1.4623.</text>
+</g>
+</svg>
