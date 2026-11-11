@@ -1,0 +1,21 @@
+---
+import { getCollection } from "astro:content";
+import { pageNumber, pages } from "../../site/pages";
+
+const docs = await getCollection("docs");
+const items = pages.flatMap((p, i) => {
+  const doc = docs.find((d) => d.id === p.slug);
+  return doc ? [{ n: pageNumber(i), slug: p.slug, title: p.title, description: doc.data.description }] : [];
+});
+---
+
+<ol class="indice-apuntes">
+  {
+    items.map((it) => (
+      <li>
+        <span class="numero">{it.n} · </span><a href={`/${it.slug}/`}>{it.title}</a>
+        {it.description && <p>{it.description}</p>}
+      </li>
+    ))
+  }
+</ol>

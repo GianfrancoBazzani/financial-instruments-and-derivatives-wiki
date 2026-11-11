@@ -1,0 +1,127 @@
+@import "@fontsource-variable/source-sans-3/wght.css";
+@import "@fontsource-variable/source-sans-3/wght-italic.css";
+
+/* Dark theme (default): navy background, white text, yellow accent. Greys derive from the navy. */
+:root {
+  --sl-font: "Source Sans 3 Variable", "Source Sans 3", system-ui, sans-serif;
+
+  --sl-color-white: #ffffff;
+  --sl-color-gray-1: #e3e6ef;
+  --sl-color-gray-2: #bcc2d3;
+  --sl-color-gray-3: #8b93aa;
+  --sl-color-gray-4: #4d556d;
+  --sl-color-gray-5: #232b42;
+  --sl-color-gray-6: #0d1428;
+  --sl-color-black: #060b19;
+
+  --sl-color-accent-low: #0b0b0b;
+  --sl-color-accent: #ffcd00;
+  --sl-color-accent-high: #ffcd00;
+  --sl-color-text-accent: #ffcd00;
+  --sl-color-bg-nav: var(--sl-color-gray-6);
+  --sl-color-bg-sidebar: var(--sl-color-gray-6);
+  --sl-color-bg-inline-code: var(--sl-color-gray-5);
+  --sl-color-hairline-light: var(--sl-color-gray-5);
+  --sl-color-hairline: var(--sl-color-gray-5);
+  --sl-color-hairline-shade: var(--sl-color-gray-6);
+
+  /* Series colours of the graphics. */
+  --g-main: #ffcd00;
+  --g-b: #6fa8ff;
+  --g-c: #ff8a7a;
+  --g-muted: #8b93aa;
+  --g-grid: #232b42;
+}
+
+/* Light theme: white background, black text; yellow only as underline or background. */
+:root[data-theme='light'] {
+  --sl-color-white: #0b0b0b;
+  --sl-color-gray-1: #1b2133;
+  --sl-color-gray-2: #343b50;
+  --sl-color-gray-3: #4e566c;
+  --sl-color-gray-4: #8b93aa;
+  --sl-color-gray-5: #d3d7e2;
+  --sl-color-gray-6: #eef0f5;
+  --sl-color-gray-7: #f6f7fa;
+  --sl-color-black: #ffffff;
+
+  --sl-color-accent-low: #fff1ad;
+  --sl-color-accent: #ffcd00;
+  --sl-color-accent-high: #0b0b0b;
+  --sl-color-text-accent: #0b0b0b;
+  --sl-color-text-invert: #0b0b0b;
+  --sl-color-bg-nav: var(--sl-color-gray-7);
+  --sl-color-bg-sidebar: var(--sl-color-gray-7);
+  --sl-color-bg-inline-code: var(--sl-color-gray-6);
+  --sl-color-hairline-light: var(--sl-color-gray-5);
+  --sl-color-hairline: var(--sl-color-gray-5);
+  --sl-color-hairline-shade: var(--sl-color-gray-6);
+
+  --g-main: #0b0b0b;
+  --g-b: #1f4fa8;
+  --g-c: #b3392b;
+  --g-muted: #6b7388;
+  --g-grid: #d3d7e2;
+}
+
+/* Thin yellow rule on the header. */
+header.header {
+  border-bottom: 2px solid var(--sl-color-accent);
+}
+
+/* Links in the light theme: black text with a yellow underline. */
+:root[data-theme='light'] .sl-markdown-content a:not(:where(.not-content *)) {
+  text-decoration-color: #ffcd00;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.18em;
+}
+
+/* Reading comfort. */
+.sl-markdown-content {
+  line-height: 1.7;
+}
+
+/* Tables and formulas scroll inside their own box, never the page. */
+.sl-markdown-content table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  font-variant-numeric: tabular-nums;
+}
+.katex-display {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25rem 0;
+}
+
+/* Footer notice and home page. */
+.aviso-no-oficial {
+  margin-top: 1.5rem;
+  font-size: var(--sl-text-sm);
+  color: var(--sl-color-gray-3);
+}
+.linea-master {
+  font-size: var(--sl-text-lg);
+  color: var(--sl-color-gray-2);
+}
+.indice-apuntes {
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0;
+}
+.indice-apuntes li {
+  padding: 0.75rem 0;
+  border-top: 1px solid var(--sl-color-hairline);
+}
+.indice-apuntes a {
+  font-weight: 600;
+}
+.indice-apuntes .numero {
+  font-variant-numeric: tabular-nums;
+  color: var(--sl-color-gray-3);
+}
+.indice-apuntes p {
+  margin: 0.15rem 0 0;
+  color: var(--sl-color-gray-2);
+}

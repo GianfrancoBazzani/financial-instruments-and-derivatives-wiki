@@ -23,7 +23,12 @@ export default defineConfig({
       locales: { root: { label: "Español", lang: "es" } },
       ...(sidebar.length > 0 ? { sidebar } : {}),
       plugins: [starlightLinksValidator()],
-      customCss: ["katex/dist/katex.min.css"],
+      customCss: ["katex/dist/katex.min.css", "./src/styles/tema.css"],
+      components: {
+        Footer: "./src/components/Footer.astro",
+        ThemeProvider: "./src/components/ThemeProvider.astro",
+        ThemeSelect: "./src/components/ThemeSelect.astro",
+      },
     }),
     react(),
   ],
