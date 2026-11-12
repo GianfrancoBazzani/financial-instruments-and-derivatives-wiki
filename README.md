@@ -28,7 +28,7 @@ src/assets/diagramas/         Static diagrams (SVG)
 src/lib/finance/              Pure TypeScript calculations behind the graphics
 src/components/graficos/      One React component per graphic, plus kit/ (shared frame, slider, plot)
 src/styles/tema.css           Theme tokens
-tools/                        Translation checker, contrast ratio
+tools/                        Translation checker, diagram lint, contrast ratio
 tests/                        Unit, translation, dist (check:site) and e2e tests
 docs/                         Translation documents (below)
 ```
@@ -65,6 +65,5 @@ upgrade it: a mismatch with the stylesheet changes the size of subscripts (an e2
 ## Approving a page
 
 Each page shows the banner "Traducción pendiente de revisión" until the owner approves it. To
-approve a page, remove the `banner` lines from its front matter in `src/content/docs/<slug>.mdx`,
-then invert the banner assertion for that page in `tests/dist/site.test.ts` (it must then not
-contain the banner).
+approve a page, remove the `banner` lines from its front matter in `src/content/docs/<slug>.mdx`.
+Nothing else changes: the dist test expects the banner exactly on the pages whose front matter has it.
