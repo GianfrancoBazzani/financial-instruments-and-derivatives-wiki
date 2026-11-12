@@ -9,6 +9,7 @@ banner:
 
 import Diagrama from "../../components/Diagrama.astro";
 import ParSwapRate from "../../components/graficos/ParSwapRate.tsx";
+import SwapValue from "../../components/graficos/SwapValue.tsx";
 
 Un swap (permuta financiera) es un acuerdo OTC entre dos empresas para intercambiar flujos de caja futuros. Define las fechas de pago y cómo se calcula cada flujo de caja, normalmente a partir del valor futuro de un tipo de interés, un tipo de cambio u otra variable de mercado. Un contrato forward puede verse como un swap simple.
 
@@ -211,7 +212,7 @@ Para el pagador, la diferencia respecto de la recta del DV01 es, por tanto, **ne
 
 El gráfico muestra, por defecto, el mismo swap, a 30 años y con un tipo fijo del 4.30%. Representa el PnL de un swap pagador y de un swap receptor frente al tipo swap, junto con la recta de la aproximación por DV01. El swap parte de la par, así que su valor al 4.30% es cero.
 
-{/* GRAFICO: SwapValue */}
+<SwapValue client:visible />
 
 | Movimiento de los tipos | Recta del DV01 | Valor del pagador | Efecto de la convexidad |
 |---|---|---|---|

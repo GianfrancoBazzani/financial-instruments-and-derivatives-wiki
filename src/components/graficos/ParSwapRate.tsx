@@ -35,7 +35,7 @@ export default function ParSwapRate() {
       controls={
         <>
           <Slider symbol="r(5)" label="Tipo cero a 5 años" value={p.r5} min={0} max={0.1} step={0.001} format={(v) => pct(v, 1)} onChange={(v) => set("r5", v)} />
-          <Slider symbol={null} label="Pendiente" value={p.slope} min={-0.01} max={0.01} step={0.001} format={(v) => `${pct(v, 1)} por año`} onChange={(v) => set("slope", v)} />
+          <Slider symbol={null} label="Pendiente" value={p.slope} min={-0.01} max={0.01} step={0.001} format={(v) => pct(v, 1)} onChange={(v) => set("slope", v)} />
           <Slider symbol={<>t<sub>n</sub></>} label="Vencimiento del swap" value={p.n} min={1} max={MAX_MATURITY} step={1} format={(v) => `${num(v, 0)} años`} onChange={(v) => set("n", v)} />
         </>
       }
