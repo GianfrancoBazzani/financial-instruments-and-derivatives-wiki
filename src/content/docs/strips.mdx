@@ -7,6 +7,8 @@ banner:
 
 {/* Fuente: 11-strips.md @ 627bb65c932601a19f45d2d83c7b9f99169740dd */}
 
+import StripPrice from "../../components/graficos/StripPrice.tsx";
+
 ## STRIPS
 
 Los STRIPS (**Separate Trading of Registered Interest and Principal of Securities**) son los flujos de caja separados de un bono con cupones, cada uno negociado como un valor independiente. El tenedor del bono puede pedir la separación a un banco, un bróker o un dealer en cualquier momento hasta el vencimiento. Los inversores compran y mantienen STRIPS solo a través de estas entidades, no del Tesoro. Cada STRIP sigue siendo una obligación directa del Gobierno de EE. UU., con el riesgo de crédito del bono original.
@@ -52,7 +54,7 @@ Con el mismo tipo del 3% para todas las fechas, los cuatro STRIPS del bono a 3 a
 
 Los precios sin redondear suman €102.83 (los precios redondeados, €102.82), que es el precio del bono con una rentabilidad del 3%. Es superior al valor nominal de €100 porque el cupón del 4% es mayor que el tipo de descuento del 3%.
 
-{/* GRAFICO: StripPrice */}
+<StripPrice client:visible />
 
 El total de los STRIPS debe ser igual al precio completo (sucio) del bono (véase [Instrumentos de renta fija](/renta-fija/#precios-limpio-y-sucio)), salvo por los costes de transacción. Si los STRIPS cuestan menos que el bono, un dealer compra los STRIPS, los vuelve a unir en el bono (**reconstitución**) y vende el bono con beneficio. La reconstitución necesita el STRIP de principal del bono y un STRIP de cupón por cada fecha de pago restante. Si los STRIPS cuestan más, el dealer compra el bono, lo separa y vende los STRIPS, por ejemplo con un beneficio de €0.33 por cada €100 de valor nominal si el bono cotiza a €102.50. Estas operaciones mantienen el precio del bono muy cerca del total de sus STRIPS.
 
