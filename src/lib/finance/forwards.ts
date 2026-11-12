@@ -7,6 +7,11 @@ export function forwardPayoff(sT: number, k: number, side: Side): number {
   return side === "long" ? sT - k : k - sT;
 }
 
+/** Cost of carry c = r - q + u: financing plus storage minus the yield on income. */
+export function costOfCarry(r: number, q: number, u: number): number {
+  return r - q + u;
+}
+
 /** Forward price F0 = (S0 - I) e^((r - q + u - y) T); `income` is a present value I, q a yield, u storage cost, y convenience yield (all continuous, default 0). */
 export function forwardPrice(a: {
   spot: number;

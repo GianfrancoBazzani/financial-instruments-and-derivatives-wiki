@@ -1,5 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { forwardPayoff, forwardPrice, forwardValue, marginAccount } from "../../src/lib/finance/forwards";
+import { costOfCarry, forwardPayoff, forwardPrice, forwardValue, marginAccount } from "../../src/lib/finance/forwards";
+
+describe("costOfCarry", () => {
+  it("is r - q + u", () => expect(costOfCarry(0.05, 0.02, 0.01)).toBeCloseTo(0.04, 12));
+  it("equals r with no income and no storage cost", () => expect(costOfCarry(0.05, 0, 0)).toBe(0.05));
+  it("matches the exponent of forwardPrice", () => {
+    const c = costOfCarry(0.05, 0.02, 0.01);
+    expect(forwardPrice({ spot: 100, r: 0.05, q: 0.02, u: 0.01, T: 2 })).toBeCloseTo(100 * Math.exp(c * 2), 10);
+  });
+});
 
 describe("forwardPayoff", () => {
   it("long gains when the price rises", () => expect(forwardPayoff(102, 100, "long")).toBe(2));

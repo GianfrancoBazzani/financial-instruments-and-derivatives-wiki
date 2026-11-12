@@ -1,4 +1,4 @@
-import { forwardPrice } from "../../lib/finance/forwards";
+import { costOfCarry, forwardPrice } from "../../lib/finance/forwards";
 import { ChartFrame } from "./kit/ChartFrame";
 import { num, pct } from "./kit/fmt";
 import { Plot } from "./kit/Plot";
@@ -21,7 +21,7 @@ export default function ForwardPrice() {
   ];
   const curve = linspace(0, T_MAX, 51).map(at);
   const marker = at(p.T);
-  const carry = p.r - p.q + p.u;
+  const carry = costOfCarry(p.r, p.q, p.u);
 
   return (
     <ChartFrame
