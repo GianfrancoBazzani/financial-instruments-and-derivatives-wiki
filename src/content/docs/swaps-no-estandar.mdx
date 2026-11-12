@@ -7,6 +7,8 @@ banner:
 
 {/* Fuente: 09-non-standard-swaps.md @ 627bb65c932601a19f45d2d83c7b9f99169740dd */}
 
+import CapFloorCollarPayoff from "../../components/graficos/CapFloorCollarPayoff.tsx";
+
 ## Swaptions europeas
 
 Las opciones sobre swaps (permutas financieras), o swaptions, son opciones populares sobre tipos de interés que dan al tenedor el derecho a entrar en un swap de tipos de interés especificado en una fecha futura especificada. Las swaptions de este apartado son europeas, así que el tenedor solo puede ejercerlas en la fecha de vencimiento.
@@ -97,7 +99,7 @@ $$
 R_{\text{ef}} = R - \max(R - R_C, 0) + \max(R_F - R, 0)
 $$
 
-{/* GRAFICO: CapFloorCollarPayoff */}
+<CapFloorCollarPayoff client:visible />
 
 Por ejemplo, un préstamo de USD 10 millones con revisiones trimestrales tiene un tipo del cap del 3% y un tipo del floor del 2%.
 
