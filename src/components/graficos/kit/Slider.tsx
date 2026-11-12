@@ -22,7 +22,12 @@ export function Slider({ symbol, label, value, min, max, step, format, onChange 
     <div className="grafico-control">
       <div className="grafico-control-cabecera">
         <label htmlFor={id}>
-          <span className="grafico-simbolo">{symbol}</span> {label}
+          {symbol != null && (
+            <>
+              <span className="grafico-simbolo">{symbol}</span>{" "}
+            </>
+          )}
+          {label}
         </label>
         <span className="grafico-valor">{shown}</span>
       </div>

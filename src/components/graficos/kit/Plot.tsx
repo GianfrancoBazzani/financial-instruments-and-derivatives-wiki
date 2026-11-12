@@ -33,14 +33,15 @@ export function plotHeight(width: number): number {
   return Math.round(Math.min(380, Math.max(220, 0.6 * width)));
 }
 
-// Labels are 12 px; a character of Source Sans 3 (tabular figures) is narrower than 6.6 px.
+// Labels are 12 px; a digit or a letter of Source Sans 3 (tabular figures) is narrower than 6.6 px, but "%" is about 9.9 px.
 const FONT = 12;
 const CHAR = 6.6;
+const PERCENT = 10;
 const TOP = 30; // room for the y-axis label
 const BOTTOM = 46; // x tick labels and the x-axis label
 const GAP = 8; // between a tick label and the plot area
 
-const textWidth = (s: string) => s.length * CHAR;
+const textWidth = (s: string) => [...s].reduce((w, c) => w + (c === "%" ? PERCENT : CHAR), 0);
 
 /** Inner size and clip-path id of the enclosing plot; null outside a plot. */
 interface PlotArea {

@@ -192,6 +192,22 @@ describe("kit", () => {
     expect(container.querySelectorAll(".grafico-rejilla line").length).toBeGreaterThanOrEqual(5);
   });
 
+  test("the left margin fits a y label with a percent sign: \"100%\" is about 27.8 px wide", () => {
+    const { container } = render(
+      <Plot xDomain={[0, 1]} yDomain={[0, 1]} xLabel="x" yLabel="y" xFormat={(v) => num(v, 1)} yFormat={() => "100%"} ariaLabel="p">
+        {() => null}
+      </Plot>,
+    );
+    const left = Number(/translate\(([\d.]+),/.exec(container.querySelector("svg > g")?.getAttribute("transform") ?? "")?.[1]);
+    expect(left).toBeGreaterThanOrEqual(27.8 + 8); // the label, then the gap to the axis
+  });
+
+  test("a slider without a symbol renders no symbol span and no leading space", () => {
+    const { container } = render(<Slider symbol={null} label="Haircut" value={1} min={0} max={2} step={1} format={String} onChange={() => {}} />);
+    expect(container.querySelector(".grafico-simbolo")).toBeNull();
+    expect(container.querySelector("label")?.textContent).toBe("Haircut");
+  });
+
   test("Marker, Bars, Legend, and direct labels", () => {
     render(
       <ChartFrame name="Todo" title="T" caption="C" controls={null} readouts={null} onReset={() => {}}>
