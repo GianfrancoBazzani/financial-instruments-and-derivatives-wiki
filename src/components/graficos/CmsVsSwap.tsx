@@ -12,7 +12,10 @@ import { linspace, tickNum, widen } from "./shared";
 // The case of the text: a 30-year swap with annual payments on a flat curve at s_F = 3%, volatility 20%, fixing in 5 years.
 const DEFAULTS = { tenor: 30, sigma: 0.2, sF: 0.03, t: 5 };
 const M = 1; // annual payments
-const HALF_WIDTH = 0.02; // the axis shows s_F ± 2 percentage points (never below 0)
+const HALF_WIDTH = 0.01; // the axis shows s_F ± 1 percentage point (never below 0), wider on the right if the expected rate needs it
+
+// Left of s_F both curves are below zero, so the label sits clear above the axis there; with no room on the left it goes to the top-left corner, which both curves leave free.
+const leftRoom = (px: number) => px > 110;
 
 /** Payoff at the fixing date of a payer swap (concave) and of a CMS (straight line), with the forward and the expected swap rate. */
 export default function CmsVsSwap() {
@@ -24,10 +27,12 @@ export default function CmsVsSwap() {
   const cms = (sT: number) => slope * (sT - expected);
   const swap = (sT: number) => payerSwapPayoffAtFixing({ sT, sF: p.sF, tenor: p.tenor, m: M });
   const lo = Math.max(0, p.sF - HALF_WIDTH);
-  const hi = lo + 2 * HALF_WIDTH;
+  const hi = Math.max(p.sF + HALF_WIDTH, expected + HALF_WIDTH);
   const rates = linspace(lo, hi, 41);
   const swapCurve: [number, number][] = rates.map((r) => [r, swap(r)]);
   const cmsLine: [number, number][] = [[lo, cms(lo)], [hi, cms(hi)]];
+  const adjustmentText = `Ajuste: ${num(adjustment * 1e4, 1)} pb`;
+  const noAdjustment = adjustment * 1e4 < 0.05;
   const yDomain = widen([-0.5, 0.5], [...swapCurve.map((q) => q[1]), ...cmsLine.map((q) => q[1])], 0.5);
 
   return (
@@ -48,7 +53,7 @@ export default function CmsVsSwap() {
         <>
           <Readout symbol={<>s<sub>F</sub></>} label="Tipo swap forward" value={pct(p.sF, 2)} />
           <Readout symbol={<>E[s<sub>T</sub>]</>} label="Tipo swap esperado" value={pct(expected, 2)} />
-          <Readout symbol={null} label="Ajuste de convexidad" value={`${num(adjustment * 1e4, 1)} pb`} />
+          <Readout symbol={null} label="Ajuste de convexidad" value={adjustmentText.replace("Ajuste: ", "")} />
         </>
       }
     >
@@ -58,6 +63,7 @@ export default function CmsVsSwap() {
           { series: "b", label: "Payoff del CMS" },
           { series: "main", label: "Tipo swap forward", mark: "point" },
           { series: "b", label: "Tipo swap esperado", mark: "point" },
+          { series: "c", label: "Ajuste por convexidad" },
         ]}
       />
       <Plot
@@ -73,8 +79,14 @@ export default function CmsVsSwap() {
           <>
             <Line points={cmsLine} x={x} y={y} series="b" />
             <Line points={swapCurve} x={x} y={y} series="main" />
-            <Marker at={[expected, 0]} x={x} y={y} series="b" />
+            <Line points={[[p.sF, 0], [expected, 0]]} x={x} y={y} series="c" />
+            {!noAdjustment && <Marker at={[expected, 0]} x={x} y={y} series="b" />}
             <Marker at={[p.sF, 0]} x={x} y={y} series="main" />
+            <g data-serie="c">
+              <text className="grafico-etiqueta" x={leftRoom(x(p.sF)) ? x(p.sF) - 8 : 6} y={leftRoom(x(p.sF)) ? y(0) - 9 : 14} textAnchor={leftRoom(x(p.sF)) ? "end" : "start"}>
+                {adjustmentText}
+              </text>
+            </g>
           </>
         )}
       </Plot>

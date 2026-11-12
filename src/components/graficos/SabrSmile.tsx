@@ -28,7 +28,7 @@ export default function SabrSmile() {
     <ChartFrame
       name="SabrSmile"
       title="Sonrisa de volatilidad SABR"
-      caption="La volatilidad implícita de Black σ(K) según la aproximación de Hagan et al. (2002): α fija el nivel, β y ρ la pendiente y ν la curvatura de la sonrisa."
+      caption="La volatilidad implícita de Black σ(K) según la aproximación de Hagan et al. (2002): α fija el nivel, β y ρ la pendiente y ν la curvatura de la sonrisa. El nivel depende de α y de β a la vez: si cambia β, ajuste α para mantener el nivel."
       onReset={reset}
       controls={
         <>

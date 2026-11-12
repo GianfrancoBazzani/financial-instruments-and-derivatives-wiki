@@ -12,6 +12,12 @@ describe("CmsVsSwap", () => {
     expect(readout("Ajuste de convexidad")).toBe("23.3 pb");
   });
 
+  test("the plot marks the adjustment with its value", () => {
+    const { container } = render(<CmsVsSwap />);
+    const labels = [...container.querySelectorAll("figure svg text")].map((t) => t.textContent);
+    expect(labels).toContain("Ajuste: 23.3 pb");
+  });
+
   test("a volatility of zero gives no adjustment; Restablecer returns to the default", async () => {
     render(<CmsVsSwap />);
     setSlider("Volatilidad", 0);
