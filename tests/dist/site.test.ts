@@ -55,9 +55,12 @@ describe.each(pages)("$slug", (p: PageDef) => {
     expect(html.match(/<figure class="diagrama"/g)?.length ?? 0).toBe(p.diagrams.length);
   });
   test("has no formula error", () => expect(html).not.toContain("katex-error"));
-  // The banner stays until the owner approves each page. When a page is approved (its `banner`
-  // line is removed from the MDX), invert this assertion for that page.
-  test("still shows the pending-review banner", () => expect(html).toContain(BANNER));
+  // The banner follows the data: the built page shows it if and only if the front matter of its MDX
+  // file has the `banner` line, so approving a page (removing that line) needs no change here.
+  test("shows the pending-review banner if and only if its front matter has the banner line", () => {
+    const front = /^---\n([\s\S]*?)\n---/.exec(readFileSync(`src/content/docs/${p.slug}.mdx`, "utf8"))?.[1] ?? "";
+    expect(html.includes(BANNER)).toBe(/^banner:/m.test(front));
+  });
 });
 
 describe("whole site", () => {
@@ -72,6 +75,18 @@ describe("whole site", () => {
     expect(items.map((m) => [m[1], m[2], m[3]])).toEqual(
       pages.map((p, i) => [`${pageNumber(i)} · `, `/${p.slug}/`, p.title]),
     );
+  });
+  test("every href and src that starts with / resolves to a file in dist", () => {
+    const missing: string[] = [];
+    for (const file of files) {
+      const html = readFileSync(file, "utf8");
+      for (const m of html.matchAll(/\b(?:href|src)="(\/(?!\/)[^"]*)"/g)) {
+        const path = decodeURIComponent(m[1].split(/[?#]/)[0]);
+        const target = path.endsWith("/") ? `dist${path}index.html` : `dist${path}`;
+        if (!existsSync(target) || statSync(target).isDirectory()) missing.push(`${file}: ${m[1]}`);
+      }
+    }
+    expect(missing).toEqual([]);
   });
   test("no Mermaid", () => expect(all).not.toMatch(/mermaid/i));
   test("no owner name", (ctx) => {
