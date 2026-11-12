@@ -9,6 +9,7 @@ banner:
 
 import CapFloorCollarPayoff from "../../components/graficos/CapFloorCollarPayoff.tsx";
 import SabrSmile from "../../components/graficos/SabrSmile.tsx";
+import CmsVsSwap from "../../components/graficos/CmsVsSwap.tsx";
 
 ## Swaptions europeas
 
@@ -218,7 +219,7 @@ Los payoffs en la fecha de fijación muestran el mismo resultado. Un swap pagado
 
 El gráfico muestra, por defecto, el caso de un swap a 30 años con pagos anuales sobre una curva plana, en el que el CMS tiene la misma pendiente que el swap en el tipo forward y paga en la fecha de fijación. Representa, frente al tipo swap en la fecha de fijación, el payoff de un swap pagador vanilla (una curva cóncava) y el payoff de un CMS (una recta con la misma pendiente en el tipo swap forward), y marca el tipo swap forward, el tipo swap esperado y el ajuste por convexidad entre ellos.
 
-{/* GRAFICO: CmsVsSwap */}
+<CmsVsSwap client:visible />
 
 ## Swaps quanto (diferenciales)
 
