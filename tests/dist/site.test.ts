@@ -1,0 +1,88 @@
+import { execSync } from "node:child_process";
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
+import { join } from "node:path";
+import { describe, expect, test } from "vitest";
+import { pageNumber, pages, type PageDef } from "../../site/pages";
+
+const read = (slug: string) => readFileSync(`dist/${slug}/index.html`, "utf8");
+const BANNER = "Traducción pendiente de revisión";
+
+function htmlFiles(dir: string): string[] {
+  return readdirSync(dir).flatMap((name) => {
+    const p = join(dir, name);
+    if (name === "pagefind" || name === "_astro") return [];
+    if (statSync(p).isDirectory()) return htmlFiles(p);
+    return name.endsWith(".html") ? [p] : [];
+  });
+}
+
+/** Each `<figure data-grafico="Name" ...>` up to its closing `</figure>` (graphics never nest figures). */
+function graphicFigures(html: string): { name: string; figure: string }[] {
+  const out: { name: string; figure: string }[] = [];
+  const open = /<figure data-grafico="(\w+)"/g;
+  for (let m = open.exec(html); m; m = open.exec(html)) {
+    const end = html.indexOf("</figure>", m.index);
+    expect(end, `unterminated figure of ${m[1]}`).toBeGreaterThan(m.index);
+    out.push({ name: m[1], figure: html.slice(m.index, end + "</figure>".length) });
+  }
+  return out;
+}
+
+function sidebarLabels(html: string): string[] {
+  const list = /<ul class="top-level[\s\S]*?<\/ul>/.exec(html)?.[0] ?? "";
+  return [...list.matchAll(/<a [^>]*><span[^>]*>([^<]*)<\/span><\/a>/g)].map((m) => m[1]);
+}
+
+describe("13 pages exist", () => {
+  test("home page", () => expect(existsSync("dist/index.html")).toBe(true));
+  test.each(pages.map((p) => p.slug))("%s", (slug) => expect(existsSync(`dist/${slug}/index.html`)).toBe(true));
+});
+
+describe.each(pages)("$slug", (p: PageDef) => {
+  const html = read(p.slug);
+
+  test("graphics are in page order", () => {
+    expect([...html.matchAll(/data-grafico="(\w+)"/g)].map((m) => m[1])).toEqual(p.graphics);
+  });
+  test.each(p.graphics)("graphic %s is server-rendered with its default plot", (g) => {
+    const figure = graphicFigures(html).find((f) => f.name === g)?.figure ?? "";
+    const svgs = [...figure.matchAll(/<svg[\s\S]*?<\/svg>/g)].map((m) => m[0]);
+    expect(svgs.length).toBeGreaterThan(0);
+    expect(svgs.some((s) => /<path[^>]* d="M/.test(s))).toBe(true);
+  });
+  test("no placeholder left", () => expect(html).not.toContain("GRAFICO:"));
+  test("shows exactly its diagrams", () => {
+    expect(html.match(/<figure class="diagrama"/g)?.length ?? 0).toBe(p.diagrams.length);
+  });
+  test("has no formula error", () => expect(html).not.toContain("katex-error"));
+  // The banner stays until the owner approves each page. When a page is approved (its `banner`
+  // line is removed from the MDX), invert this assertion for that page.
+  test("still shows the pending-review banner", () => expect(html).toContain(BANNER));
+});
+
+describe("whole site", () => {
+  const files = htmlFiles("dist");
+  const all = files.map((f) => readFileSync(f, "utf8")).join("\n");
+  test("sidebar lists the 12 pages in order, numbered", () => {
+    expect(sidebarLabels(read(pages[0].slug))).toEqual(pages.map((p, i) => `${pageNumber(i)} · ${p.title}`));
+  });
+  test("home page lists the 12 pages in order with their numbers", () => {
+    const html = readFileSync("dist/index.html", "utf8");
+    const items = [...html.matchAll(/<span class="numero">([^<]*)<\/span><a href="([^"]*)">([^<]*)<\/a>/g)];
+    expect(items.map((m) => [m[1], m[2], m[3]])).toEqual(
+      pages.map((p, i) => [`${pageNumber(i)} · `, `/${p.slug}/`, p.title]),
+    );
+  });
+  test("no Mermaid", () => expect(all).not.toMatch(/mermaid/i));
+  test("no owner name", (ctx) => {
+    let name = "";
+    try {
+      name = execSync("git config user.name", { encoding: "utf8" }).trim();
+    } catch {
+      /* no git identity */
+    }
+    if (!name) return ctx.skip("git config user.name is empty: nothing to search for");
+    const needles = [name, ...name.split(/\s+/).filter((w) => w.length > 3)];
+    for (const n of needles) expect(all.toLowerCase(), n).not.toContain(n.toLowerCase());
+  });
+});
