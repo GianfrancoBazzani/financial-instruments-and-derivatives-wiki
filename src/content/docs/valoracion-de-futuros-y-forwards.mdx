@@ -136,20 +136,20 @@ Para hallar el valor $f$ de un forward largo con precio de entrega $K$, consider
 La cartera paga $F_0 - K$ sea cual sea $S_T$, así que, en ausencia de arbitraje, vale el valor actual de ese importe. Por tanto, el valor de un forward largo es
 
 $$
-f_{\text{long}} = (F_0 - K) e^{-rT}
+f_{\text{largo}} = (F_0 - K) e^{-rT}
 $$
 
 y, con las posiciones opuestas, el valor de un forward corto es
 
 $$
-f_{\text{short}} = (K - F_0) e^{-rT}
+f_{\text{corto}} = (K - F_0) e^{-rT}
 $$
 
 <ForwardValue client:visible />
 
 Al inicio $K = F_0$, así que ambos valores son cero. Estas fórmulas valen para los tres tipos de activo de inversión. La tabla siguiente sustituye $F_0$ en cada caso y da los valores para activos sin ingresos, con ingresos conocidos y con rentabilidad conocida.
 
-| Activo | $f_{\text{long}}$ | $f_{\text{short}}$ |
+| Activo | $f_{\text{largo}}$ | $f_{\text{corto}}$ |
 | --- | --- | --- |
 | Sin ingresos | $S_0 - K e^{-rT}$ | $K e^{-rT} - S_0$ |
 | Ingresos conocidos $I$ | $S_0 - I - K e^{-rT}$ | $K e^{-rT} - S_0 + I$ |
@@ -204,7 +204,7 @@ Si $F_0 > (S_0 + U) e^{rT}$, un arbitrajista pide prestado $S_0 + U$, compra la 
 :::note
 **Cobertura del oro y tipo de arrendamiento del oro**
 
-Una empresa minera de oro cubre su producción futura con un contrato forward corto con un banco, que fija el precio que recibirá. El banco cubre su forward largo pidiendo prestado oro a un banco central, vendiéndolo al contado e invirtiendo lo obtenido al tipo $r$. En $T$, el banco compra el oro a la empresa minera por $F_0$ y se lo devuelve al banco central. El banco central cobra intereses por el préstamo, en oro, que se llaman tipo de arrendamiento del oro $\ell$. Como los tenedores de oro pueden ganar $\ell$ prestándolo, el oro actúa como un activo con rentabilidad $\ell$ y, sin tener en cuenta los costes de almacenamiento,
+Una empresa minera de oro cubre su producción futura con un contrato forward corto con un banco, que fija el precio que recibirá. El banco cubre su forward largo pidiendo prestado oro a un banco central, vendiéndolo al contado e invirtiendo lo obtenido al tipo $r$. En $T$, el banco compra el oro a la empresa minera por $F_0$ y se lo devuelve al banco central. El banco central cobra por el préstamo un interés en oro, llamado tipo de arrendamiento del oro $\ell$. Como los tenedores de oro pueden ganar $\ell$ prestándolo, el oro actúa como un activo con rentabilidad $\ell$ y, sin tener en cuenta los costes de almacenamiento,
 
 $$
 F_0 = S_0 e^{(r - \ell)T}

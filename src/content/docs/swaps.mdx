@@ -80,7 +80,7 @@ Por tanto, recibir el tipo variable sobre $L$ hasta $t_n$ tiene el mismo valor a
 :::note
 **Dónde se aplica la suma telescópica**
 
-La suma se simplifica en cadena en cualquier swap cuyos tipos forward y factores de descuento provienen de la misma curva. El tipo de tipo variable, por sí solo, no lo decide.
+La suma se simplifica en cadena en cualquier swap cuyos tipos forward y factores de descuento provienen de la misma curva. La clase de tipo variable, por sí sola, no lo decide.
 
 - **OIS (€STR, SOFR).** La suma es exacta cuando el swap se descuenta con la curva de su propio tipo a un día, que es el estándar de mercado para los swaps con colateral.
 - **Swaps LIBOR antes de 2008.** La suma era exacta, porque una sola curva LIBOR daba los tipos forward y los factores de descuento.
@@ -234,7 +234,7 @@ Los swaps son populares porque tienen muchos usos. Los usos que siguen se aplica
 
 #### Transformar un activo
 
-Los mismos swaps también cambian el tipo de tipo que rinde un activo.
+Los mismos swaps también cambian la clase de tipo que rinde un activo.
 
 - **De fijo a variable.** La empresa A gana el 2.7% con sus bonos y, en el swap, recibe variable y paga el 3%, así que sus bonos rinden variable − 0.3%.
 - **De variable a fijo.** La empresa B gana variable − 0.2% con su inversión y, en el swap, paga variable y recibe el 2.97%, así que su inversión rinde un 2.77% fijo.
@@ -447,7 +447,7 @@ Las dos formas se distinguen por el precio que paga el inversor.
 
 ### Spread del asset swap
 
-El spread ASW $s$ es el spread que da al swap un valor de $P - 100$ para el dealer, lo que compensa la diferencia de precio que el inversor recibe al comienzo. El inversor es el pagador del swap, porque paga el tipo fijo, que es el cupón $C$ del valor. Por tanto, el valor del swap para el inversor es el valor del pagador de un IRS con $R_K = C$ y $L = 100$, más el valor del spread que recibe el inversor.
+El spread ASW $s$ es el spread que da al swap un valor de $P - 100$ para el dealer, lo que compensa la diferencia de precio que el inversor recibe al comienzo. El inversor es el pagador del swap, porque paga el tipo fijo, que es el cupón $C$ del valor. Por tanto, el valor del swap para el inversor es el valor de un IRS pagador con $R_K = C$ y $L = 100$, más el valor del spread que recibe el inversor.
 
 $$
 V_{\text{pagador}} = \underbrace{100 \left[ 1 - DF(t_n) \right] - 100 C A}_{\text{swap pagador a } C} + \underbrace{100 s A}_{\text{spread}}

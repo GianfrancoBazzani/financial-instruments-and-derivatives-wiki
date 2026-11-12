@@ -28,7 +28,7 @@ export default function ForwardValue() {
     <ChartFrame
       name="ForwardValue"
       title="Valor de un forward"
-      caption="El valor de un forward largo f_long = (F_0 − K) e^(−rT) y el de uno corto f_short = (K − F_0) e^(−rT) son rectas opuestas del precio spot S, con F_0 = S e^(rT); el punto marca el precio S elegido."
+      caption="El valor de un forward largo f_largo = (F_0 − K) e^(−rT) y el de uno corto f_corto = (K − F_0) e^(−rT) son rectas opuestas del precio spot S, con F_0 = S e^(rT); el punto marca el precio S elegido."
       onReset={reset}
       controls={
         <>
