@@ -33,6 +33,16 @@ describe("SabrSmile", () => {
     sweepExtremes(<SabrSmile />);
   });
 
+  test("the largest alpha is a position of the slider (a whole number of steps above the minimum)", () => {
+    const { container } = render(<SabrSmile />);
+    const alpha = container.querySelector<HTMLInputElement>("input[type='range']")!;
+    // Default beta 0.5 and F 3%: 0.3 * sqrt(0.03) = 0.05196, which the slider cannot show; the step below is 0.05.
+    // The exact text matters: a browser moves a maximum of 0.04999… down to the position below it.
+    expect(alpha.max).toBe("0.05");
+    fireEvent.change(alpha, { target: { value: alpha.max } });
+    expect(alpha.getAttribute("aria-valuetext")).toBe("0.0500");
+  });
+
   test("at all 64 min/max corners of the six sliders the three read-outs are positive volatilities", () => {
     const { container } = render(<SabrSmile />);
     const sliders = [...container.querySelectorAll<HTMLInputElement>("input[type='range']")];

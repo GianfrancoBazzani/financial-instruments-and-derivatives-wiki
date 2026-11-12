@@ -16,12 +16,16 @@ const K_FROM = 0.25; // strikes of the axis, as multiples of F
 const K_TO = 2.5;
 const ALPHA_MIN = 0.005;
 const ALPHA_MAX = 0.3;
+const ALPHA_STEP = 0.0025;
 
 /** Implied Black volatility of the SABR approximation against the strike, with the at-the-money point. */
 export default function SabrSmile() {
   const { p, set, reset } = useParams(DEFAULTS);
   // Hagan's expansion is only valid for moderate levels: the largest alpha shrinks with F^(1 - beta), the level that alpha means.
-  const alphaMax = Math.max(ALPHA_MIN, Math.min(ALPHA_MAX, ALPHA_MAX * p.f ** (1 - p.beta)));
+  // The limit goes down to a position of the slider, so the value that the slider shows is the value in use.
+  const alphaLimit = Math.max(ALPHA_MIN, Math.min(ALPHA_MAX, ALPHA_MAX * p.f ** (1 - p.beta)));
+  const alphaSteps = Math.floor((alphaLimit - ALPHA_MIN) / ALPHA_STEP + 1e-9);
+  const alphaMax = Number((ALPHA_MIN + alphaSteps * ALPHA_STEP).toFixed(4)); // 4 decimals: free of binary noise
   const alpha = Math.min(p.alpha, alphaMax);
   const vol = (k: number) => sabrImpliedVol({ f: p.f, k, t: p.t, alpha, beta: p.beta, rho: p.rho, nu: p.nu });
   const strikes = linspace(K_FROM * p.f, K_TO * p.f, 61);
@@ -37,7 +41,7 @@ export default function SabrSmile() {
       onReset={reset}
       controls={
         <>
-          <Slider symbol="α" label="Alfa" value={alpha} min={ALPHA_MIN} max={alphaMax} step={0.0025} format={(v) => num(v, 4)} onChange={(v) => set("alpha", v)} />
+          <Slider symbol="α" label="Alfa" value={alpha} min={ALPHA_MIN} max={alphaMax} step={ALPHA_STEP} format={(v) => num(v, 4)} onChange={(v) => set("alpha", v)} />
           <Slider symbol="β" label="Beta" value={p.beta} min={0} max={1} step={0.05} format={(v) => num(v, 2)} onChange={(v) => set("beta", v)} />
           <Slider symbol="ρ" label="Correlación" value={p.rho} min={-0.9} max={0.9} step={0.05} format={(v) => num(v, 2)} onChange={(v) => set("rho", v)} />
           <Slider symbol="ν" label="Volatilidad de la volatilidad" value={p.nu} min={0} max={1} step={0.05} format={(v) => num(v, 2)} onChange={(v) => set("nu", v)} />
