@@ -1,0 +1,23 @@
+/* Table of the discount factors of ParSwapRate: sober, tabular figures, fits 360 px. */
+.grafico-df {
+  width: 100%;
+  margin: 0.75rem 0 0;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+.grafico-df caption {
+  padding-bottom: 0.25rem;
+  text-align: left;
+  color: var(--sl-color-gray-2);
+}
+.grafico-df th,
+.grafico-df td {
+  padding: 0.15rem 0.5rem;
+  text-align: right;
+  border-bottom: 1px solid var(--g-grid);
+}
+.grafico-df thead th {
+  color: var(--sl-color-gray-2);
+  font-weight: 600;
+}

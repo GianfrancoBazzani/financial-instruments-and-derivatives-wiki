@@ -8,6 +8,7 @@ banner:
 {/* Fuente: 08-swaps.md @ 627bb65c932601a19f45d2d83c7b9f99169740dd */}
 
 import Diagrama from "../../components/Diagrama.astro";
+import ParSwapRate from "../../components/graficos/ParSwapRate.tsx";
 
 Un swap (permuta financiera) es un acuerdo OTC entre dos empresas para intercambiar flujos de caja futuros. Define las fechas de pago y cómo se calcula cada flujo de caja, normalmente a partir del valor futuro de un tipo de interés, un tipo de cambio u otra variable de mercado. Un contrato forward puede verse como un swap simple.
 
@@ -110,7 +111,7 @@ $$
 R_{\text{par}} = \frac{1 - DF(t_n)}{A} = \frac{1 - DF(t_n)}{\sum_{i=1}^{n} \tau_i DF(t_i)}
 $$
 
-{/* GRAFICO: ParSwapRate */}
+<ParSwapRate client:visible />
 
 Es la misma fórmula que la de la rentabilidad par de un bono (véase [Curvas de tipos de interés](/curvas-de-tipos/)). Por tanto, el tipo swap par es el cupón de un bono a tipo fijo que vale su principal. Después del comienzo, $R_{\text{par}}$ cambia con la curva mientras que $R_K$ permanece fijo. El pagador gana cuando $R_{\text{par}}$ sube por encima de $R_K$, y el receptor gana cuando baja por debajo de $R_K$.
 
