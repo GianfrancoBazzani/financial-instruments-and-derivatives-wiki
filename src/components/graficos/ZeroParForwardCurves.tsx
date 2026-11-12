@@ -49,7 +49,7 @@ export default function ZeroParForwardCurves() {
       onReset={reset}
       controls={
         <>
-          <Slider symbol="r(5)" label="Tipo cero a 5 años" value={p.r5} min={0} max={0.1} step={0.001} format={(v) => pct(v, 1)} onChange={(v) => set("r5", v)} />
+          <Slider symbol="r(5)" label="Tipo cupón cero a 5 años" value={p.r5} min={0} max={0.1} step={0.001} format={(v) => pct(v, 1)} onChange={(v) => set("r5", v)} />
           <Slider symbol={null} label="Pendiente (por año)" value={p.slope} min={-0.01} max={0.01} step={0.001} format={(v) => pct(v, 1)} onChange={(v) => set("slope", v)} />
           <Slider symbol={null} label="Curvatura (por año²)" value={p.curvature} min={-0.001} max={0.001} step={0.0001} format={(v) => pct(v, 2)} onChange={(v) => set("curvature", v)} />
           <Slider symbol="T" label="Vencimiento marcado" value={p.T} min={1} max={10} step={1} format={(v) => `${num(v, 0)} años`} onChange={(v) => set("T", v)} />
@@ -57,7 +57,7 @@ export default function ZeroParForwardCurves() {
       }
       readouts={
         <>
-          <Readout symbol="r(T)" label="Tipo cero" value={pct(now.zero, 2)} />
+          <Readout symbol="r(T)" label="Tipo cupón cero" value={pct(now.zero, 2)} />
           <Readout symbol="c(T)" label="Tipo par" value={pct(now.par, 2)} />
           <Readout symbol="f(T−1, T)" label="Tipo forward" value={pct(now.forward, 2)} />
         </>

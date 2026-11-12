@@ -10,9 +10,9 @@ describe("ParSwapRate", () => {
   test("the default is the upward curve 3% + 0.5% per year, 5 years, annual: R_par is below the zero rate", () => {
     render(<ParSwapRate />);
     expect(readout("Tipo swap par")).toBe("5.39%");
-    expect(readout("Tipo cero al vencimiento")).toBe("5.50%");
+    expect(readout("Tipo cupón cero al vencimiento")).toBe("5.50%");
     expect(readout("Anualidad")).toBe("4.3549");
-    expect(rate(readout("Tipo swap par"))).toBeLessThan(rate(readout("Tipo cero al vencimiento")));
+    expect(rate(readout("Tipo swap par"))).toBeLessThan(rate(readout("Tipo cupón cero al vencimiento")));
     expect(document.querySelectorAll("table tbody tr")).toHaveLength(5);
   });
 

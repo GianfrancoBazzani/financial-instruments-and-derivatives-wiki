@@ -8,14 +8,14 @@ describe("RepoHaircutCarry", () => {
   test("the default is the example of the page: bond of 100M, haircut 2%, yield 3.4%, repo at 1D", () => {
     render(<RepoHaircutCarry />);
     expect(readout("Efectivo prestado")).toBe("98,000,000");
-    expect(readout("Tipo repo")).toBe("2.80%");
+    expect(readout("Tipo del repo")).toBe("2.80%");
     expect(readout("Carry")).toBe("0.60%");
   });
 
   test("financing at 6M gives a negative carry; Restablecer returns to the default", async () => {
     render(<RepoHaircutCarry />);
     setSlider("Plazo del repo", 4);
-    expect(readout("Tipo repo")).toBe("3.80%");
+    expect(readout("Tipo del repo")).toBe("3.80%");
     expect(readout("Carry")).toBe("-0.40%");
     await userEvent.setup().click(screen.getByRole("button", { name: "Restablecer" }));
     expect(readout("Efectivo prestado")).toBe("98,000,000");

@@ -37,7 +37,7 @@ export default function RepoHaircutCarry() {
       readouts={
         <>
           <Readout symbol={null} label="Efectivo prestado" value={money(cashLent(p.collateral, p.haircut))} />
-          <Readout symbol={null} label="Tipo repo" value={pct(chosen.rate, 2)} />
+          <Readout symbol={null} label="Tipo del repo" value={pct(chosen.rate, 2)} />
           <Readout symbol={null} label="Carry" value={pct(carry, 2)} />
         </>
       }

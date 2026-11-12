@@ -30,11 +30,11 @@ export default function ParSwapRate() {
     <ChartFrame
       name="ParSwapRate"
       title="Tipo swap par"
-      caption="El tipo swap par R_par = (1 − DF(t_n)) / A, con A = Σ τ_i DF(t_i), es una media de los tipos cero hasta el vencimiento t_n del swap."
+      caption="El tipo swap par R_par = (1 − DF(t_n)) / A, con A = Σ τ_i DF(t_i), es una media de los tipos cupón cero hasta el vencimiento t_n del swap."
       onReset={reset}
       controls={
         <>
-          <Slider symbol="r(5)" label="Tipo cero a 5 años" value={p.r5} min={0} max={0.1} step={0.001} format={(v) => pct(v, 1)} onChange={(v) => set("r5", v)} />
+          <Slider symbol="r(5)" label="Tipo cupón cero a 5 años" value={p.r5} min={0} max={0.1} step={0.001} format={(v) => pct(v, 1)} onChange={(v) => set("r5", v)} />
           <Slider symbol={null} label="Pendiente" value={p.slope} min={-0.01} max={0.01} step={0.001} format={(v) => pct(v, 1)} onChange={(v) => set("slope", v)} />
           <Slider symbol={<>t<sub>n</sub></>} label="Vencimiento del swap" value={p.n} min={1} max={MAX_MATURITY} step={1} format={(v) => `${num(v, 0)} años`} onChange={(v) => set("n", v)} />
         </>
@@ -42,14 +42,14 @@ export default function ParSwapRate() {
       readouts={
         <>
           <Readout symbol={<>R<sub>par</sub></>} label="Tipo swap par" value={pct(par, 2)} hideLabel />
-          <Readout symbol={<>r(t<sub>n</sub>)</>} label="Tipo cero al vencimiento" value={pct(zero(p.n), 2)} />
+          <Readout symbol={<>r(t<sub>n</sub>)</>} label="Tipo cupón cero al vencimiento" value={pct(zero(p.n), 2)} />
           <Readout symbol="A" label="Anualidad" value={num(a, 4)} />
         </>
       }
     >
       <Legend
         items={[
-          { series: "main", label: "Tipo cero r(t)" },
+          { series: "main", label: "Tipo cupón cero r(t)" },
           { series: "b", label: "Tipo swap par R_par", dashed: true },
         ]}
       />
@@ -72,7 +72,7 @@ export default function ParSwapRate() {
         )}
       </Plot>
       <table className="grafico-df">
-        <caption>Factores de descuento de las fechas de pago</caption>
+        <caption>Factores de descuento de las fechas de pago (tipos cupón cero con capitalización anual)</caption>
         <thead>
           <tr>
             <th scope="col">t_i (años)</th>

@@ -26,12 +26,12 @@ export default function ConversionFactor() {
     <ChartFrame
       name="ConversionFactor"
       title="Factor de conversión"
-      caption="El factor de conversión es el precio por dólar de principal del bono descontado al 6% anual con capitalización semestral, así que sube con el cupón y vale 1 cuando el cupón es el 6%."
+      caption="El factor de conversión es el precio por dólar de principal del bono descontado al 6% anual con capitalización semestral, así que sube con el cupón y vale 1 cuando el cupón es el 6% y el vencimiento redondeado es un número entero de periodos de 6 meses."
       onReset={reset}
       controls={
         <>
           <Slider symbol={null} label="Tipo del cupón" value={p.coupon} min={0} max={COUPON_MAX} step={0.005} format={(v) => pct(v, 2)} onChange={(v) => set("coupon", v)} />
-          <Slider symbol="T" label="Años hasta el vencimiento" value={p.years} min={15} max={30} step={1} format={(v) => `${num(v, 0)} años`} onChange={(v) => set("years", v)} />
+          <Slider symbol={null} label="Años hasta el vencimiento" value={p.years} min={15} max={30} step={1} format={(v) => `${num(v, 0)} años`} onChange={(v) => set("years", v)} />
           <Slider symbol={null} label="Meses hasta el vencimiento" value={p.months} min={0} max={11} step={1} format={(v) => `${num(v, 0)} meses`} onChange={(v) => set("months", v)} />
         </>
       }

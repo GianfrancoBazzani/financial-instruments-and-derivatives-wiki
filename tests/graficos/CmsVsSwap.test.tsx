@@ -9,7 +9,7 @@ describe("CmsVsSwap", () => {
     render(<CmsVsSwap />);
     expect(readout("Tipo swap forward")).toBe("3.00%");
     expect(readout("Tipo swap esperado")).toBe("3.23%");
-    expect(readout("Ajuste de convexidad")).toBe("23.3 pb");
+    expect(readout("Ajuste por convexidad")).toBe("23.3 pb");
   });
 
   test("the plot marks the adjustment with its value", () => {
@@ -21,10 +21,10 @@ describe("CmsVsSwap", () => {
   test("a volatility of zero gives no adjustment; Restablecer returns to the default", async () => {
     render(<CmsVsSwap />);
     setSlider("Volatilidad", 0);
-    expect(readout("Ajuste de convexidad")).toBe("0.0 pb");
+    expect(readout("Ajuste por convexidad")).toBe("0.0 pb");
     expect(readout("Tipo swap esperado")).toBe("3.00%");
     await userEvent.setup().click(screen.getByRole("button", { name: "Restablecer" }));
-    expect(readout("Ajuste de convexidad")).toBe("23.3 pb");
+    expect(readout("Ajuste por convexidad")).toBe("23.3 pb");
   });
 
   test("the main series draws a path", () => {

@@ -53,7 +53,7 @@ export default function CmsVsSwap() {
         <>
           <Readout symbol={<>s<sub>F</sub></>} label="Tipo swap forward" value={pct(p.sF, 2)} />
           <Readout symbol={<>E[s<sub>T</sub>]</>} label="Tipo swap esperado" value={pct(expected, 2)} />
-          <Readout symbol={null} label="Ajuste de convexidad" value={adjustmentText.replace("Ajuste: ", "")} />
+          <Readout symbol={null} label="Ajuste por convexidad" value={adjustmentText.replace("Ajuste: ", "")} />
         </>
       }
     >
