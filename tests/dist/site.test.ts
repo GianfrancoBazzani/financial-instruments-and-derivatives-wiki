@@ -75,14 +75,21 @@ describe("whole site", () => {
   });
   test("no Mermaid", () => expect(all).not.toMatch(/mermaid/i));
   test("no owner name", (ctx) => {
-    let name = "";
-    try {
-      name = execSync("git config user.name", { encoding: "utf8" }).trim();
-    } catch {
-      /* no git identity */
-    }
-    if (!name) return ctx.skip("git config user.name is empty: nothing to search for");
-    const needles = [name, ...name.split(/\s+/).filter((w) => w.length > 3)];
-    for (const n of needles) expect(all.toLowerCase(), n).not.toContain(n.toLowerCase());
+    const git = (key: string) => {
+      try {
+        return execSync(`git config ${key}`, { encoding: "utf8" }).trim();
+      } catch {
+        return "";
+      }
+    };
+    const name = git("user.name");
+    const email = git("user.email");
+    const split = (s: string) => s.split(/[\s._\-+@]+|(?<=[a-z])(?=[A-Z])/).filter((w) => w.length > 3);
+    const needles = [...new Set([...split(name), ...split(email.split("@")[0] ?? ""), name, email.split("@")[0] ?? ""])]
+      .filter((n) => n.length > 3)
+      .map((n) => n.toLowerCase());
+    if (needles.length === 0) return ctx.skip("git user.name and user.email are empty: nothing to search for");
+    const lower = all.toLowerCase();
+    for (const n of needles) expect(lower, "owner name part found in the built site").not.toContain(n);
   });
 });

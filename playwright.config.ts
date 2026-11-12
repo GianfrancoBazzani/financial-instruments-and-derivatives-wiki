@@ -10,8 +10,10 @@ export default defineConfig({
   use: { baseURL: `http://localhost:${PORT}` },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
   webServer: {
+    // --ignore-lock: without it astro preview detaches to the background and Playwright sees the process exit.
     command: `pnpm preview --port ${PORT} --ignore-lock`,
     url: `http://localhost:${PORT}/`,
-    reuseExistingServer: true,
+    // A taken port fails loudly: never test a stale server.
+    reuseExistingServer: false,
   },
 });

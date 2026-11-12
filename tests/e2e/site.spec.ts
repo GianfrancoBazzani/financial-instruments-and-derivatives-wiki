@@ -1,4 +1,5 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
+import { readFileSync } from "node:fs";
 import { pages } from "../../site/pages";
 
 const paths = ["/", ...pages.map((p) => `/${p.slug}/`)];
@@ -51,6 +52,15 @@ for (const theme of themes) {
     }
   });
 }
+
+// Guard: the server under test must serve the current dist/ (same hashed assets as dist/index.html).
+test.beforeAll(async ({ request }) => {
+  const assets = (html: string) => [...html.matchAll(/_astro\/[^"']+\.(?:css|js)/g)].map((m) => m[0]).sort();
+  const built = assets(readFileSync("dist/index.html", "utf8"));
+  const served = assets(await (await request.get("/")).text());
+  expect(built.length).toBeGreaterThan(0);
+  expect(served, "the preview server serves a stale build: run pnpm build and stop old previews").toEqual(built);
+});
 
 test("PriceYield responds to the keyboard on /renta-fija/", async ({ page }) => {
   await page.goto("/renta-fija/");
