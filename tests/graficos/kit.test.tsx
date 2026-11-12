@@ -161,6 +161,37 @@ describe("kit", () => {
     for (let i = 1; i < xs.length; i++) expect(xs[i] - xs[i - 1]).toBeGreaterThan(80);
   });
 
+  test("explicit xTicks draw every given label at a narrow width; without them the ticks thin", () => {
+    let report: (w: number) => void = () => {};
+    vi.stubGlobal(
+      "ResizeObserver",
+      class {
+        constructor(cb: ResizeObserverCallback) {
+          report = (w) => cb([{ contentRect: { width: w } } as ResizeObserverEntry], this as never);
+        }
+        observe() {}
+        unobserve() {}
+        disconnect() {}
+      },
+    );
+    const terms = ["1D", "1W", "1M", "3M", "6M"];
+    const props = {
+      xDomain: [-0.5, 4.5] as [number, number],
+      yDomain: [0, 1] as [number, number],
+      xLabel: "x",
+      yLabel: "y",
+      xFormat: (v: number) => terms[v] ?? "",
+      yFormat: (v: number) => num(v, 1),
+      ariaLabel: "p",
+      children: () => null,
+    };
+    const { container } = render(<Plot {...props} xTicks={[0, 1, 2, 3, 4]} />);
+    act(() => report(328));
+    const labels = [...container.querySelectorAll(".grafico-eje-x text")].map((t) => t.textContent);
+    expect(labels).toEqual(terms);
+    expect(container.querySelectorAll(".grafico-rejilla line").length).toBeGreaterThanOrEqual(5);
+  });
+
   test("Marker, Bars, Legend, and direct labels", () => {
     render(
       <ChartFrame name="Todo" title="T" caption="C" controls={null} readouts={null} onReset={() => {}}>

@@ -19,6 +19,8 @@ export interface PlotProps {
   yFormat(v: number): string;
   /** Short description of the plot for screen readers. */
   ariaLabel: string;
+  /** Exact x tick positions (grid lines and labels), in this order and without thinning; automatic when absent. */
+  xTicks?: number[];
   children(s: PlotScales): ReactNode;
 }
 
@@ -88,7 +90,7 @@ function layout(width: number, p: PlotProps) {
   let right = 12;
   const ticksFor = () => {
     x.range([0, width - left - right]);
-    return pickTicks(x, width - left - right, 80, xRoom);
+    return p.xTicks ?? pickTicks(x, width - left - right, 80, xRoom);
   };
   let xTicks = ticksFor();
   for (let pass = 0; pass < 3; pass++) {
