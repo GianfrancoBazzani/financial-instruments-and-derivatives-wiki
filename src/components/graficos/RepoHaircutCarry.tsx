@@ -61,7 +61,7 @@ export default function RepoHaircutCarry() {
           <>
             <Line points={[[-0.5, p.bondYield], [LAST + 0.5, p.bondYield]]} x={x} y={y} series="b" dashed />
             <Line points={curve} x={x} y={y} series="main" />
-            <Marker at={[p.term, chosen.rate]} x={x} y={y} series="main" label={`${chosen.term}: carry ${pct(carry, 2)}`} />
+            <Marker at={[p.term, chosen.rate]} x={x} y={y} series="main" label={chosen.term} />
           </>
         )}
       </Plot>
