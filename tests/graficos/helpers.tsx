@@ -43,6 +43,10 @@ function check(container: HTMLElement, where: string): void {
     const shown = /NaN|Infinity/.exec(text)?.[0] ?? NEGATIVE_ZERO.exec(text)?.[0];
     if (shown !== undefined) throw new Error(`sweepExtremes: ${where}: the graphic shows "${shown}" (in "${text}")`);
   }
+  // fmt prints "—" for a value that is not finite, so a read-out that shows it has a NaN behind it.
+  for (const dd of container.querySelectorAll("[data-lectura] dd"))
+    if ((dd.textContent ?? "").includes("—"))
+      throw new Error(`sweepExtremes: ${where}: the read-out "${(dd.closest("[data-lectura]") as HTMLElement).dataset.lectura}" shows "—" (not finite)`);
   const markup = /NaN|Infinity/.exec(container.innerHTML)?.[0];
   if (markup !== undefined) throw new Error(`sweepExtremes: ${where}: the SVG markup contains "${markup}"`);
   const drawn = [...container.querySelectorAll("svg path")].some((p) => (p.getAttribute("d") ?? "").trim() !== "");
@@ -58,20 +62,37 @@ function move(s: HTMLInputElement, to: "minimum" | "maximum"): string {
   return `"${nameOf(s)}" at its ${to} (${value})`;
 }
 
+const MAX_CORNER_SLIDERS = 8;
+
+/** Every slider to its minimum or its maximum, in all 2^n combinations (bit i of the corner = slider i). */
+function walkCorners(ui: ReactElement, count: number): void {
+  const view = render(ui);
+  try {
+    for (let corner = 0; corner < 2 ** count; corner++) {
+      const parts = sliders(view.container).map((s, i) => move(s, (corner >> i) & 1 ? "maximum" : "minimum"));
+      check(view.container, `corner ${corner} of ${2 ** count}: ${parts.join(", ")}`);
+    }
+  } finally {
+    view.unmount();
+  }
+}
+
 /**
  * Renders ui and moves every slider to its minimum, then every slider to its maximum, then each
- * slider alone (from a fresh render) to its minimum and its maximum. After each change it asserts
- * that the text shows no "NaN", "Infinity", or negative zero, and that a <path> has a non-empty d.
+ * slider alone (from a fresh render) to its minimum and its maximum; with 8 sliders or fewer it also
+ * walks all min/max combinations. After each change it asserts that the text shows no "NaN",
+ * "Infinity", or negative zero, that no read-out shows "—", and that a <path> has a non-empty d.
  */
 export function sweepExtremes(ui: ReactElement): void {
   let view = render(ui);
+  let count = 0;
   try {
     check(view.container, "default state");
     for (const s of sliders(view.container))
       check(view.container, `${move(s, "minimum")}, after the sliders before it went to their minimum`);
     for (const s of sliders(view.container))
       check(view.container, `${move(s, "maximum")}, after the sliders before it went to their maximum`);
-    const count = sliders(view.container).length;
+    count = sliders(view.container).length;
     for (let i = 0; i < count; i++) {
       for (const to of ["minimum", "maximum"] as const) {
         view.unmount();
@@ -82,4 +103,5 @@ export function sweepExtremes(ui: ReactElement): void {
   } finally {
     view.unmount();
   }
+  if (count <= MAX_CORNER_SLIDERS) walkCorners(ui, count);
 }

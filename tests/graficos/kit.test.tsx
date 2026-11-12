@@ -241,8 +241,32 @@ describe("helpers", () => {
   });
   test("sweepExtremes names the slider and the position when it finds NaN", () => {
     const nanAtMax = (a: number) => (a === 10 ? NaN : 2 * a);
-    expect(() => sweepExtremes(<Demo curve={nanAtMax} />)).not.toThrow(); // the kit prints "—" and skips the point
+    expect(() => sweepExtremes(<Demo curve={nanAtMax} />)).toThrow(/"a".*maximum.*"doble".*"—"/); // fmt prints "—"
     expect(() => sweepExtremes(<Demo curve={nanAtMax} show={String} />)).toThrow(/"a".*maximum.*NaN/);
+  });
+  test("sweepExtremes also walks the mixed min/max combinations", () => {
+    // Fails only with a and c at their maximum and b at its minimum: no single move and no all-min or all-max state reaches it.
+    function Three() {
+      const { p, set } = useParams({ a: 0, b: 0, c: 0 });
+      const bad = p.a === 1 && p.b === 0 && p.c === 1;
+      return (
+        <ChartFrame
+          name="Three"
+          title="T"
+          caption="C"
+          controls={(["a", "b", "c"] as const).map((k) => (
+            <Slider key={k} symbol={k} label={k} value={p[k]} min={0} max={1} step={1} format={String} onChange={(v) => set(k, v)} />
+          ))}
+          readouts={<Readout symbol={null} label="suma" value={bad ? "NaN" : "0"} />}
+          onReset={() => {}}
+        >
+          <Plot xDomain={[0, 1]} yDomain={[0, 1]} xLabel="x" yLabel="y" xFormat={String} yFormat={String} ariaLabel="p">
+            {({ x, y }) => <Line points={[[0, 0], [1, 1]]} x={x} y={y} series="main" />}
+          </Plot>
+        </ChartFrame>
+      );
+    }
+    expect(() => sweepExtremes(<Three />)).toThrow(/corner 5 of 8: "a" at its maximum \(1\), "b" at its minimum \(0\), "c" at its maximum \(1\)/);
   });
   test("sweepExtremes catches a negative zero, but not a small negative number", () => {
     const tiny = (a: number) => (a === -5 ? -1e-9 : 2 * a);
