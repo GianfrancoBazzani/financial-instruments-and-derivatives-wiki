@@ -53,7 +53,8 @@ export default function RepoHaircutCarry() {
         yDomain={widen([0.02, 0.045], [p.bondYield], 0.005)}
         xLabel="Plazo del repo"
         yLabel="Tipo"
-        xFormat={(v) => (Number.isInteger(v) && v >= 0 && v <= LAST ? REPO_CURVE[v].term : "")}
+        xTicks={REPO_CURVE.map((_, i) => i)}
+        xFormat={(v) => REPO_CURVE[v]?.term ?? ""}
         yFormat={(v) => pct(v, 1)}
         ariaLabel="Curva de repo por plazo y rentabilidad del bono"
       >

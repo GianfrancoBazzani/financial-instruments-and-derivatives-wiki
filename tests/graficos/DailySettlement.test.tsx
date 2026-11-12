@@ -32,6 +32,13 @@ describe("DailySettlement", () => {
     expect(screen.getByRole<HTMLInputElement>("slider", { name: "Margen de mantenimiento" }).value).toBe("2");
   });
 
+  test("the day axes show whole days only", () => {
+    const { container } = render(<DailySettlement />);
+    const ticks = [...container.querySelectorAll(".grafico-eje-x text")].map((t) => t.textContent ?? "");
+    expect(ticks.length).toBeGreaterThan(0);
+    for (const t of ticks) expect(t).not.toContain(".");
+  });
+
   test("the main series draws a path", () => {
     const { container } = render(<DailySettlement />);
     expect(container.querySelector("figure svg [data-serie='main'] path")?.getAttribute("d")).toMatch(/^M/);

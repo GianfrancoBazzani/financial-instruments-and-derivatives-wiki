@@ -22,6 +22,12 @@ describe("RepoHaircutCarry", () => {
     expect(readout("Carry")).toBe("0.60%");
   });
 
+  test("the five term names are the ticks of the plot", () => {
+    const { container } = render(<RepoHaircutCarry />);
+    const ticks = [...container.querySelectorAll(".grafico-eje-x text")].map((t) => t.textContent);
+    expect(ticks).toEqual(["1D", "1W", "1M", "3M", "6M"]);
+  });
+
   test("the main series draws a path", () => {
     const { container } = render(<RepoHaircutCarry />);
     expect(container.querySelector("figure svg [data-serie='main'] path")?.getAttribute("d")).toMatch(/^M/);

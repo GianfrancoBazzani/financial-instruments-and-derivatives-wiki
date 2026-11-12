@@ -7,7 +7,7 @@ import { Readout } from "./kit/Readout";
 import { Legend, Line, Marker } from "./kit/Series";
 import { Slider } from "./kit/Slider";
 import { useParams } from "./kit/useParams";
-import { tickNum, widen } from "./shared";
+import { widen } from "./shared";
 
 // The worked example of the page: a long futures position at 100, initial margin 3, maintenance margin 2.5.
 const DEFAULTS = { initial: 3, maintenance: 2.5 };
@@ -31,6 +31,8 @@ export default function DailySettlement() {
   const last = rows[rows.length - 1];
   const calls = rows.filter((r) => r.variationMargin > 0);
   const lastDay = rows.length - 1;
+  // Whole days only; a long path labels every second day so that 360 px do not crowd.
+  const dayTicks = rows.map((r) => r.day).filter((d) => lastDay <= 12 || d % 2 === 0);
   const pt = (day: number, v: number): [number, number] => [day, v];
 
   return (
@@ -65,7 +67,8 @@ export default function DailySettlement() {
         yDomain={widen([94, 106], path, 2)}
         xLabel="Día"
         yLabel="Precio del futuro"
-        xFormat={tickNum}
+        xTicks={dayTicks}
+        xFormat={(v) => num(v, 0)}
         yFormat={(v) => num(v, 0)}
         ariaLabel="Precio del futuro en cada día"
       >
@@ -90,7 +93,8 @@ export default function DailySettlement() {
         yDomain={widen([0, 8], [...rows.map((r) => r.balance), p.initial], 2)}
         xLabel="Día"
         yLabel="Saldo de margen"
-        xFormat={tickNum}
+        xTicks={dayTicks}
+        xFormat={(v) => num(v, 0)}
         yFormat={(v) => num(v, 0)}
         ariaLabel="Saldo de margen en cada día y llamadas de margen"
       >
