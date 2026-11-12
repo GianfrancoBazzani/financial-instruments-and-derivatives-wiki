@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, test } from "vitest";
 import SabrSmile from "../../src/components/graficos/SabrSmile";
@@ -31,5 +31,23 @@ describe("SabrSmile", () => {
 
   test("no slider position shows NaN, Infinity, -0, or an empty plot", () => {
     sweepExtremes(<SabrSmile />);
+  });
+
+  test("at all 64 min/max corners of the six sliders the three read-outs are positive volatilities", () => {
+    const { container } = render(<SabrSmile />);
+    const sliders = [...container.querySelectorAll<HTMLInputElement>("input[type='range']")];
+    expect(sliders).toHaveLength(6);
+    // alpha (first) has a maximum that follows beta and F, so it is moved last, after the others have settled.
+    const order = [1, 2, 3, 4, 5, 0];
+    for (let corner = 0; corner < 64; corner++) {
+      order.forEach((index, bit) => {
+        const s = sliders[index];
+        fireEvent.change(s, { target: { value: (corner >> bit) & 1 ? s.max : s.min } });
+      });
+      for (const label of ["σ ATM", "σ con K = 0.5 F", "σ con K = 1.5 F"]) {
+        const value = parseFloat(readout(label));
+        expect(value, `${label} at corner ${corner}`).toBeGreaterThan(0);
+      }
+    }
   });
 });
