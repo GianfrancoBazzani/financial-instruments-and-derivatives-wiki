@@ -8,6 +8,7 @@ banner:
 {/* Fuente: 09-non-standard-swaps.md @ 627bb65c932601a19f45d2d83c7b9f99169740dd */}
 
 import CapFloorCollarPayoff from "../../components/graficos/CapFloorCollarPayoff.tsx";
+import SabrSmile from "../../components/graficos/SabrSmile.tsx";
 
 ## Swaptions europeas
 
@@ -179,7 +180,7 @@ donde
 
 $\beta$ y $\rho$ fijan la pendiente (sesgo, o skew) de la sonrisa, y $\nu$ fija su curvatura. En la práctica, $\beta$ se fija cerca de 0.5, y $\alpha_0$, $\rho$ y $\nu$ se calibran con la sonrisa de cada vencimiento y plazo. El modelo da una fórmula aproximada para la volatilidad implícita de Black (o normal) en cada precio de ejercicio, y después el modelo de Black da el precio. SABR es el estándar de mercado para construir la superficie de volatilidad de las swaptions.
 
-{/* GRAFICO: SabrSmile */}
+<SabrSmile client:visible />
 
 ## Swaps de vencimiento constante
 
