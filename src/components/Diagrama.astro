@@ -16,4 +16,5 @@ if (svg === undefined) {
 }
 ---
 
-<figure class="diagrama" role="img" aria-label={alt} set:html={svg} />
+{/* tabindex: the figure scrolls on a narrow screen, and a keyboard must be able to reach it. */}
+<figure class="diagrama" role="img" aria-label={alt} tabindex="0" set:html={svg} />

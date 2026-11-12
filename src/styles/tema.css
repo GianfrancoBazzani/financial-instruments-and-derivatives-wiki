@@ -150,10 +150,17 @@ figure.diagrama {
 figure.diagrama svg {
   display: block;
   max-width: 100%;
-  min-width: 38rem;
   height: auto;
   margin-inline: auto;
   color: var(--sl-color-text);
+}
+
+/* On a narrow screen a diagram keeps a legible size and scrolls inside its own box.
+   50rem is the width below which Starlight hides the sidebar. */
+@media (max-width: 50rem) {
+  figure.diagrama svg {
+    min-width: 38rem;
+  }
 }
 
 figure.diagrama text {
